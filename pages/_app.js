@@ -1,4 +1,5 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
+import '../src/config/firebase-config';
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />;
