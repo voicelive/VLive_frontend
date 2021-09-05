@@ -1,37 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/auth';
 import styled from '@emotion/styled';
 import GoogleLoginButton from './GoogleLoginButton';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 function UserProfile() {
-  const [userInfo, setUserInfo] = useState(null);
-  const [isLogin, setIsLogin] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (!userInfo) return;
+    if (!user) return;
 
-    const sessionStorage = window.sessionStorage;
-
-    sessionStorage.setItem('userInfo', userInfo);
-    setIsLogin(true);
-  }, [userInfo]);
+    window.sessionStorage.setItem('user', user);
+  }, [user]);
 
   async function signOutGoogle() {
     await firebase.auth().signOut();
-    storage.removeItem('userInfo');
+    window.sessionStorage.removeItem('user');
+    setUser(null);
   }
 
   return (
     <>
-      {!isLogin && <GoogleLoginButton setUserInfo={setUserInfo} />}
+      {!user && <GoogleLoginButton setUser={setUser} />}
       <Profile>
-        <div class='user-image'>
-          <img src={userInfo.photoUrl}/>
+        <div className='user-image'>
+          <img src={user?.photoUrl}/>
         </div>
-        <div class='user-email'>{userInfo.email}</div>
-        <div class='user-name'>{userInfo.name}</div>
-        <div class='logout'>
+        <div className='user-email'>{user?.email}</div>
+        <div className='user-name'>{user?.name}</div>
+        <div className='logout'>
           <button onClick={signOutGoogle}>
             로그아웃
           </button>
