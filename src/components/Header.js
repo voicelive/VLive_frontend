@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 export default function Header() {
-  return <div>header</div>;
+  return <h1>V-Live</h1>;
 }
