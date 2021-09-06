@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import GoogleLoginButton from './GoogleLoginButton';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import Image from 'next/image';
 
 function UserProfile() {
   const [user, setUser] = useState(null);
@@ -23,15 +24,13 @@ function UserProfile() {
     <>
       {!user && <GoogleLoginButton setUser={setUser} />}
       <Profile>
-        <div className='user-image'>
-          <img src={user?.photoUrl}/>
+        <div className="user-image">
+          <Image src={user?.photoUrl} />
         </div>
-        <div className='user-email'>{user?.email}</div>
-        <div className='user-name'>{user?.name}</div>
-        <div className='logout'>
-          <button onClick={signOutGoogle}>
-            로그아웃
-          </button>
+        <div className="user-email">{user?.email}</div>
+        <div className="user-name">{user?.name}</div>
+        <div className="logout">
+          <button onClick={signOutGoogle}>로그아웃</button>
         </div>
       </Profile>
     </>
@@ -45,10 +44,18 @@ const Profile = styled.div`
   grid-column-gap: 5px;
   grid-row-gap: 5px;
 
-  .user-image { grid-area: 1 / 1 / 3 / 2; }
-  .user-email { grid-area: 1 / 2 / 2 / 4; }
-  .user-name { grid-area: 2 / 2 / 3 / 4; }
-  .logout { grid-area: 3 / 1 / 4 / 4; }
+  .user-image {
+    grid-area: 1 / 1 / 3 / 2;
+  }
+  .user-email {
+    grid-area: 1 / 2 / 2 / 4;
+  }
+  .user-name {
+    grid-area: 2 / 2 / 3 / 4;
+  }
+  .logout {
+    grid-area: 3 / 1 / 4 / 4;
+  }
 `;
 
 export default UserProfile;

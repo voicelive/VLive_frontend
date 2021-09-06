@@ -1,12 +1,15 @@
 import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import PropTypes from 'prop-types';
 
 export default function GoogleLoginButton({ setUser }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   async function signInGoogle() {
-    const { user } = await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    const { user } = await firebase
+      .auth()
+      .signInWithPopup(new firebase.auth.GoogleAuthProvider());
     const userInfo = {
       email: user.email,
       name: user.displayName,
@@ -23,13 +26,15 @@ export default function GoogleLoginButton({ setUser }) {
       });
 
       const { data } = await response.json();
-      setUser({...data.user, token: data.token});
+      setUser({ ...data.user, token: data.token });
     } catch (err) {
       console.error(err);
     }
   }
 
-  return (
-    <button onClick={signInGoogle}>구글로 로그인</button>
-  );
+  return <button onClick={signInGoogle}>구글로 로그인</button>;
 }
+
+GoogleLoginButton.propTypes = {
+  setUser: PropTypes.func.isRequired,
+};
