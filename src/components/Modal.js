@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 
 export default function Modal({ children, showModal }) {
   const [isOpenModal, setIsOpenModal] = useState(true);
@@ -11,7 +12,7 @@ export default function Modal({ children, showModal }) {
 
     return () => {
       setIsOpenModal(false);
-    }
+    };
   }, [showModal]);
 
   function closeModal() {
@@ -23,14 +24,14 @@ export default function Modal({ children, showModal }) {
       {isOpenModal && (
         <Wrapper>
           <Dimmed onClick={closeModal} />
-          <StyledModal children={children} />
+          <StyledModal>{children}</StyledModal>
         </Wrapper>
       )}
     </>
   );
 }
 
-Button.propTypes = {
+Modal.propTypes = {
   children: PropTypes.elementType.isRequired,
   showModal: PropTypes.func.isRequired,
 };
