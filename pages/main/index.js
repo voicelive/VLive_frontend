@@ -1,14 +1,10 @@
-import useSWR from 'swr';
 import UserProfile from '../../src/components/UserProfile';
+import { useGetTodos } from '../../src/hooks/useGetTodos';
 
 export default function Main() {
-  const { data } = useSWR('/todos/1', () => {
-    return fetch('https://jsonplaceholder.typicode.com/todos/1').then(
-      (response) => response.json(),
-    );
-  });
+  const { data: todos } = useGetTodos();
 
-  console.log('data', data);
+  console.log('todos', todos);
 
   return (
     <div>
