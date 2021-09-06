@@ -1,14 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 
 export function Button({ children, color, onClick }) {
   return (
-    <StyledButton
-      color={color}
-      onClick={onClick}
-    >
+    <StyledButton color={color} onClick={onClick}>
       {children}
-    </StyledButton>);
+    </StyledButton>
+  );
 }
 
 Button.propTypes = {

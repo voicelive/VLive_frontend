@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import GoogleLoginButton from './GoogleLoginButton';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import Image from 'next/image';
 
 export default function UserProfile() {
   const [user, setUser] = useState(null);
@@ -23,9 +24,11 @@ export default function UserProfile() {
     <>
       {!user && <GoogleLoginButton setUser={setUser} />}
       <Profile>
-        <div className="user-image">
-          <img src={user?.photoUrl} />
-        </div>
+        {user != null ? (
+          <div className="user-image">
+            <Image src={user.photoUrl} />
+          </div>
+        ) : null}
         <div className="user-email">{user?.email}</div>
         <div className="user-name">{user?.name}</div>
         <div className="logout">
