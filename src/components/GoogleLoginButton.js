@@ -2,8 +2,9 @@ import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import PropTypes from 'prop-types';
+import Button from '../components/Button';
 
-export default function GoogleLoginButton({ setUser }) {
+export default function GoogleLoginButton({ setIsLogin }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   async function signInGoogle() {
@@ -24,17 +25,28 @@ export default function GoogleLoginButton({ setUser }) {
         },
         body: JSON.stringify(userInfo),
       });
-
       const { data } = await response.json();
-      setUser({ ...data.user, token: data.token });
+
+      window.sessionStorage.setItem(
+        'user',
+        JSON.stringify({
+          ...data.user,
+          token: data.token,
+        }),
+      );
+      setIsLogin(true);
     } catch (err) {
       console.error(err);
     }
   }
 
-  return <button onClick={signInGoogle}>구글로 로그인</button>;
+  return (
+    <Button onClick={signInGoogle} color="black">
+      구글로 로그인
+    </Button>
+  );
 }
 
 GoogleLoginButton.propTypes = {
-  setUser: PropTypes.func.isRequired,
+  setIsLogin: PropTypes.func.isRequired,
 };

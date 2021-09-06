@@ -4,58 +4,81 @@ import GoogleLoginButton from './GoogleLoginButton';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import Image from 'next/image';
+import Button from '../components/Button';
 
 export default function UserProfile() {
+  const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (!user) return;
+    if (!isLogin) return;
 
-    window.sessionStorage.setItem('user', user);
-  }, [user]);
+    setUser(JSON.parse(sessionStorage.getItem('user')));
+  }, [isLogin]);
 
   async function signOutGoogle() {
-    await firebase.auth().signOut();
+    try {
+      await firebase.auth().signOut();
+    } catch (err) {
+      console.error(err);
+    }
+
     window.sessionStorage.removeItem('user');
     setUser(null);
   }
 
   return (
-    <>
-      {!user && <GoogleLoginButton setUser={setUser} />}
-      <Profile>
-        {user != null ? (
+    <ProfileBox>
+      {user === null ? (
+        <GoogleLoginButton setIsLogin={setIsLogin} />
+      ) : (
+        <Profile>
           <div className="user-image">
-            <Image src={user.photoUrl} />
+            <Image
+              src={user?.photoUrl}
+              alt="User profile image"
+              width={70}
+              height={70}
+            />
           </div>
-        ) : null}
-        <div className="user-email">{user?.email}</div>
-        <div className="user-name">{user?.name}</div>
-        <div className="logout">
-          <button onClick={signOutGoogle}>로그아웃</button>
-        </div>
-      </Profile>
-    </>
+          <div className="user-email">{user?.email}</div>
+          <div className="user-name">{user?.name}</div>
+          <div className="logout">
+            <Button onClick={signOutGoogle} color="black">
+              로그아웃
+            </Button>
+          </div>
+        </Profile>
+      )}
+    </ProfileBox>
   );
 }
 
 const Profile = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  grid-column-gap: 5px;
-  grid-row-gap: 5px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
 
   .user-image {
     grid-area: 1 / 1 / 3 / 2;
+    justify-self: start;
   }
   .user-email {
     grid-area: 1 / 2 / 2 / 4;
+    justify-self: start;
   }
   .user-name {
+    justify-self: start;
     grid-area: 2 / 2 / 3 / 4;
   }
   .logout {
+    justify-self: center;
     grid-area: 3 / 1 / 4 / 4;
   }
+`;
+
+const ProfileBox = styled.div`
+  height: 120px;
+  padding: 20px;
+  text-align: center;
 `;
