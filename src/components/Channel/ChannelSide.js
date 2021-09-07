@@ -48,29 +48,19 @@ export default function ChannelSide() {
   return (
     <SideContainer>
       <PlayerWrapper>
-        <div className="player-profile-list">
-          {players?.map((player) => {
-            return (
-              <div key={player.userId} className="player-profile">
-                <div className="player">{player.userId}</div>
-                <div className="character">{player.characterId}</div>
-              </div>
-            );
-          })}
-        </div>
+        {players?.map((player) => (
+          <div key={player.userId} className="player-profile">
+            <div className="player">{player.userId}</div>
+            <div className="character">{player.characterId}</div>
+          </div>
+        ))}
       </PlayerWrapper>
       <AudienceWrapper>
-        <div className="audience-list">
-          <div className="audience">
-            {audience?.map((user) => {
-              return (
-                <div key={user.id} className="user-profile">
-                  <div className="user-id">{user}</div>
-                </div>
-              );
-            })}
+        {audience?.map((user) => (
+          <div key={user.id} className="user-id">
+            {user}
           </div>
-        </div>
+        ))}
       </AudienceWrapper>
       <ButtonWrapper>
         {currentUsers[0] === host ? (
@@ -85,41 +75,27 @@ export default function ChannelSide() {
 }
 
 const SideContainer = styled.div`
-  display: inline-block;
-  height: 800px;
   width: 20%;
+  height: 800px;
   border: 1px solid black;
 `;
 
 const PlayerWrapper = styled.div`
-  height: 55%;
   width: 100%;
+  height: 55%;
   border: 1px solid black;
 
-  .player-profile-list {
-    padding: 10px;
-    height: 90%;
-    border: 1px solid black;
-  }
-
   .player-profile {
-    display: block;
-    height: 50px;
     width: 100%;
+    height: 50px;
     border: 1px solid black;
   }
 `;
 
 const AudienceWrapper = styled.div`
-  height: 30%;
   width: 100%;
+  height: 30%;
   border: 1px solid black;
-
-  .audience-list {
-    padding: 10px;
-    height: 80%;
-    border: 1px solid black;
-  }
 `;
 
 const ButtonWrapper = styled.div`

@@ -49,29 +49,25 @@ export default function ChannelMain() {
 }
 
 const MainContainer = styled.div`
-  display: inline-block;
-  height: 800px;
   width: 80%;
+  height: 800px;
   border: 1px solid black;
 
   header {
-    display: inline-block;
-    height: 10%;
     width: 100%;
+    height: 10%;
     border: 1px solid black;
   }
 `;
 
 const VideoWrapper = styled.div`
-  display: inline-block;
-  height: 55%;
   width: 100%;
+  height: 55%;
   border: 1px solid black;
 `;
 
 const ChattingWrapper = styled.div`
-  display: inline-block;
-  height: 30%;
   width: 100%;
+  height: 30%;
   border: 1px solid black;
 `;

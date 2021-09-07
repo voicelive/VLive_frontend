@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from '@emotion/styled';
+
 import ChannelMain from './ChannelMain';
 import ChannelSide from './ChannelSide';
 
-export default function ChannelContainer() {
+export default function Channel() {
   return (
-    <div>
-      <Container>
-        <ChannelMain />
-        <ChannelSide />
-      </Container>
-    </div>
+    <Container>
+      <ChannelMain />
+      <ChannelSide />
+    </Container>
   );
 }
 
