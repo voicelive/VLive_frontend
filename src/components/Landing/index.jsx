@@ -6,24 +6,18 @@ import Link from 'next/link';
 import Header from '../Header';
 import HistoryItem from './HistoryItem';
 import Button from '../Button';
+import ErrorBox from '../ErrorBox';
 
 export default function Landing() {
   const { historyChannels, error } = useChannels();
 
   if (error) {
-    return (
-      <>
-        <h2>{error}</h2>
-        <Link href="/" passHref>
-          <Button color="red">홈으로 돌아가기</Button>
-        </Link>
-      </>
-    );
+    return <ErrorBox message={error.message} />;
   }
 
   return (
     <Wrapper>
-      <Header />
+      <Header>V-Live</Header>
       <h2 className="recent-game">RECENT GAME</h2>
 
       <HistoryContainer>

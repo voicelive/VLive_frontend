@@ -15,7 +15,7 @@ export default function UserProfile() {
   const [error, setError] = useState(null);
 
   if (error) {
-    return <ErrorBox />;
+    return <ErrorBox message={error.message} />;
   }
 
   useEffect(() => {

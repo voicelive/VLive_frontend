@@ -10,7 +10,7 @@ export default function GoogleLoginButton({ onLogin }) {
   const [error, setError] = useState(null);
 
   if (error) {
-    return <ErrorBox />;
+    return <ErrorBox message={error.message} />;
   }
 
   async function signInGoogle() {
@@ -45,7 +45,7 @@ export default function GoogleLoginButton({ onLogin }) {
         }),
       );
 
-      onLogin(true);
+      onLogin();
     } catch (err) {
       setError(err.message);
     }

@@ -17,7 +17,7 @@ export default function Main() {
   const { activeChannels, error } = useChannels();
 
   if (error) {
-    return <ErrorBox />;
+    return <ErrorBox message={error.message} />;
   }
 
   function openModal() {
@@ -31,7 +31,7 @@ export default function Main() {
   return (
     <Wrapper>
       <MainContainer>
-        <Header />
+        <Header>V-Live</Header>
         {activeChannels?.map((channel) => (
           <Link href={`/channel/${channel._id}`} key={channel._id} passHref>
             <a>

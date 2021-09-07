@@ -9,7 +9,7 @@ export default function Preview() {
   const { episodes, error } = useEpisodes();
 
   if (error) {
-    return <ErrorBox />;
+    return <ErrorBox message={error.message} />;
   }
 
   return (

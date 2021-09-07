@@ -3,10 +3,10 @@ import Link from 'next/link';
 import Button from '../components/Button';
 import PropTypes from 'prop-types';
 
-export default function ErrorBox({ error }) {
+export default function ErrorBox({ message }) {
   return (
     <>
-      <h2>{error}</h2>
+      <p>{message}</p>
       <Link href="/" passHref>
         <Button color="red">홈으로 돌아가기</Button>
       </Link>
@@ -15,5 +15,5 @@ export default function ErrorBox({ error }) {
 }
 
 ErrorBox.propTypes = {
-  error: PropTypes.func.isRequired,
+  message: PropTypes.string.isRequired,
 };
