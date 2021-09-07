@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import useParams from 'react-router-dom';
 import useSWR from 'swr';
 import styled from '@emotion/styled';
 
 async function fetcher() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const channelId = useParams();
+  const channelId = '6135b03f428aabe0cf791289';
 
   try {
     const response = await fetch(`${baseUrl}/channel/${channelId}`, {

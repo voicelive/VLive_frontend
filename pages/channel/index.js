@@ -1,9 +1,9 @@
-import ChannelContainer from '../../src/components/Channel/Channel';
+import ChannelContainer from '../../src/components/Channel/ChannelContainer';
 
 export default function Channel() {
   return (
     <div>
-      <Channel />
+      <ChannelContainer />
     </div>
   );
 }

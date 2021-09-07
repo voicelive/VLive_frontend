@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import useParams from 'react-router-dom';
+// import useParams from 'react-router-dom';
 import useSWR from 'swr';
 import styled from '@emotion/styled';
 import Button from '../Button';
 
 async function fetcher() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const channelId = useParams();
+  // const channelId = useParams();
+  const channelId = '6135b03f428aabe0cf791289';
 
   try {
     const response = await fetch(`${baseUrl}/channel/${channelId}`, {
@@ -16,6 +17,7 @@ async function fetcher() {
       },
     });
     const { data } = await response.json();
+    console.log(data, 'data');
 
     return data;
   } catch (err) {
