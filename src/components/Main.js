@@ -38,7 +38,9 @@ export default function Main() {
       <SideContainer>
         <UserProfile />
         <Preview />
-        <Button>채널 개설하기</Button>
+        <div className="button-wrapper">
+          <Button>채널 개설하기</Button>
+        </div>
       </SideContainer>
     </Wrapper>
   );
@@ -56,8 +58,16 @@ const MainContainer = styled.div`
 `;
 
 const SideContainer = styled.div`
+  position: relative;
   display: inline-block;
   height: 800px;
   width: 20%;
   border: 1px solid black;
+  text-align: center;
+  .button-wrapper {
+    position: absolute;
+    text-align: center;
+    bottom: 10px;
+    width: 100%;
+  }
 `;
