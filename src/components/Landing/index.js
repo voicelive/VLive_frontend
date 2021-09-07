@@ -25,9 +25,9 @@ export default function Landing() {
     <Wrapper>
       <Header />
       <HistoryContainer>
-        {historyChannels?.map((channel) => {
-          return <ChannelItem key={channel._id} channel={channel} />;
-        })}
+        {historyChannels?.map((channel) => (
+          <ChannelItem key={channel._id} channel={channel} />
+        )}
       </HistoryContainer>
       <Link href="/main" passHref>
         <Button>게임하러가기</Button>
