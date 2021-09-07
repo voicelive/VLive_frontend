@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/dist/client/router';
+import Image from 'next/image';
 
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -113,7 +114,12 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
                   onClick={handleClick}
                 >
                   <span className="episode-title">{episode.title}</span>
-                  <img src={episode.thumbnail} alt="episode-thumbnail" />
+                  <Image
+                    src={episode.thumbnail}
+                    alt="episode-thumbnail"
+                    width={200}
+                    height={100}
+                  />
                 </EpisodeOption>
               ))}
           </ul>
@@ -212,10 +218,5 @@ const EpisodeOption = styled.li`
 
   .episode-title {
     margin-bottom: 5px;
-  }
-
-  img {
-    height: 100px;
-    border: 1px solid white;
   }
 `;
