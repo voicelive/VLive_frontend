@@ -27,7 +27,7 @@ export default function Landing() {
       <HistoryContainer>
         {historyChannels?.map((channel) => (
           <ChannelItem key={channel._id} channel={channel} />
-        )}
+        ))}
       </HistoryContainer>
       <Link href="/main" passHref>
         <Button>게임하러가기</Button>
