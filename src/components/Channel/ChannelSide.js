@@ -20,6 +20,7 @@ export default function ChannelSide() {
     if (!channel) return;
 
     const { players, audience, host } = channel;
+    console.log(audience, 'audience');
 
     setPlayers(players);
     setAudience(audience);
@@ -35,16 +36,16 @@ export default function ChannelSide() {
   return (
     <SideContainer>
       <PlayerWrapper>
-        {players?.map((player, index) => (
-          <div key={`${player.userId}${index}`} className="player-profile">
+        {players?.map((player) => (
+          <div key={player._id} className="player-profile">
             <div className="player">{player.userId}</div>
             <div className="character">{player.characterId}</div>
           </div>
         ))}
       </PlayerWrapper>
       <AudienceWrapper>
-        {audience?.map((user, index) => (
-          <div key={`${user.userId}${index}`} className="user-id">
+        {audience?.map((user) => (
+          <div key={user} className="user-id">
             {user}
           </div>
         ))}

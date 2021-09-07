@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import useChannel from '../../hooks/useChannel';
 import styled from '@emotion/styled';
+import useChannel from '../../hooks/useChannel';
 
 export default function ChannelMain() {
   const [channelInfo, setChannelInfo] = useState(null);
@@ -13,14 +13,12 @@ export default function ChannelMain() {
   useEffect(() => {
     if (!channel) return;
 
-    const { name, episode } = channel;
-
-    setChannelInfo({ name, episode });
+    setChannelInfo(channel);
   }, [channel]);
 
   return (
     <MainContainer>
-      {channelInfo ? (
+      {channelInfo !== null ? (
         <header>
           <div className="channel-name">{channelInfo.name}</div>
           <div className="episode-title">{channelInfo.episode.title}</div>

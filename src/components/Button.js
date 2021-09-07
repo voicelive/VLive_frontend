@@ -12,6 +12,7 @@ export default function Button({ children, color, onClick }) {
 
 Button.propTypes = {
   children: PropTypes.elementType.isRequired,
+  onClick: PropTypes.func,
   color: PropTypes.string,
 };
 

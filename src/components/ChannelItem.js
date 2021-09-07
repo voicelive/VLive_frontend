@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
 export default function ChannelItem({ channel }) {
