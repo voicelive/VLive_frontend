@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import PropTypes from 'prop-types';
-import Button from '../components/Button';
+import Button from '../Button';
+import ErrorBox from '../ErrorBox';
 
-export default function GoogleLoginButton({ setIsLogin, setError }) {
+export default function GoogleLoginButton({ onLogin }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const [error, setError] = useState(null);
+
+  if (error) {
+    return <ErrorBox />;
+  }
 
   async function signInGoogle() {
     const { user } = await firebase
@@ -39,7 +45,7 @@ export default function GoogleLoginButton({ setIsLogin, setError }) {
         }),
       );
 
-      setIsLogin(true);
+      onLogin(true);
     } catch (err) {
       setError(err.message);
     }
@@ -53,6 +59,5 @@ export default function GoogleLoginButton({ setIsLogin, setError }) {
 }
 
 GoogleLoginButton.propTypes = {
-  setIsLogin: PropTypes.func.isRequired,
-  setError: PropTypes.func.isRequired,
+  onLogin: PropTypes.func.isRequired,
 };

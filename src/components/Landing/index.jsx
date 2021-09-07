@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import useGetChannels from '../../hooks/useGetChannels';
+import useChannels from '../../hooks/useChannels';
 import Link from 'next/link';
 
 import Header from '../Header';
@@ -8,7 +8,7 @@ import HistoryItem from './HistoryItem';
 import Button from '../Button';
 
 export default function Landing() {
-  const { historyChannels, error } = useGetChannels();
+  const { historyChannels, error } = useChannels();
 
   if (error) {
     return (
