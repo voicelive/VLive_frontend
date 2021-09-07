@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
+import useGetChannels from '../hooks/useGetChannels';
 
 import Header from '../components/Header';
 import ChannelItem from '../components/ChannelItem';
@@ -8,24 +9,7 @@ import Preview from '../components/Preview';
 import Button from '../components/Button';
 
 export default function Main() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const [channels, setChannels] = useState([]);
-
-  useEffect(async () => {
-    try {
-      const response = await fetch(`${baseUrl}/channel`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const { data } = await response.json();
-
-      setChannels(data.channels);
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
+  const { channels } = useGetChannels();
 
   return (
     <Wrapper>
