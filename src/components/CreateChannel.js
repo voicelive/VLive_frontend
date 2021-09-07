@@ -40,6 +40,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
     ev.preventDefault();
     const { name, episodeId } = inputValue;
     const userId = '6134fe8265a8f8e45b246e4c';
+    // + 세션스토리지에서 id 조회
 
     try {
       const response = await fetch(`${baseurl}/channel`, {
@@ -56,6 +57,8 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
         return alert(posted.message);
       }
 
+      const channelId = posted.data;
+      // + 세션스토리지에 저장
       router.push(`/channel/${channelId}`);
     } catch (err) {
       console.error(err);
