@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import useGetChannels from '../hooks/useGetChannels';
+import useChannels from '../hooks/useChannels';
 import Link from 'next/link';
 
 import Header from '../components/Header';
@@ -13,8 +13,12 @@ import CreateChannel from './CreateChannel';
 
 export default function Main() {
   const [error, setError] = useState(null);
+<<<<<<< HEAD
+  const { channels } = useChannels();
+=======
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { activeChannels } = useGetChannels();
+>>>>>>> 7e0d74119b9e824c9173187acff05eacb1f86e13
 
   if (error) {
     return (
@@ -39,9 +43,13 @@ export default function Main() {
     <Wrapper>
       <MainContainer>
         <Header />
-        {activeChannels?.map((channel) => {
-          return <ChannelItem key={channel._id} channel={channel} />;
-        })}
+        {channels?.map((channel) => (
+          <Link href={`/channel/${channel._id}`} key={channel._id} passHref>
+            <a>
+              <ChannelItem channel={channel} />
+            </a>
+          </Link>
+        ))}
       </MainContainer>
       <SideContainer>
         <UserProfile setError={setError} />

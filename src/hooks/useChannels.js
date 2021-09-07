@@ -18,7 +18,7 @@ async function fetcher() {
   }
 }
 
-export default function useGetChannels() {
+export default function useEpisodes() {
   const { data: channels, error } = useSWR('/channel', fetcher);
   let historyChannels = [];
   let activeChannels = [];
