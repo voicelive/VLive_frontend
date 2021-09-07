@@ -52,7 +52,7 @@ export default function Main() {
       </SideContainer>
       {isModalOpen && (
         <Modal closeModal={closeModal}>
-          <CreateChannel closeModal={closeModal} />
+          <CreateChannel closeModal={closeModal} isModalOpen={isModalOpen} />
         </Modal>
       )}
     </Wrapper>

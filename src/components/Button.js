@@ -2,9 +2,9 @@ import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
-export default function Button({ children, color, onClick }) {
+export default function Button({ type, children, color, onClick }) {
   return (
-    <StyledButton color={color} onClick={onClick}>
+    <StyledButton type={type} color={color} onClick={onClick}>
       {children}
     </StyledButton>
   );
@@ -14,10 +14,12 @@ Button.propTypes = {
   children: PropTypes.elementType.isRequired,
   onClick: PropTypes.func.isRequired,
   color: PropTypes.string,
+  type: PropTypes.string,
 };
 
 Button.defaultProps = {
   color: undefined,
+  type: 'button',
 };
 
 const StyledButton = styled.button`

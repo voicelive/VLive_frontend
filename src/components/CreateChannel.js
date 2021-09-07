@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { Router, useRouter } from 'next/dist/client/router';
 import styled from '@emotion/styled';
 
-export default function CreateChannel({ closeModal }) {
+import Button from './Button';
+
+export default function CreateChannel({ isModalOpen, closeModal }) {
   const baseurl = process.env.NEXT_PUBLIC_API_URL;
+  const router = useRouter();
+
   const [episodes, setEpisodes] = useState([]);
   const [inputValue, setInputValue] = useState({
     name: '',
@@ -27,11 +32,12 @@ export default function CreateChannel({ closeModal }) {
     }
 
     fetchData();
-  }, []);
+  }, [isModalOpen]);
 
-  async function submitData() {
+  async function submitData(ev) {
+    ev.preventDefault();
     const { name, episodeId } = inputValue;
-    const userId = '6134fe8265a8f8e45b246e4c'; // 세션스토리에서 받아와야 함
+    const userId = '6134fe8265a8f8e45b246e4c';
 
     try {
       const response = await fetch(`${baseurl}/channel`, {
@@ -39,14 +45,16 @@ export default function CreateChannel({ closeModal }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, episodeId, userId }),
+        body: JSON.stringify({ name, episodeId, host: userId }),
       });
 
       const posted = await response.json();
 
       if (posted.result === 'error') {
-        alert(posted.message);
+        return alert(posted.message);
       }
+
+      router.push(`/channel/${channelId}`);
     } catch (err) {
       console.error(err);
     }
@@ -84,8 +92,8 @@ export default function CreateChannel({ closeModal }) {
           <input
             type="text"
             name="name"
+            placeholder="아무나 들어와보시지"
             value={inputValue.name}
-            placeholder="아무나 들어오세요"
             onChange={handleChange}
           />
         </ChannelName>
@@ -105,9 +113,9 @@ export default function CreateChannel({ closeModal }) {
               ))}
           </ul>
         </EpisodeOptions>
-        <button type="submit" onClick={submitData}>
+        <Button type="submit" onClick={submitData}>
           채널 개설
-        </button>
+        </Button>
       </CreatingForm>
     </Container>
   );
@@ -172,7 +180,7 @@ const EpisodeOptions = styled.div`
 
   .episode-list {
     display: grid;
-    grid-template-columns: repeat(2, minmax(100px, 170px));
+    grid-template-columns: repeat(3, minmax(100px, 170px));
     padding: 0;
   }
 `;
@@ -180,8 +188,13 @@ const EpisodeOptions = styled.div`
 const EpisodeOption = styled.li`
   display: flex;
   flex-direction: column;
-  margin-right: 10px;
+  margin: 0 10px 20px 0;
+  height: 100px;
   list-style: none;
   cursor: pointer;
-  border: 1px solid white;
+  font-size: 12px;
+
+  img {
+    height: 100px;
+  }
 `;
