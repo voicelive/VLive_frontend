@@ -4,7 +4,7 @@ import 'firebase/auth';
 import PropTypes from 'prop-types';
 import Button from '../components/Button';
 
-export default function GoogleLoginButton({ setIsLogin, setError }) {
+export default function GoogleLoginButton({ onLogin, onError }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   async function signInGoogle() {
