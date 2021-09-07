@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Router, useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/dist/client/router';
+
+import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import Button from './Button';
@@ -83,7 +85,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
       <div className="header">
         <span className="title">채널개설 하기</span>
         <button type="button" alt="close" onClick={closeModal}>
-          X
+          나가기
         </button>
       </div>
       <CreatingForm>
@@ -107,19 +109,26 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
                   id={episode._id}
                   onClick={handleClick}
                 >
-                  <span>{episode.title}</span>
+                  <span className="episode-title">{episode.title}</span>
                   <img src={episode.thumbnail} alt="episode-thumbnail" />
                 </EpisodeOption>
               ))}
           </ul>
         </EpisodeOptions>
-        <Button type="submit" onClick={submitData}>
-          채널 개설
-        </Button>
+        <div className="button">
+          <Button type="submit" onClick={submitData}>
+            채널 개설
+          </Button>
+        </div>
       </CreatingForm>
     </Container>
   );
 }
+
+CreateChannel.propTypes = {
+  isModalOpen: PropTypes.bool.isRequired,
+  closeModal: PropTypes.func.isRequired,
+};
 
 const Container = styled.div`
   width: 100%;
@@ -147,13 +156,17 @@ const CreatingForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  box-sizing: border-box;
   height: 90%;
   padding: 30px 50px;
+  box-sizing: border-box;
   text-align: left;
 
   .channel-name {
     display: block;
+  }
+
+  .button {
+    margin: 10px auto 0 auto;
   }
 `;
 
@@ -188,13 +201,18 @@ const EpisodeOptions = styled.div`
 const EpisodeOption = styled.li`
   display: flex;
   flex-direction: column;
-  margin: 0 10px 20px 0;
   height: 100px;
+  margin: 0 15px 20px 0;
+  font-size: 12px;
   list-style: none;
   cursor: pointer;
-  font-size: 12px;
+
+  .episode-title {
+    margin-bottom: 5px;
+  }
 
   img {
     height: 100px;
+    border: 1px solid white;
   }
 `;

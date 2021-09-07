@@ -24,7 +24,7 @@ Button.defaultProps = {
 
 const StyledButton = styled.button`
   all: unset;
-  width: 150px;
+  width: 130px;
   height: 20px;
   padding: 15px 20px;
   font-size: 14px;
