@@ -1,33 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import useSWR from 'swr';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
+
+import useChannel from '../../hooks/useChannel';
 import Button from '../Button';
-
-async function fetcher() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const channelId = '6135b03f428aabe0cf791289';
-
-  try {
-    const response = await fetch(`${baseUrl}/channel/${channelId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const { data } = await response.json();
-
-    return data;
-  } catch (err) {
-    console.error(err);
-  }
-}
 
 export default function ChannelSide() {
   const [currentUsers, setCurrentUsers] = useState([]);
   const [players, setPlayers] = useState(null);
   const [audience, setAudience] = useState(null);
   const [host, setHost] = useState(null);
-  const { data: channel } = useSWR('/channel', fetcher);
+  const {
+    query: { channelId },
+  } = useRouter();
+
+  const channel = useChannel(channelId);
 
   useEffect(() => {
     if (!channel) return;
@@ -48,16 +35,16 @@ export default function ChannelSide() {
   return (
     <SideContainer>
       <PlayerWrapper>
-        {players?.map((player) => (
-          <div key={player.userId} className="player-profile">
+        {players?.map((player, index) => (
+          <div key={`${player.userId}${index}`} className="player-profile">
             <div className="player">{player.userId}</div>
             <div className="character">{player.characterId}</div>
           </div>
         ))}
       </PlayerWrapper>
       <AudienceWrapper>
-        {audience?.map((user) => (
-          <div key={user.id} className="user-id">
+        {audience?.map((user, index) => (
+          <div key={`${user.userId}${index}`} className="user-id">
             {user}
           </div>
         ))}

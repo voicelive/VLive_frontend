@@ -2,10 +2,10 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
-import useGetEpisodes from '../hooks/useGetEpisodes';
+import useEpisodes from '../hooks/useEpisodes';
 
 export default function Preview({ setError }) {
-  const { episodes, error } = useGetEpisodes();
+  const { episodes, error } = useEpisodes();
 
   if (error) {
     setError(error.message);

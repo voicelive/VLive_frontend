@@ -1,47 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import useSWR from 'swr';
+import { useRouter } from 'next/router';
+import useChannel from '../../hooks/useChannel';
 import styled from '@emotion/styled';
 
-async function fetcher() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const channelId = '6135b03f428aabe0cf791289';
-
-  try {
-    const response = await fetch(`${baseUrl}/channel/${channelId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const { data } = await response.json();
-
-    return data;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
 export default function ChannelMain() {
-  const [channelInfo, setChannelInfo] = useState({});
-  const { data: channel } = useSWR('/channel', fetcher);
+  const [channelInfo, setChannelInfo] = useState(null);
+  const {
+    query: { channelId },
+  } = useRouter();
+  const channel = useChannel(channelId);
 
   useEffect(() => {
     if (!channel) return;
 
     const { name, episode } = channel;
-    const { title } = episode;
 
-    setChannelInfo({ name, title });
+    setChannelInfo({ name, episode });
   }, [channel]);
 
   return (
     <MainContainer>
-      {channelInfo && (
+      {channelInfo ? (
         <header>
           <div className="channel-name">{channelInfo.name}</div>
-          <div className="episode-title">{channelInfo.title}</div>
+          <div className="episode-title">{channelInfo.episode.title}</div>
         </header>
-      )}
+      ) : null}
       <VideoWrapper />
       <ChattingWrapper />
     </MainContainer>

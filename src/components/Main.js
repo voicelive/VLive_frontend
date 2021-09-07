@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import useGetChannels from '../hooks/useGetChannels';
+import useChannels from '../hooks/useChannels';
 import Link from 'next/link';
 
 import Header from '../components/Header';
@@ -11,7 +11,7 @@ import Button from '../components/Button';
 
 export default function Main() {
   const [error, setError] = useState(null);
-  const { channels } = useGetChannels();
+  const { channels } = useChannels();
 
   if (error) {
     return (
@@ -28,9 +28,13 @@ export default function Main() {
     <Wrapper>
       <MainContainer>
         <Header />
-        {channels?.map((channel) => {
-          return <ChannelItem key={channel._id} channel={channel} />;
-        })}
+        {channels?.map((channel) => (
+          <Link href={`/channel/${channel._id}`} key={channel._id} passHref>
+            <a>
+              <ChannelItem channel={channel} />
+            </a>
+          </Link>
+        ))}
       </MainContainer>
       <SideContainer>
         <UserProfile setError={setError} />

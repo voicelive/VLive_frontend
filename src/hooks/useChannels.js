@@ -18,7 +18,7 @@ async function fetcher() {
   }
 }
 
-export default function useGetEpisodes() {
+export default function useEpisodes() {
   const { data: channels, error } = useSWR('/channel', fetcher);
 
   return { channels, error };
