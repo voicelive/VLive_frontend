@@ -12,6 +12,10 @@ export default function ChannelItem({ channel }) {
   );
 }
 
+ChannelItem.propTypes = {
+  channel: PropTypes.object.isRequired,
+};
+
 const Container = styled.div`
   height: 160px;
   margin: 30px;
