@@ -1,3 +1,5 @@
-export default function Landing() {
-  return <div>Landing Page</div>;
+import Landing from '../src/components/Landing';
+
+export default function LandingPage() {
+  return <Landing />;
 }
