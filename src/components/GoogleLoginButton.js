@@ -4,7 +4,7 @@ import 'firebase/auth';
 import PropTypes from 'prop-types';
 import Button from '../components/Button';
 
-export default function GoogleLoginButton({ setIsLogin }) {
+export default function GoogleLoginButton({ setIsLogin, setError }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   async function signInGoogle() {
@@ -25,7 +25,11 @@ export default function GoogleLoginButton({ setIsLogin }) {
         },
         body: JSON.stringify(userInfo),
       });
-      const { data } = await response.json();
+      const { result, data, message } = await response.json();
+
+      if (result === 'error') {
+        return setError(message);
+      }
 
       window.sessionStorage.setItem(
         'user',
@@ -34,9 +38,10 @@ export default function GoogleLoginButton({ setIsLogin }) {
           token: data.token,
         }),
       );
+
       setIsLogin(true);
     } catch (err) {
-      console.error(err);
+      setError(err.message);
     }
   }
 
@@ -49,4 +54,5 @@ export default function GoogleLoginButton({ setIsLogin }) {
 
 GoogleLoginButton.propTypes = {
   setIsLogin: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
 };

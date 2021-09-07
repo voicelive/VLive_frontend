@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import styled from '@emotion/styled';
-import GoogleLoginButton from './GoogleLoginButton';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
 import Image from 'next/image';
-import Button from '../components/Button';
 
-export default function UserProfile() {
+import Button from '../components/Button';
+import GoogleLoginButton from './GoogleLoginButton';
+
+export default function UserProfile({ setError }) {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
 
@@ -20,7 +22,7 @@ export default function UserProfile() {
     try {
       await firebase.auth().signOut();
     } catch (err) {
-      console.error(err);
+      setError(err.message);
     }
 
     window.sessionStorage.removeItem('user');
@@ -30,12 +32,12 @@ export default function UserProfile() {
   return (
     <ProfileBox>
       {user === null ? (
-        <GoogleLoginButton setIsLogin={setIsLogin} />
+        <GoogleLoginButton setError={setError} setIsLogin={setIsLogin} />
       ) : (
         <Profile>
           <div className="user-image">
             <Image
-              src={user?.photoUrl}
+              src={user.photoUrl}
               alt="User profile image"
               width={70}
               height={70}
@@ -63,14 +65,17 @@ const Profile = styled.div`
     grid-area: 1 / 1 / 3 / 2;
     justify-self: start;
   }
+
   .user-email {
     grid-area: 1 / 2 / 2 / 4;
     justify-self: start;
   }
+
   .user-name {
     justify-self: start;
     grid-area: 2 / 2 / 3 / 4;
   }
+
   .logout {
     justify-self: center;
     grid-area: 3 / 1 / 4 / 4;
@@ -82,3 +87,7 @@ const ProfileBox = styled.div`
   padding: 20px;
   text-align: center;
 `;
+
+UserProfile.propTypes = {
+  setError: PropTypes.func.isRequired,
+};

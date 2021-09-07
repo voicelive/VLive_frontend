@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import useGetChannels from '../hooks/useGetChannels';
+import Link from 'next/link';
 
 import Header from '../components/Header';
 import ChannelItem from '../components/ChannelItem';
@@ -8,24 +10,19 @@ import Preview from '../components/Preview';
 import Button from '../components/Button';
 
 export default function Main() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const [channels, setChannels] = useState([]);
+  const [error, setError] = useState(null);
+  const { channels } = useGetChannels();
 
-  useEffect(async () => {
-    try {
-      const response = await fetch(`${baseUrl}/channel`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const { data } = await response.json();
-
-      setChannels(data.channels);
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
+  if (error) {
+    return (
+      <>
+        <h2>{error}</h2>
+        <Link href="/" passHref>
+          <Button color="red">홈으로 돌아가기</Button>
+        </Link>
+      </>
+    );
+  }
 
   return (
     <Wrapper>
@@ -36,9 +33,11 @@ export default function Main() {
         })}
       </MainContainer>
       <SideContainer>
-        <UserProfile />
-        <Preview />
-        <Button>채널 개설하기</Button>
+        <UserProfile setError={setError} />
+        <Preview setError={setError} />
+        <div className="button-wrapper">
+          <Button>채널 개설하기</Button>
+        </div>
       </SideContainer>
     </Wrapper>
   );
@@ -56,8 +55,17 @@ const MainContainer = styled.div`
 `;
 
 const SideContainer = styled.div`
+  position: relative;
   display: inline-block;
   height: 800px;
   width: 20%;
   border: 1px solid black;
+  text-align: center;
+
+  .button-wrapper {
+    position: absolute;
+    text-align: center;
+    bottom: 10px;
+    width: 100%;
+  }
 `;
