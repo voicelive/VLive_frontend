@@ -1,6 +1,6 @@
 {
   "name": "vlive-frontend",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "A vlive project frontend",
   "author": "Team brosis <eunbines2@gmail.com>",
   "contributors": [
@@ -13,7 +13,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "dependencies": {
     "@emotion/react": "^11.4.1",
