@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-
 import ChannelMain from './ChannelMain';
 import ChannelSide from './ChannelSide';
 
