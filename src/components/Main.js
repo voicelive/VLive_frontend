@@ -11,7 +11,7 @@ import Button from '../components/Button';
 
 export default function Main() {
   const [error, setError] = useState(null);
-  const { channels } = useGetChannels();
+  const { activeChannels } = useGetChannels();
 
   if (error) {
     return (
@@ -28,7 +28,7 @@ export default function Main() {
     <Wrapper>
       <MainContainer>
         <Header />
-        {channels?.map((channel) => {
+        {activeChannels?.map((channel) => {
           return <ChannelItem key={channel._id} channel={channel} />;
         })}
       </MainContainer>
