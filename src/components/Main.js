@@ -8,9 +8,12 @@ import ChannelItem from '../components/ChannelItem';
 import UserProfile from './UserProfile';
 import Preview from '../components/Preview';
 import Button from '../components/Button';
+import Modal from '../components/Modal';
+import CreateChannel from './CreateChannel';
 
 export default function Main() {
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { activeChannels } = useGetChannels();
 
   if (error) {
@@ -22,6 +25,14 @@ export default function Main() {
         </Link>
       </>
     );
+  }
+
+  function openModal() {
+    setIsModalOpen(true);
+  }
+
+  function closeModal() {
+    setIsModalOpen(false);
   }
 
   return (
@@ -36,9 +47,14 @@ export default function Main() {
         <UserProfile setError={setError} />
         <Preview setError={setError} />
         <div className="button-wrapper">
-          <Button>채널 개설하기</Button>
+          <Button onClick={openModal}>채널 개설하기</Button>
         </div>
       </SideContainer>
+      {isModalOpen && (
+        <Modal closeModal={closeModal}>
+          <CreateChannel closeModal={closeModal} />
+        </Modal>
+      )}
     </Wrapper>
   );
 }

@@ -2,38 +2,18 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
-export default function Modal({ children, showModal }) {
-  const [isOpenModal, setIsOpenModal] = useState(true);
-
-  useEffect(() => {
-    if (showModal) {
-      setIsOpenModal(true);
-    }
-
-    return () => {
-      setIsOpenModal(false);
-    };
-  }, [showModal]);
-
-  function closeModal() {
-    setIsOpenModal(false);
-  }
-
+export default function Modal({ children, closeModal }) {
   return (
-    <>
-      {isOpenModal && (
-        <Wrapper>
-          <Dimmed onClick={closeModal} />
-          <StyledModal>{children}</StyledModal>
-        </Wrapper>
-      )}
-    </>
+    <Wrapper>
+      <Dimmed onClick={closeModal} />
+      <StyledModal>{children}</StyledModal>
+    </Wrapper>
   );
 }
 
 Modal.propTypes = {
   children: PropTypes.elementType.isRequired,
-  showModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 const Wrapper = styled.div`
