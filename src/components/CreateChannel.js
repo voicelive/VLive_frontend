@@ -26,11 +26,15 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
             'Content-Type': 'application/json',
           },
         });
+        const { result, data, message } = await response.json();
 
-        const fetched = await response.json();
-        setEpisodes(fetched.data);
+        if (result === 'error') {
+          return alert(message);
+        }
+
+        setEpisodes(data);
       } catch (err) {
-        console.error(err);
+        alert(err.message);
       }
     }
 
@@ -39,9 +43,9 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
 
   async function submitData(ev) {
     ev.preventDefault();
+
     const { name, episodeId } = inputValue;
     const userId = '6134fe8265a8f8e45b246e4c';
-    // + 세션스토리지에서 id 조회
 
     try {
       const response = await fetch(`${baseurl}/channel`, {
@@ -51,18 +55,17 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
         },
         body: JSON.stringify({ name, episodeId, host: userId }),
       });
+      const { result, data, message } = await response.json();
 
-      const posted = await response.json();
-
-      if (posted.result === 'error') {
-        return alert(posted.message);
+      if (result === 'error') {
+        return alert(message);
       }
 
-      const channelId = posted.data;
-      // + 세션스토리지에 저장
+      const channelId = data;
+
       router.push(`/channel/${channelId}`);
     } catch (err) {
-      console.error(err);
+      alert(err.message);
     }
   }
 
@@ -88,7 +91,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
     <Container>
       <div className="header">
         <span className="title">채널개설 하기</span>
-        <button type="button" alt="close" onClick={closeModal}>
+        <button type="button" onClick={closeModal}>
           나가기
         </button>
       </div>
@@ -106,22 +109,21 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
         <EpisodeOptions>
           <span className="episode-select">연기할 작품을 선택하세요</span>
           <ul className="episode-list">
-            {episodes.length &&
-              episodes.map((episode) => (
-                <EpisodeOption
-                  key={episode._id}
-                  id={episode._id}
-                  onClick={handleClick}
-                >
-                  <span className="episode-title">{episode.title}</span>
-                  <Image
-                    src={episode.thumbnail}
-                    alt="episode-thumbnail"
-                    width={200}
-                    height={100}
-                  />
-                </EpisodeOption>
-              ))}
+            {episodes.map((episode) => (
+              <EpisodeOption
+                key={episode._id}
+                id={episode._id}
+                onClick={handleClick}
+              >
+                <span className="episode-title">{episode.title}</span>
+                <Image
+                  src={episode.thumbnail}
+                  alt="episode-thumbnail"
+                  width={200}
+                  height={100}
+                />
+              </EpisodeOption>
+            ))}
           </ul>
         </EpisodeOptions>
         <div className="button">

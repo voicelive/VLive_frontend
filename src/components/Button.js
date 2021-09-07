@@ -1,25 +1,22 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import theme from './styles/theme';
 
-export default function Button({ type, children, color, onClick }) {
-  return (
-    <StyledButton type={type} color={color} onClick={onClick}>
-      {children}
-    </StyledButton>
-  );
+export default function Button({ children, ...props }) {
+  return <StyledButton {...props}>{children}</StyledButton>;
 }
 
 Button.propTypes = {
   children: PropTypes.elementType.isRequired,
   onClick: PropTypes.func.isRequired,
-  color: PropTypes.string,
   type: PropTypes.string,
+  color: PropTypes.string,
 };
 
 Button.defaultProps = {
-  color: undefined,
   type: 'button',
+  color: theme.pink,
 };
 
 const StyledButton = styled.button`
@@ -32,7 +29,7 @@ const StyledButton = styled.button`
   text-align: center;
   cursor: pointer;
   border-radius: 20px;
-  background-color: ${({ color, theme }) => color || theme.pink};
+  background-color: ${({ color }) => color};
   transition-property: scale, translateY;
   transition: scale 300ms ease-in;
   color: white;
