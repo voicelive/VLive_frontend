@@ -1,10 +1,15 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import PropTypes from 'prop-types';
 import useGetEpisodes from '../hooks/useGetEpisodes';
 
-export default function Preview() {
-  const { episodes } = useGetEpisodes();
+export default function Preview({ setError }) {
+  const { episodes, error } = useGetEpisodes();
+
+  if (error) {
+    setError(error.message);
+  }
 
   return (
     <PreviewContainer>
@@ -29,11 +34,16 @@ const PreviewContainer = styled.div`
   display: inline-block;
   height: 500px;
   width: 80%;
-  border: 1px solid black;
   padding: 20px;
   text-align: center;
   overflow: scroll;
+  border: 1px solid black;
+
   .episode {
     background: gray;
   }
 `;
+
+Preview.propTypes = {
+  setError: PropTypes.func.isRequired,
+};

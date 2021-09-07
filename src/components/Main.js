@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import useGetChannels from '../hooks/useGetChannels';
+import Link from 'next/link';
 
 import Header from '../components/Header';
 import ChannelItem from '../components/ChannelItem';
@@ -9,7 +10,19 @@ import Preview from '../components/Preview';
 import Button from '../components/Button';
 
 export default function Main() {
+  const [error, setError] = useState(null);
   const { channels } = useGetChannels();
+
+  if (error) {
+    return (
+      <>
+        <h2>{error}</h2>
+        <Link href="/" passHref>
+          <Button color="red">홈으로 돌아가기</Button>
+        </Link>
+      </>
+    );
+  }
 
   return (
     <Wrapper>
@@ -20,8 +33,8 @@ export default function Main() {
         })}
       </MainContainer>
       <SideContainer>
-        <UserProfile />
-        <Preview />
+        <UserProfile setError={setError} />
+        <Preview setError={setError} />
         <div className="button-wrapper">
           <Button>채널 개설하기</Button>
         </div>
@@ -48,6 +61,7 @@ const SideContainer = styled.div`
   width: 20%;
   border: 1px solid black;
   text-align: center;
+
   .button-wrapper {
     position: absolute;
     text-align: center;

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function ChannelItem({ channel }) {
   return (
@@ -17,3 +18,11 @@ const Container = styled.div`
   padding: 8px;
   border: 1px solid green;
 `;
+
+ChannelItem.propTypes = {
+  channel: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    players: PropTypes.array.isRequired,
+    audience: PropTypes.array.isRequired,
+  }),
+};
