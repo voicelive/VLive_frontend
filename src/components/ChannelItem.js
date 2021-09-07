@@ -5,12 +5,16 @@ import PropTypes from 'prop-types';
 export default function ChannelItem({ channel }) {
   return (
     <Container>
-      <h1>채널 이름: {channel.name}</h1>
-      <h3>플레이어 수: {channel.players.length}</h3>
-      <h3>시청자 수: {channel.audience.length}</h3>
+      <h3>채널 이름: {channel.name}</h3>
+      <p>플레이어 수: {channel.players.length}</p>
+      <p>시청자 수: {channel.audience.length}</p>
     </Container>
   );
 }
+
+ChannelItem.propTypes = {
+  channel: PropTypes.object.isRequired,
+};
 
 const Container = styled.div`
   height: 160px;

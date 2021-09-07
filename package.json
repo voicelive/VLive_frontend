@@ -1,6 +1,6 @@
 {
   "name": "vlive-frontend",
-  "version": "0.2.2",
+  "version": "0.5.2",
   "description": "A vlive project frontend",
   "author": "Team brosis <eunbines2@gmail.com>",
   "contributors": [
@@ -13,7 +13,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "dependencies": {
     "@emotion/react": "^11.4.1",
@@ -23,6 +24,7 @@
     "prop-types": "^15.7.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-icons": "^4.2.0",
     "swr": "^1.0.0"
   },
   "devDependencies": {
