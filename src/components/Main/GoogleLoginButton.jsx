@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
+
 import Button from '../Button';
 import ErrorBox from '../ErrorBox';
-
 export default function GoogleLoginButton({ onLogin }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [error, setError] = useState(null);
@@ -52,11 +53,23 @@ export default function GoogleLoginButton({ onLogin }) {
   }
 
   return (
-    <Button onClick={signInGoogle} color="black">
-      구글로 로그인
-    </Button>
+    <ButtonContainer>
+      <Button
+        onClick={signInGoogle}
+        color="black"
+        width="200px"
+        fontSize="1.2em"
+      >
+        구글로 로그인
+      </Button>
+    </ButtonContainer>
   );
 }
+
+const ButtonContainer = styled.div`
+  padding-top: 30px;
+  position: relative;
+`;
 
 GoogleLoginButton.propTypes = {
   onLogin: PropTypes.func.isRequired,

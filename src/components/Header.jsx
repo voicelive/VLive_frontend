@@ -13,10 +13,12 @@ export default function Header({ children }) {
 
 const Container = styled.header`
   width: 100%;
-  height: 100px;
+  height: 10vh;
   text-align: left;
+  background: ${theme.navy};
+  box-shadow: inset 0px -19px 12px -6px #383650a5;
   h1 {
-    margin-left: 50px;
+    margin: 20px 0 0 50px;
     color: ${theme.pink};
     float: left;
     font-size: 2.4em;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import useChannels from '../../hooks/useChannels';
 import Link from 'next/link';
+import theme from '../../styles/theme';
 
 import Header from '../Header';
 import ChannelItem from '../ChannelItem';
@@ -29,56 +30,69 @@ export default function Main() {
   }
 
   return (
-    <Wrapper>
+    <>
+      <Header>V-Live</Header>
       <MainContainer>
-        <Header>V-Live</Header>
-        {activeChannels?.map((channel) => (
-          <Link href={`/channel/${channel._id}`} key={channel._id} passHref>
-            <a>
-              <ChannelItem channel={channel} />
-            </a>
-          </Link>
-        ))}
+        <ListBox>
+          {activeChannels?.map((channel) => (
+            <Link href={`/channel/${channel._id}`} key={channel._id} passHref>
+              <a>
+                <ChannelItem channel={channel} />
+              </a>
+            </Link>
+          ))}
+        </ListBox>
+        <SideBox>
+          <UserProfile />
+          <Preview />
+          <div className="button-wrapper">
+            <Button onClick={openModal} width="200px" fontSize="1em">
+              채널 개설하기
+            </Button>
+          </div>
+        </SideBox>
       </MainContainer>
-      <SideContainer>
-        <UserProfile />
-        <Preview />
-        <div className="button-wrapper">
-          <Button onClick={openModal}>채널 개설하기</Button>
-        </div>
-      </SideContainer>
       {isModalOpen && (
         <Modal closeModal={closeModal}>
           <CreateChannel closeModal={closeModal} isModalOpen={isModalOpen} />
         </Modal>
       )}
-    </Wrapper>
+    </>
   );
 }
 
-const Wrapper = styled.div`
-  display: flex;
-`;
-
 const MainContainer = styled.div`
-  display: inline-block;
-  height: 800px;
-  width: 80%;
-  border: 1px solid black;
+  height: 90vh;
+  display: flex;
+  width: 100%;
 `;
 
-const SideContainer = styled.div`
+const ListBox = styled.div`
+  display: inline-block;
+  width: 80%;
+  overflow: scroll;
+  padding: 30px 100px;
+  background: linear-gradient(
+      to right,
+      ${theme.darkNavy},
+      ${theme.navy},
+      ${theme.darkNavy}
+    ),
+    url('/images/background.jpg');
+`;
+
+const SideBox = styled.div`
   position: relative;
   display: inline-block;
-  height: 800px;
   width: 20%;
-  border: 1px solid black;
   text-align: center;
+  background: ${theme.navy};
 
   .button-wrapper {
     position: absolute;
     text-align: center;
     bottom: 10px;
     width: 100%;
+    margin-bottom: 20px;
   }
 `;
