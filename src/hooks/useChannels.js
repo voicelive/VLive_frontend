@@ -18,8 +18,8 @@ async function fetcher() {
   }
 }
 
-export default function useEpisodes() {
-  const { data: channels, error } = useSWR('/channel', fetcher);
+export default function useChannels() {
+  const { data: channels, error, mutate } = useSWR('/channel', fetcher);
   let historyChannels = [];
   let activeChannels = [];
 
@@ -29,5 +29,5 @@ export default function useEpisodes() {
       : historyChannels.push(channel);
   });
 
-  return { historyChannels, activeChannels, error };
+  return { historyChannels, activeChannels, error, mutate };
 }
