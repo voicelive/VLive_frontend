@@ -1,34 +1,23 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import useChannels from '../hooks/useChannels';
+import useChannels from '../../hooks/useChannels';
 import Link from 'next/link';
 
-import Header from '../components/Header';
-import ChannelItem from '../components/ChannelItem';
+import Header from '../Header';
+import ChannelItem from '../ChannelItem';
 import UserProfile from './UserProfile';
-import Preview from '../components/Preview';
-import Button from '../components/Button';
-import Modal from '../components/Modal';
-import CreateChannel from './CreateChannel';
+import Preview from './Preview';
+import Button from '../Button';
+import Modal from '../Modal';
+import CreateChannel from '../CreateChannel';
+import ErrorBox from '../ErrorBox';
 
 export default function Main() {
-  const [error, setError] = useState(null);
-<<<<<<< HEAD
-  const { channels } = useChannels();
-=======
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { activeChannels } = useGetChannels();
->>>>>>> 7e0d74119b9e824c9173187acff05eacb1f86e13
+  const { activeChannels, error } = useChannels();
 
   if (error) {
-    return (
-      <>
-        <h2>{error}</h2>
-        <Link href="/" passHref>
-          <Button color="red">홈으로 돌아가기</Button>
-        </Link>
-      </>
-    );
+    return <ErrorBox message={error.message} />;
   }
 
   function openModal() {
@@ -42,8 +31,8 @@ export default function Main() {
   return (
     <Wrapper>
       <MainContainer>
-        <Header />
-        {channels?.map((channel) => (
+        <Header>V-Live</Header>
+        {activeChannels?.map((channel) => (
           <Link href={`/channel/${channel._id}`} key={channel._id} passHref>
             <a>
               <ChannelItem channel={channel} />
@@ -52,8 +41,8 @@ export default function Main() {
         ))}
       </MainContainer>
       <SideContainer>
-        <UserProfile setError={setError} />
-        <Preview setError={setError} />
+        <UserProfile />
+        <Preview />
         <div className="button-wrapper">
           <Button onClick={openModal}>채널 개설하기</Button>
         </div>

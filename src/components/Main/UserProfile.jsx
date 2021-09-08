@@ -5,12 +5,18 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 
-import Button from '../components/Button';
+import Button from '../Button';
 import GoogleLoginButton from './GoogleLoginButton';
+import ErrorBox from '../ErrorBox';
 
-export default function UserProfile({ setError }) {
+export default function UserProfile() {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+
+  if (error) {
+    return <ErrorBox message={error.message} />;
+  }
 
   useEffect(() => {
     if (!isLogin) return;
@@ -32,7 +38,7 @@ export default function UserProfile({ setError }) {
   return (
     <ProfileBox>
       {user === null ? (
-        <GoogleLoginButton setError={setError} setIsLogin={setIsLogin} />
+        <GoogleLoginButton onLogin={setIsLogin} />
       ) : (
         <Profile>
           <div className="user-image">

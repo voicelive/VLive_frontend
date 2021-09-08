@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import theme from './styles/theme';
+import theme from '../styles/theme';
 
 export default function Button({ children, ...props }) {
   return <StyledButton {...props}>{children}</StyledButton>;
