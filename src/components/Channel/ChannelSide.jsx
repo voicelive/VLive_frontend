@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import useChannel from '../../hooks/useChannel';
+import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import useChannel from '../../hooks/useChannel';
 import Button from '../Button';
 
-export default function ChannelSide() {
+export default function ChannelSide({ channelId }) {
   const [currentUsers, setCurrentUsers] = useState([]);
   const [players, setPlayers] = useState(null);
   const [audience, setAudience] = useState(null);
   const [host, setHost] = useState(null);
-  const {
-    query: { channelId },
-  } = useRouter();
 
   const channel = useChannel(channelId);
 
@@ -20,7 +17,6 @@ export default function ChannelSide() {
     if (!channel) return;
 
     const { players, audience, host } = channel;
-    console.log(audience, 'audience');
 
     setPlayers(players);
     setAudience(audience);
@@ -61,6 +57,10 @@ export default function ChannelSide() {
     </SideContainer>
   );
 }
+
+ChannelSide.propTypes = {
+  channelId: PropTypes.string.isRequired,
+};
 
 const SideContainer = styled.div`
   width: 20%;
