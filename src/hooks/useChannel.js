@@ -14,7 +14,7 @@ async function fetcher(channelId) {
 
     return data;
   } catch (err) {
-    console.error(err);
+    alert(err.message);
   }
 }
 
