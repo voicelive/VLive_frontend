@@ -3,12 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import theme from '../../styles/theme';
 
-export default function HistoryItem({ channel }) {
+export default function HistoryItem({ channel: { name, episode } }) {
   return (
     <Container>
-      <h3>
-        {channel.name} {channel.episode}
-      </h3>
+      <h3>{`${name} ${episode}`}</h3>
     </Container>
   );
 }
