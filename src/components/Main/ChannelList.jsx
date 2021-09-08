@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import { useSocket } from '../../hooks/socket/useSocket';
@@ -34,14 +33,6 @@ export default function ChannelList() {
     </MainContainer>
   );
 }
-
-ChannelList.propTypes = {
-  loadedChannels: PropTypes.array,
-};
-
-ChannelList.defaultProps = {
-  loadedChannels: [],
-};
 
 const MainContainer = styled.div`
   display: inline-block;
