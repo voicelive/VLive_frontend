@@ -3,10 +3,10 @@ import styled from '@emotion/styled';
 import theme from '../styles/theme';
 import PropTypes from 'prop-types';
 
-export default function Header({ childeren }) {
+export default function Header({ children }) {
   return (
     <Container>
-      <h1>{childeren}</h1>
+      <h1>{children}</h1>
     </Container>
   );
 }
@@ -24,5 +24,5 @@ const Container = styled.header`
 `;
 
 Header.propTypes = {
-  childeren: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired,
 };

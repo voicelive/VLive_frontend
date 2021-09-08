@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 
@@ -38,7 +37,7 @@ export default function UserProfile() {
   return (
     <ProfileBox>
       {user === null ? (
-        <GoogleLoginButton onLogin={setIsLogin} />
+        <GoogleLoginButton onLogin={() => setIsLogin(true)} />
       ) : (
         <Profile>
           <div className="user-image">
@@ -93,7 +92,3 @@ const ProfileBox = styled.div`
   padding: 20px;
   text-align: center;
 `;
-
-UserProfile.propTypes = {
-  setError: PropTypes.func.isRequired,
-};

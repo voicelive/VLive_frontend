@@ -44,7 +44,3 @@ const PreviewContainer = styled.div`
     background: gray;
   }
 `;
-
-Preview.propTypes = {
-  setError: PropTypes.func.isRequired,
-};
