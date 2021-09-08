@@ -16,25 +16,25 @@ export default function Landing() {
   }
 
   return (
-    <Wrapper>
+    <Container>
       <Header>V-Live</Header>
       <h2 className="recent-game">RECENT GAME</h2>
 
-      <HistoryContainer>
+      <HistoryWrapper>
         {historyChannels?.map((channel) => (
           <HistoryItem key={channel._id} channel={channel} />
         ))}
-      </HistoryContainer>
-      <ButtonContainer>
+      </HistoryWrapper>
+      <ButtonWrapper>
         <Link href="/main" passHref>
           <Button>게임하러가기</Button>
         </Link>
-      </ButtonContainer>
-    </Wrapper>
+      </ButtonWrapper>
+    </Container>
   );
 }
 
-const Wrapper = styled.div`
+const Container = styled.div`
   position: relative;
   text-align: center;
   background-image: linear-gradient(
@@ -52,22 +52,22 @@ const Wrapper = styled.div`
   }
 `;
 
-const HistoryContainer = styled.div`
+const HistoryWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  background: #1d1d2985;
-  border-radius: 20px;
   height: 500px;
   width: 600px;
+  background: #1d1d2985;
+  border-radius: 20px;
   overflow: visible;
 `;
 
-const ButtonContainer = styled.div`
+const ButtonWrapper = styled.div`
   position: absolute;
   left: 0;
   right: 0;
+  margin-top: 60px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 60px;
 `;

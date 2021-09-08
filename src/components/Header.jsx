@@ -1,17 +1,17 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import theme from '../styles/theme';
 import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
 
 export default function Header({ children }) {
   return (
-    <Container>
-      <h1>{children}</h1>
-    </Container>
+    <Wrapper>
+      <h1>{childeren}</h1>
+    </Wrapper>
   );
 }
 
-const Container = styled.header`
+const Wrapper = styled.header`
   width: 100%;
   height: 100px;
   text-align: left;
