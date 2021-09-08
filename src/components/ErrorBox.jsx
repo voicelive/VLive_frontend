@@ -1,7 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import Button from '../components/Button';
 import PropTypes from 'prop-types';
+
+import Button from '../components/Button';
 
 export default function ErrorBox({ message }) {
   return (

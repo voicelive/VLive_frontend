@@ -5,13 +5,13 @@ import theme from '../../styles/theme';
 
 export default function HistoryItem({ channel: { name, episode } }) {
   return (
-    <Container>
+    <Wrapper>
       <h3>{`${name} ${episode}`}</h3>
-    </Container>
+    </Wrapper>
   );
 }
 
-const Container = styled.div`
+const Wrapper = styled.div`
   height: 80px;
   width: 500px;
   margin: 10px auto;
