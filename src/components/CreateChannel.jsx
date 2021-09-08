@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/dist/client/router';
-import { useSocket } from '../hooks/socket/useSocket';
+import { socketClient } from '../hooks/socket/useSocket';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -13,12 +13,8 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
     name: '',
     episodeId: '',
   });
-  const baseurl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
-
-  const socket = useSocket('listen create channel', (channel) => {
-    console.log(channel);
-  });
+  const baseurl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     async function fetchData() {
@@ -64,7 +60,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
         return alert(message);
       }
 
-      socket.emit('create channel', data);
+      socketClient.emit('create channel', data);
 
       const channelId = data._id;
       router.push(`/channel/${channelId}`);
