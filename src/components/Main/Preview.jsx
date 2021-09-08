@@ -1,7 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
+<<<<<<< HEAD
 import styled from '@emotion/styled';
 
+=======
+>>>>>>> 3398e69 (chores: remove unnessesary import)
 import useEpisodes from '../../hooks/useEpisodes';
 import ErrorBox from '../ErrorBox';
 
