@@ -65,7 +65,8 @@ export default function ChannelSide() {
 const SideContainer = styled.div`
   width: 20%;
   height: 800px;
-  border: 1px solid black;
+  background: #1d2e3c;
+  opacity: 0.8;
 `;
 
 const PlayerWrapper = styled.div`

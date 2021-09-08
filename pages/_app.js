@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import '../public/global.css';
 import '../src/config/firebase-config';
 
 import { ThemeProvider } from '@emotion/react';
