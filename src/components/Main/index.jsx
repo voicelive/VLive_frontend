@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import useChannels from '../../hooks/useChannels';
-import Link from 'next/link';
 
-import Header from '../Header';
-import ChannelItem from '../ChannelItem';
 import UserProfile from './UserProfile';
 import Preview from './Preview';
+import CreateChannel from '../CreateChannel';
+import ChannelList from './ChannelList';
 import Button from '../Button';
 import Modal from '../Modal';
-import CreateChannel from '../CreateChannel';
 import ErrorBox from '../ErrorBox';
 
 export default function Main() {
@@ -29,17 +27,8 @@ export default function Main() {
   }
 
   return (
-    <Wrapper>
-      <MainContainer>
-        <Header>V-Live</Header>
-        {activeChannels?.map((channel) => (
-          <Link href={`/channel/${channel._id}`} key={channel._id} passHref>
-            <a>
-              <ChannelItem channel={channel} />
-            </a>
-          </Link>
-        ))}
-      </MainContainer>
+    <Container>
+      <ChannelList loadedChannels={activeChannels} />
       <SideContainer>
         <UserProfile />
         <Preview />
@@ -52,19 +41,12 @@ export default function Main() {
           <CreateChannel closeModal={closeModal} isModalOpen={isModalOpen} />
         </Modal>
       )}
-    </Wrapper>
+    </Container>
   );
 }
 
-const Wrapper = styled.div`
+const Container = styled.div`
   display: flex;
-`;
-
-const MainContainer = styled.div`
-  display: inline-block;
-  height: 800px;
-  width: 80%;
-  border: 1px solid black;
 `;
 
 const SideContainer = styled.div`
