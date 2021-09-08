@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useChannel from '../../hooks/useChannel';
+import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 export default function ChannelMain({ channelId }) {
@@ -25,6 +26,10 @@ export default function ChannelMain({ channelId }) {
     </MainContainer>
   );
 }
+
+ChannelMain.propTypes = {
+  channelId: PropTypes.string.isRequired,
+};
 
 const MainContainer = styled.div`
   width: 80%;

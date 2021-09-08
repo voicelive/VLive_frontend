@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useChannel from '../../hooks/useChannel';
+import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import Button from '../Button';
@@ -56,6 +57,10 @@ export default function ChannelSide({ channelId }) {
     </SideContainer>
   );
 }
+
+ChannelSide.propTypes = {
+  channelId: PropTypes.string.isRequired,
+};
 
 const SideContainer = styled.div`
   width: 20%;

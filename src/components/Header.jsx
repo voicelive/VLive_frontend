@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 export default function Header({ children }) {
   return (
     <Wrapper>
-      <h1>{childeren}</h1>
+      <h1>{children}</h1>
     </Wrapper>
   );
 }

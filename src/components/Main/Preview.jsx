@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import useEpisodes from '../../hooks/useEpisodes';
