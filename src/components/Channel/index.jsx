@@ -1,14 +1,19 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import ChannelMain from './ChannelMain';
 import ChannelSide from './ChannelSide';
 
 export default function Channel() {
+  const {
+    query: { channelId },
+  } = useRouter();
+
   return (
     <Container>
-      <ChannelMain />
-      <ChannelSide />
+      <ChannelMain channelId={channelId} />
+      <ChannelSide channelId={channelId} />
     </Container>
   );
 }
