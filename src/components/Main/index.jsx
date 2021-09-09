@@ -5,10 +5,10 @@ import theme from '../../styles/theme';
 import Header from '../Header';
 import UserProfile from './UserProfile';
 import Preview from './Preview';
-import Button from '../Button';
-import Modal from '../Modal';
 import CreateChannel from '../CreateChannel';
 import ChannelList from './ChannelList';
+import Button from '../Button';
+import Modal from '../Modal';
 
 export default function Main() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -59,8 +59,6 @@ const SideBox = styled.div`
   background: ${theme.navy};
   .button-wrapper {
     position: absolute;
-    text-align: center;
-    bottom: 10px;
     width: 100%;
     margin-bottom: 20px;
   }
