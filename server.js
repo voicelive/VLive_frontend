@@ -8,11 +8,19 @@ const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
+const { EVENTS } = require('./src/constants/socketEvent');
+
 io.on('connection', (socket) => {
   console.log('socket connected...');
 
-  socket.on('create channel', (channel) => {
-    socket.broadcast.emit('listen create channel', channel);
+  socket.on(EVENTS.CREATE_CHANNEL, (channel) => {
+    socket.broadcast.emit(EVENTS.LISTEN_CREATE_CHANNEL, channel);
+  });
+
+  socket.on(EVENTS.ENTER_CHANNEL, (userData) => {
+    socket.join(userData.channelId);
+
+    socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
   });
 });
 
