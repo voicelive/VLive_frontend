@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import styled from '@emotion/styled';
 import useChannel from '../../hooks/useChannel';
+import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
 
-export default function ChannelMain() {
+export default function ChannelMain({ channelId }) {
   const [channelInfo, setChannelInfo] = useState(null);
-  const {
-    query: { channelId },
-  } = useRouter();
   const channel = useChannel(channelId);
 
   useEffect(() => {
@@ -29,6 +26,10 @@ export default function ChannelMain() {
     </MainContainer>
   );
 }
+
+ChannelMain.propTypes = {
+  channelId: PropTypes.string.isRequired,
+};
 
 const MainContainer = styled.div`
   width: 80%;
