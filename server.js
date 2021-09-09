@@ -27,6 +27,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
   });
 
+  socket.on();
   socket.on('new chat', ({ channelId, newChat }) => {
     // socket.join(channelId);
     if (!channelId) {
