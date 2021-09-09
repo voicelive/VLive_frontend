@@ -6,7 +6,7 @@ import theme from '../../styles/theme';
 import { useSocket } from '../../hooks/socket/useSocket';
 import useChannels from '../../hooks/useChannels';
 
-import ChannelItem from '../ChannelItem';
+import ChannelItem from './ChannelItem';
 import ErrorBox from '../ErrorBox';
 
 export default function ChannelList() {
@@ -22,7 +22,6 @@ export default function ChannelList() {
 
   return (
     <ListBox>
-
       {activeChannels?.map((channel) => (
         <Link href={`/channel/${channel._id}`} key={channel._id} passHref>
           <a>
