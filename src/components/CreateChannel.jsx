@@ -14,12 +14,12 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
     episodeId: '',
   });
   const router = useRouter();
-  const baseurl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`${baseurl}/episode`, {
+        const response = await fetch(`${baseUrl}/episode`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
     const { _id } = JSON.parse(sessionStorage.getItem('user'));
 
     try {
-      const response = await fetch(`${baseurl}/channel`, {
+      const response = await fetch(`${baseUrl}/channel`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
