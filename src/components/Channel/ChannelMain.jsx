@@ -3,7 +3,10 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import useChannel from '../../hooks/useChannel';
+
 import ErrorBox from '../ErrorBox';
+import ChatBody from './ChatBody';
+import ChatForm from './ChatForm';
 
 export default function ChannelMain() {
   const {
@@ -27,8 +30,11 @@ export default function ChannelMain() {
         <h2 className="channel-name">{name}</h2>
         <h3 className="episode-title">{episode.title}</h3>
       </header>
-      <VideoWrapper />
-      <ChattingWrapper />
+      <Video />
+      <Chat>
+        <ChatBody />
+        <ChatForm />
+      </Chat>
     </MainContainer>
   );
 }
@@ -62,15 +68,12 @@ const MainContainer = styled.div`
   }
 `;
 
-const VideoWrapper = styled.div`
+const Video = styled.div`
   width: 100%;
   height: 55%;
   background-image: url('/images/background.jpg');
 `;
 
-const ChattingWrapper = styled.div`
-  width: 100%;
-  height: 275px;
-  background: #1d2e3c;
-  opacity: 0.8;
+const Chat = styled.div`
+  height: 35%;
 `;
