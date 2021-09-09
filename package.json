@@ -1,6 +1,6 @@
 {
   "name": "vlive-frontend",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "A vlive project frontend",
   "author": "Team brosis <eunbines2@gmail.com>",
   "contributors": [
@@ -41,6 +41,7 @@
     "eslint-plugin-react": "^7.25.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^7.0.2",
+    "nodemon": "^2.0.12",
     "prettier": "^2.3.2"
   }
 }

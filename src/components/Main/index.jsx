@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import theme from '../../styles/theme';
 
+import Header from '../Header';
 import UserProfile from './UserProfile';
 import Preview from './Preview';
 import CreateChannel from '../CreateChannel';
@@ -20,40 +22,45 @@ export default function Main() {
   }
 
   return (
-    <Container>
-      <ChannelList />
-      <SideContainer>
-        <UserProfile />
-        <Preview />
-        <div className="button-wrapper">
-          <Button onClick={openModal}>채널 개설하기</Button>
-        </div>
-      </SideContainer>
+    <>
+      <Header>V-Live</Header>
+      <MainContainer>
+        <ChannelList />
+        <SideBox>
+          <UserProfile />
+          <Preview />
+          <div className="button-wrapper">
+            <Button onClick={openModal} width="200px" fontSize="1em">
+              채널 개설하기
+            </Button>
+          </div>
+        </SideBox>
+      </MainContainer>
       {isModalOpen && (
         <Modal closeModal={closeModal}>
           <CreateChannel closeModal={closeModal} isModalOpen={isModalOpen} />
         </Modal>
       )}
-    </Container>
+    </>
   );
 }
 
-const Container = styled.div`
+const MainContainer = styled.div`
+  height: 90vh;
   display: flex;
+  width: 100%;
 `;
 
-const SideContainer = styled.div`
+const SideBox = styled.div`
   position: relative;
   display: inline-block;
-  height: 800px;
   width: 20%;
   text-align: center;
-  border: 1px solid black;
+  background: ${theme.navy};
 
   .button-wrapper {
     position: absolute;
     width: 100%;
-    bottom: 10px;
-    text-align: center;
+    margin-bottom: 20px;
   }
 `;
