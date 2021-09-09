@@ -17,10 +17,8 @@ export default function ChannelMain({ channelId }) {
     <MainContainer>
       {channelInfo !== null ? (
         <header>
-          <h2 className="channel-name">{channelInfo.name}</h2>
-          <h3 className="episode-title">
-            sdcksdjcn{channelInfo.episode.title}
-          </h3>
+          <div className="channel-name">{channelInfo.name}</div>
+          <div className="episode-title">{channelInfo.episode}</div>
         </header>
       ) : null}
       <VideoWrapper />
