@@ -8,7 +8,11 @@ const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
+<<<<<<< HEAD
 const { EVENTS } = require('./src/constants/socketEvent');
+=======
+const chatContents = {};
+>>>>>>> 4510e87 (feat: connect chat socket)
 
 io.on('connection', (socket) => {
   console.log('socket connected...');
@@ -21,6 +25,29 @@ io.on('connection', (socket) => {
     socket.join(userData.channelId);
 
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
+  });
+
+  socket.on('new chat', ({ channelId, newChat }) => {
+    // socket.join(channelId);
+    if (!channelId) {
+      return;
+    }
+
+    if (newChat === '') {
+      return;
+    }
+
+    chatContents.hasOwnProperty(channelId)
+      ? chatContents[channelId].push(newChat)
+      : (chatContents[channelId] = [newChat]);
+
+    console.log(chatContents);
+    console.log('chatBody에게 보내기 직전!');
+
+    const updatedContents = chatContents[channelId];
+    socket.broadcast.emit('listen new chat', updatedContents);
+    // io.to(channelId).emit('listen new chat', updatedContents);
+    console.log('보내고나서');
   });
 });
 
