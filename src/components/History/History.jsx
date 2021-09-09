@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import useChannel from '../../hooks/useChannel';
 
@@ -11,25 +12,37 @@ export default function RecentHistory() {
   } = useRouter();
   const { channel, error } = useChannel(historyId);
 
+  if (historyId == null || channel == null) {
+    return <></>;
+  }
+
   if (error) {
     return <ErrorBox message={error.message} />;
   }
 
+  const { name, episode, players } = channel;
+
   return (
     <Container>
       <header>
-        <h4 className="player-wrap">{channel?.name}</h4>
-        <h3 className="player-wrap">{channel?.episode.title}</h3>
+        <h4 className="player-wrap">{name}</h4>
+        <h3 className="player-wrap">{episode.title}</h3>
       </header>
       <VideoWrapper>
         <div className="video"></div>
       </VideoWrapper>
       <ResultWrapper>
-        {channel?.players.map((player) => (
+        {players.map((player) => (
           <div key={player._id} className="player-profile">
-            <div className="player">{player.userId}</div>
-            <div className="character">{player.characterId}</div>
-            <div className="character">{player.voteCount}</div>
+            <Image
+              src={player.characterId.imgUrl}
+              alt="User profile image"
+              width={70}
+              height={70}
+            />
+            <div>{player.userId.name}</div>
+            <div>{player.characterId.name}</div>
+            <div>{player.voteCount}</div>
           </div>
         ))}
       </ResultWrapper>

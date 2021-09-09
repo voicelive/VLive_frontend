@@ -1,35 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import useChannel from '../../hooks/useChannel';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
-export default function ChannelMain({ channelId }) {
-  const [channelInfo, setChannelInfo] = useState(null);
-  const channel = useChannel(channelId);
+import useChannel from '../../hooks/useChannel';
+import ErrorBox from '../ErrorBox';
 
-  useEffect(() => {
-    if (!channel) return;
+export default function ChannelMain() {
+  const {
+    query: { channelId },
+  } = useRouter();
+  const { channel, error } = useChannel(channelId);
 
-    setChannelInfo(channel);
-  }, [channel]);
+  if (channelId == null || channel == null) {
+    return <></>;
+  }
+
+  if (error) {
+    return <ErrorBox message={error.message} />;
+  }
+
+  const { name, episode } = channel;
 
   return (
     <MainContainer>
-      {channelInfo !== null ? (
-        <header>
-          <div className="channel-name">{channelInfo.name}</div>
-          <div className="episode-title">{channelInfo.episode}</div>
-        </header>
-      ) : null}
+      <header>
+        <h2 className="channel-name">{name}</h2>
+        <h3 className="episode-title">{episode.title}</h3>
+      </header>
       <VideoWrapper />
       <ChattingWrapper />
     </MainContainer>
   );
 }
-
-ChannelMain.propTypes = {
-  channelId: PropTypes.string.isRequired,
-};
 
 const MainContainer = styled.div`
   width: 80%;
@@ -38,6 +40,7 @@ const MainContainer = styled.div`
 
   header {
     padding-left: 20px;
+    text-align: left;
     background-color: rgba(0, 0, 0, 0.6);
     color: #ffffff;
     border: 1px solid black;
@@ -45,9 +48,8 @@ const MainContainer = styled.div`
 
   h2 {
     margin: 0px;
-    padding-top: 10px;
+    padding-top: 15px;
     padding-bottom: 10px;
-    text-align: left;
     font-size: 1.2em;
     font-weight: 200;
   }
@@ -55,7 +57,6 @@ const MainContainer = styled.div`
   h3 {
     margin: 0px;
     padding-bottom: 10px;
-    text-align: left;
     font-size: 1.5em;
     font-weight: 500;
   }
@@ -69,8 +70,7 @@ const VideoWrapper = styled.div`
 
 const ChattingWrapper = styled.div`
   width: 100%;
-  height: 30%;
+  height: 275px;
   background: #1d2e3c;
   opacity: 0.8;
-  border: 1px solid black;
 `;

@@ -19,10 +19,9 @@ export default function Landing() {
     <Container>
       <Header>V-Live</Header>
       <h2 className="recent-game">RECENT GAME</h2>
-
       <HistoryWrapper>
         {historyChannels?.map((channel) => (
-          <Link href={`/history/${channel._id}`} key={channel._id}>
+          <Link href={`/history/${channel._id}`} key={channel._id} passHref>
             <a>
               <HistoryItem channel={channel} />
             </a>
@@ -31,7 +30,9 @@ export default function Landing() {
       </HistoryWrapper>
       <ButtonWrapper>
         <Link href="/main" passHref>
-          <Button>게임하러가기</Button>
+          <a>
+            <Button>게임하러가기</Button>
+          </a>
         </Link>
       </ButtonWrapper>
     </Container>

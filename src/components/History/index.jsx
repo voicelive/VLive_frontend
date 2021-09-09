@@ -15,7 +15,9 @@ export default function History() {
       </HistoryWrapper>
       <ButtonWrapper>
         <Link href="/main" passHref>
-          <Button>게임하러가기</Button>
+          <a>
+            <Button>게임하러가기</Button>
+          </a>
         </Link>
       </ButtonWrapper>
     </Container>

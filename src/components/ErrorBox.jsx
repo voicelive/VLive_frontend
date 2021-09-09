@@ -9,7 +9,9 @@ export default function ErrorBox({ message }) {
     <>
       <p>{message}</p>
       <Link href="/" passHref>
-        <Button color="red">홈으로 돌아가기</Button>
+        <a>
+          <Button color="red">홈으로 돌아가기</Button>
+        </a>
       </Link>
     </>
   );
