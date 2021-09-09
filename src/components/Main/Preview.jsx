@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import styled from '@emotion/styled';
-
 import useEpisodes from '../../hooks/useEpisodes';
 import ErrorBox from '../ErrorBox';
 
