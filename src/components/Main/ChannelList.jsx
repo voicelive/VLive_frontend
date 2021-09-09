@@ -22,6 +22,7 @@ export default function ChannelList() {
 
   return (
     <ListBox>
+
       {activeChannels?.map((channel) => (
         <Link href={`/channel/${channel._id}`} key={channel._id} passHref>
           <a>
