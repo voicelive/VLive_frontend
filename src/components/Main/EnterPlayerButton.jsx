@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSocket } from '../../hooks/socket/useSocket';
+import { EVENTS } from '../../constants/socketEvent';
 
 import Button from '../Button';
-
-import { EVENTS } from '../../constants/socketEvent';
 
 export default function UserEntryButton({
   initialCount,
@@ -14,9 +13,7 @@ export default function UserEntryButton({
   children,
 }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
   const [userCount, setUserCount] = useState(initialCount);
-
   const socket = useSocket(
     EVENTS.LISTEN_ENTER_CHANNEL,
     ({ channelId: id, userType: type }) => {
@@ -36,7 +33,7 @@ export default function UserEntryButton({
       name,
       email,
       photoUrl,
-      userType: userType,
+      userType,
     };
 
     socket.emit(EVENTS.ENTER_CHANNEL, userData);
