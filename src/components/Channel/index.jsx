@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import ChannelMain from './ChannelMain';
 import ChannelSide from './ChannelSide';
+import useUserType from '../../hooks/useUserType';
+import useUpdateChannel from '../../hooks/useUpdateChannel';
 
 export default function Channel() {
+  const [mounted, setMounted] = useState(false);
   const {
     query: { channelId },
   } = useRouter();
+  const { _id } = JSON.parse(sessionStorage.getItem('user'));
+  const userType = useUserType(channelId, _id);
+
+  useEffect(() => {
+    setMounted(true);
+  }, [userType]);
 
   return (
     <Container>

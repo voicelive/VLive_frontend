@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import Button from '../Button';
+import useUserType from '../../hooks/useUserType';
 
 export default function ChannelSide({ channelId }) {
   const [currentUsers, setCurrentUsers] = useState([]);
@@ -12,6 +13,7 @@ export default function ChannelSide({ channelId }) {
   const [host, setHost] = useState(null);
 
   const channel = useChannel(channelId);
+  const { _id } = JSON.parse(sessionStorage.getItem('user'));
 
   useEffect(() => {
     if (!channel) return;
