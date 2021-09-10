@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 
-import UserEntryButton from './EnterPlayerButton';
+import UserEntryButton from './UserEntryButton';
 
 import { CHANNEL, USER_TYPE } from '../../constants/channel';
 

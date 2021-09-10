@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import styled from '@emotion/styled';
 import theme from '../../styles/theme';
 
@@ -11,7 +10,6 @@ import ErrorBox from '../ErrorBox';
 
 export default function ChannelList() {
   const { activeChannels, error, mutate } = useChannels();
-
   useSocket('listen create channel', (channel) => {
     mutate([...activeChannels, channel]);
   });
@@ -23,11 +21,9 @@ export default function ChannelList() {
   return (
     <ListBox>
       {activeChannels?.map((channel) => (
-        <Link href={`/channel/${channel._id}`} key={channel._id} passHref>
-          <a>
-            <ChannelItem channel={channel} />
-          </a>
-        </Link>
+        <div key={channel._id}>
+          <ChannelItem channel={channel} />
+        </div>
       ))}
     </ListBox>
   );

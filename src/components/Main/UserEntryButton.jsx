@@ -66,5 +66,5 @@ UserEntryButton.propTypes = {
   maxCount: PropTypes.number.isRequired,
   channelId: PropTypes.string.isRequired,
   userType: PropTypes.string.isRequired,
-  children: PropTypes.string,
+  children: PropTypes.string.isRequired,
 };
