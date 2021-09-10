@@ -6,13 +6,14 @@ import useChannel from '../../hooks/useChannel';
 import { socketClient } from '../../hooks/socket/useSocket';
 import Button from '../../components/Button';
 import ErrorBox from '../ErrorBox';
+
 import { EVENTS } from '../../constants/socketEvent';
 
-async function setChannelEnd(endChannelId) {
+async function endChannelHandler(id) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   try {
-    await fetch(`${baseUrl}/channel/${endChannelId}`, {
+    await fetch(`${baseUrl}/channel/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -22,7 +23,7 @@ async function setChannelEnd(endChannelId) {
       }),
     });
 
-    socketClient.emit(EVENTS.END_CHANNEL, endChannelId);
+    socketClient.emit(EVENTS.END_CHANNEL, id);
   } catch (error) {
     return error;
   }
@@ -44,7 +45,7 @@ export default function ChannelVideo() {
 
   return (
     <MainContainer>
-      <Button onClick={() => setChannelEnd(channelId)}>game end</Button>
+      <Button onClick={() => endChannelHandler(channelId)}>game end</Button>
     </MainContainer>
   );
 }

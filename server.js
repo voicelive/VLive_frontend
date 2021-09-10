@@ -25,7 +25,6 @@ io.on('connection', (socket) => {
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
   });
 
-<<<<<<< HEAD
   socket.on('new chat', ({ channelId, newChat }) => {
     socket.join(channelId);
 
@@ -45,10 +44,10 @@ io.on('connection', (socket) => {
     io.to(channelId).emit('listen new chat', chatList);
 
     saveChat(channelId);
-=======
-  socket.on(EVENTS.END_CHANNEL, (endChannelId) => {
-    socket.broadcast.emit(EVENTS.LISTEN_END_CHANNEL, endChannelId);
->>>>>>> f367475 (feat: end channel socket in channel List, server)
+  });
+
+  socket.on(EVENTS.END_CHANNEL, (id) => {
+    socket.broadcast.emit(EVENTS.LISTEN_END_CHANNEL, id);
   });
 });
 
