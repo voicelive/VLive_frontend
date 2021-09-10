@@ -27,28 +27,25 @@ io.on('connection', (socket) => {
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
   });
 
-  socket.on();
   socket.on('new chat', ({ channelId, newChat }) => {
-    // socket.join(channelId);
-    if (!channelId) {
-      return;
+    socket.join(channelId);
+
+    if (!chatContents[channelId]) {
+      const data = {
+        channelId,
+        chatList: [{ author: newChat.author, chat: newChat.chat }],
+      };
+
+      chatContents[channelId] = data;
+    } else {
+      chatContents[channelId].chatList.push(newChat);
     }
 
-    if (newChat === '') {
-      return;
-    }
+    const { chatList } = chatContents[channelId];
 
-    chatContents.hasOwnProperty(channelId)
-      ? chatContents[channelId].push(newChat)
-      : (chatContents[channelId] = [newChat]);
+    io.to(channelId).emit('listen new chat', chatList);
 
-    console.log(chatContents);
-    console.log('chatBody에게 보내기 직전!');
-
-    const updatedContents = chatContents[channelId];
-    socket.broadcast.emit('listen new chat', updatedContents);
-    // io.to(channelId).emit('listen new chat', updatedContents);
-    console.log('보내고나서');
+    saveChat(channelId);
   });
 });
 
@@ -62,3 +59,22 @@ nextApp.prepare().then(() => {
     console.log(`> Ready on http://localhost:${port}`);
   });
 });
+
+async function saveChat(channelId) {
+  try {
+    const response = await fetch(`http://localhost:8000/chat`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(chatContents[channelId]),
+    });
+    const { result, message } = await response.json();
+
+    if (result === 'error') {
+      return message;
+    }
+  } catch (err) {
+    alert(err.message);
+  }
+}
