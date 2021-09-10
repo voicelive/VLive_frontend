@@ -1,10 +1,8 @@
 import useChannel from './useChannel';
 
-export default function usePlayers(channelId) {
-  const {
-    channel: { audience },
-    error,
-  } = useChannel(channelId);
+export default function useAudience(channelId) {
+  const { channel, error, mutate } = useChannel(channelId);
+  const audience = channel ? channel.audience : [];
 
-  return { audience, error };
+  return { audience, error, mutate };
 }
