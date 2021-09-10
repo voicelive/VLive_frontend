@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
@@ -9,45 +8,33 @@ import UserEntryButton from './UserEntryButton';
 
 export default function ChannelItem({
   channel: { _id, name, players, episode },
+  isButtonActive,
 }) {
   return (
     <Container>
       <h3>{name}</h3>
       <p>{episode.title}</p>
-      <Link href={`/channel/${_id}`} key={`player_${_id}`} passHref>
-        <a>
-          <UserEntryButton
-            initialCount={players.length}
-            maxCount={episode.characters?.length}
-            channelId={_id}
-            userType={USER_TYPE.PLAYER}
-          >
-            플레이어로 입장
-          </UserEntryButton>
-        </a>
-      </Link>
-      <Link href={`/channel/${_id}`} key={`audience_${_id}`} passHref>
-        <a>
-          <UserEntryButton
-            initialCount={players.length}
-            maxCount={CHANNEL.MAX_AUDIENCE}
-            channelId={_id}
-            userType={USER_TYPE.AUDIENCE}
-          >
-            시청자로 입장
-          </UserEntryButton>
-        </a>
-      </Link>
+      <UserEntryButton
+        initialCount={players.length}
+        maxCount={episode.characters?.length}
+        channelId={_id}
+        userType={USER_TYPE.PLAYER}
+        isActive={isButtonActive}
+      >
+        플레이어로 입장
+      </UserEntryButton>
+      <UserEntryButton
+        initialCount={players.length}
+        maxCount={CHANNEL.MAX_AUDIENCE}
+        channelId={_id}
+        userType={USER_TYPE.AUDIENCE}
+        isActive={isButtonActive}
+      >
+        시청자로 입장
+      </UserEntryButton>
     </Container>
   );
 }
-
-const Container = styled.div`
-  height: 160px;
-  margin: 30px;
-  padding: 8px;
-  border: 1px solid green;
-`;
 
 ChannelItem.propTypes = {
   channel: PropTypes.shape({
@@ -60,4 +47,12 @@ ChannelItem.propTypes = {
       title: PropTypes.string.isRequired,
     }),
   }),
+  isButtonActive: PropTypes.boolean,
 };
+
+const Container = styled.div`
+  height: 160px;
+  margin: 30px;
+  padding: 8px;
+  border: 1px solid green;
+`;

@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import styled from '@emotion/styled';
 import Image from 'next/image';
+import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
 
-import Button from '../Button';
 import GoogleLoginButton from './GoogleLoginButton';
 import ErrorBox from '../ErrorBox';
+import LogoutButton from './LogoutButton';
 
-export default function UserProfile() {
-  const [isLogin, setIsLogin] = useState(false);
+export default function UserProfile({ loginStatus, setLoginStatus }) {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
@@ -19,23 +17,12 @@ export default function UserProfile() {
 
   useEffect(() => {
     setUser(JSON.parse(sessionStorage.getItem('user')));
-  }, [isLogin]);
-
-  async function signOutGoogle() {
-    try {
-      await firebase.auth().signOut();
-    } catch (err) {
-      setError(err.message);
-    }
-
-    window.sessionStorage.removeItem('user');
-    setUser(null);
-  }
+  }, [loginStatus]);
 
   return (
     <ProfileBox>
       {user === null ? (
-        <GoogleLoginButton onLogin={() => setIsLogin(true)} />
+        <GoogleLoginButton onLogin={() => setLoginStatus(true)} />
       ) : (
         <Profile>
           <div className="user-image">
@@ -49,20 +36,21 @@ export default function UserProfile() {
           <div className="user-email">{user?.email}</div>
           <div className="user-name">{user?.name}</div>
           <div className="logout">
-            <Button
-              onClick={signOutGoogle}
-              width="230px"
-              height="8px"
-              borderRadius="15px"
-            >
-              로그아웃
-            </Button>
+            <LogoutButton
+              setLogoutError={setError}
+              onLogout={() => setLoginStatus(false)}
+            />
           </div>
         </Profile>
       )}
     </ProfileBox>
   );
 }
+
+UserProfile.propTypes = {
+  loginStatus: PropTypes.boolean,
+  setLoginStatus: PropTypes.func.isRequired,
+};
 
 const ProfileBox = styled.div`
   padding: 20px;
