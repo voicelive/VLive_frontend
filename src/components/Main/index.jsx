@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import theme from '../../styles/theme';
 
@@ -13,6 +13,10 @@ import Modal from '../Modal';
 export default function Main() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    setIsLogin(!!sessionStorage.getItem('user'));
+  }, []);
 
   function openModal() {
     setIsModalOpen(true);
