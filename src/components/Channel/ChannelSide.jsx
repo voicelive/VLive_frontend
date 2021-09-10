@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
-
-import useChannel from '../../hooks/useChannel';
+import useChannel from '../../hooks/channel/useChannel';
 
 import PlayerItem from './PlayerItem';
 import AudienceItem from './AudienceItem';

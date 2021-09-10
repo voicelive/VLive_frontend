@@ -8,7 +8,7 @@ import UserEntryButton from './UserEntryButton';
 
 export default function ChannelItem({
   channel: { _id, name, players, episode },
-  isButtonActive,
+  loginStatus,
 }) {
   return (
     <Container>
@@ -19,7 +19,7 @@ export default function ChannelItem({
         maxCount={episode.characters?.length}
         channelId={_id}
         userType={USER_TYPE.PLAYER}
-        isActive={isButtonActive}
+        isActive={loginStatus}
       >
         플레이어로 입장
       </UserEntryButton>
@@ -28,7 +28,7 @@ export default function ChannelItem({
         maxCount={CHANNEL.MAX_AUDIENCE}
         channelId={_id}
         userType={USER_TYPE.AUDIENCE}
-        isActive={isButtonActive}
+        isActive={loginStatus}
       >
         시청자로 입장
       </UserEntryButton>
@@ -47,7 +47,7 @@ ChannelItem.propTypes = {
       title: PropTypes.string.isRequired,
     }),
   }),
-  isButtonActive: PropTypes.boolean,
+  loginStatus: PropTypes.boolean,
 };
 
 const Container = styled.div`

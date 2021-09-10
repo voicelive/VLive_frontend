@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import styled from '@emotion/styled';
-import useEpisodes from '../../hooks/useEpisodes';
+import useEpisodes from '../../hooks/channel/useEpisodes';
 import ErrorBox from '../ErrorBox';
 
 export default function Preview() {

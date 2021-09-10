@@ -26,9 +26,13 @@ export default function Main() {
     <>
       <Header>V-Live</Header>
       <MainContainer>
-        <ChannelList isButtonActive={isLogin} />
+        <ChannelList loginStatus={isLogin} />
         <SideBox>
-          <UserProfile setLoginState={setIsLogin} loginStatus={isLogin} />
+          <UserProfile
+            onLogin={() => setIsLogin(true)}
+            onLogout={() => setIsLogin(false)}
+            loginStatus={isLogin}
+          />
           <Preview />
           <div className="button-wrapper">
             <Button

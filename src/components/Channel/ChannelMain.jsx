@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import useChannel from '../../hooks/useChannel';
+import useChannel from '../../hooks/channel/useChannel';
 import ErrorBox from '../ErrorBox';
 import ChatBody from './ChatBody';
 import ChatForm from './ChatForm';
