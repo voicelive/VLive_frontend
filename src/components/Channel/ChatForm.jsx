@@ -1,15 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 
 import { socketClient } from '../../hooks/socket/useSocket';
 
-export default function ChatForm() {
+export default function ChatForm({ channelId }) {
   const [input, setInput] = useState('');
-  const channelId = '613a02b5c1c0e1fc6129ec3e';
-  const user = {
-    name: 'col ki',
-    _id: '6138479e7aa76e11ace4898e',
-  };
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const { name } = JSON.parse(sessionStorage.getItem('user'));
+    setUserName(name);
+  }, []);
 
   function submitChat(ev) {
     ev.preventDefault();
@@ -19,9 +21,8 @@ export default function ChatForm() {
     if (!trimmedInput) return;
 
     const newChat = {
-      author: user.name.replace(' ', ''),
+      author: userName.replace(' ', ''),
       chat: trimmedInput,
-      userId: user._id,
     };
 
     socketClient.emit('new chat', { channelId, newChat });
@@ -46,6 +47,10 @@ export default function ChatForm() {
     </Form>
   );
 }
+
+ChatForm.propTypes = {
+  channelId: PropTypes.string.isRequired,
+};
 
 const Form = styled.form`
   display: flex;
