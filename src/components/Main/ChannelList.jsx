@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import theme from '../../styles/theme';
+import PropTypes from 'prop-types';
 
 import { useSocket } from '../../hooks/socket/useSocket';
 import useChannels from '../../hooks/useChannels';
@@ -8,7 +9,7 @@ import useChannels from '../../hooks/useChannels';
 import ChannelItem from './ChannelItem';
 import ErrorBox from '../ErrorBox';
 
-export default function ChannelList() {
+export default function ChannelList({ isButtonActive }) {
   const { activeChannels, error, mutate } = useChannels();
   useSocket('listen create channel', (channel) => {
     mutate([...activeChannels, channel]);
@@ -22,12 +23,16 @@ export default function ChannelList() {
     <ListBox>
       {activeChannels?.map((channel) => (
         <div key={channel._id}>
-          <ChannelItem channel={channel} />
+          <ChannelItem channel={channel} isButtonActive={isButtonActive} />
         </div>
       ))}
     </ListBox>
   );
 }
+
+ChannelList.propTypes = {
+  isButtonActive: PropTypes.boolean,
+};
 
 const ListBox = styled.div`
   display: inline-block;

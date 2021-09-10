@@ -12,6 +12,7 @@ import Modal from '../Modal';
 
 export default function Main() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
 
   function openModal() {
     setIsModalOpen(true);
@@ -25,12 +26,16 @@ export default function Main() {
     <>
       <Header>V-Live</Header>
       <MainContainer>
-        <ChannelList />
+        <ChannelList isButtonActive={isLogin} />
         <SideBox>
-          <UserProfile />
+          <UserProfile setIsLogin={setIsLogin} />
           <Preview />
           <div className="button-wrapper">
-            <Button onClick={openModal} width="200px" fontSize="1em">
+            <Button
+              onClick={isLogin === true ? { openModal } : null}
+              width="200px"
+              fontSize="1em"
+            >
               채널 개설하기
             </Button>
           </div>
