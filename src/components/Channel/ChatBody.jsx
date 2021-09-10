@@ -20,12 +20,14 @@ export default function ChatBody({ channelId }) {
   return (
     <Contents ref={chatRef}>
       <ul className="chat-list">
-        {chatList?.map(({ author, chat }, index) => (
-          <Content key={index}>
-            <span className="author">{author}</span>
-            <span>{chat}</span>
-          </Content>
-        ))}
+        {chatList
+          ? chatList.map(({ author, chat }, index) => (
+              <Content key={index}>
+                <span className="author">{author}</span>
+                <span>{chat}</span>
+              </Content>
+            ))
+          : null}
       </ul>
     </Contents>
   );
