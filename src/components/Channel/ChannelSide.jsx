@@ -20,7 +20,7 @@ export default function ChannelSide() {
     setUser(JSON.parse(sessionStorage.getItem('user')));
   }, []);
 
-  if (channelId == null || channel == null) {
+  if (!channelId || !channel) {
     return <></>;
   }
 

@@ -14,7 +14,7 @@ export default function ChannelMain() {
   } = useRouter();
   const { channel, error } = useChannel(channelId);
 
-  if (channelId == null || channel == null) {
+  if (!channelId || !channel) {
     return <></>;
   }
 

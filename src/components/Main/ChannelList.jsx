@@ -19,11 +19,11 @@ export default function ChannelList({ isButtonActive }) {
   });
 
   useSocket(EVENTS.LISTEN_END_CHANNEL, (endChannelId) => {
-    const newActiveChannel = activeChannels.filter(
+    const newActiveChannels = activeChannels.filter(
       (activeChannel) => activeChannel._id !== endChannelId,
     );
 
-    mutate(newActiveChannel);
+    mutate(newActiveChannels);
   });
 
   if (error) {
