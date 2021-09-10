@@ -51,7 +51,6 @@ const MainContainer = styled.div`
   width: 80%;
   height: auto;
   background-color: rgba(0, 0, 0, 0.6);
-
   header {
     padding-left: 20px;
     text-align: left;
@@ -59,7 +58,6 @@ const MainContainer = styled.div`
     color: #ffffff;
     border: 1px solid black;
   }
-
   .channel-name {
     margin: 0px;
     padding-top: 15px;
@@ -67,7 +65,6 @@ const MainContainer = styled.div`
     font-size: 1.2em;
     font-weight: 200;
   }
-
   .episode-title {
     margin: 0px;
     padding-bottom: 10px;
