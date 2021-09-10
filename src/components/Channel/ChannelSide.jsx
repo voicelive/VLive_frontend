@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
+
 import useChannel from '../../hooks/useChannel';
 
 import PlayerItem from './PlayerItem';

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import useChannel from '../../hooks/useChannel';
@@ -32,12 +33,20 @@ export default function ChannelMain() {
       </header>
       <Video />
       <Chat>
-        <ChatBody />
-        <ChatForm />
+        <ChatBody channelId={channelId} />
+        <ChatForm channelId={channelId} />
       </Chat>
     </MainContainer>
   );
 }
+
+ChannelMain.propTypes = {
+  channelId: PropTypes.string,
+};
+
+ChannelMain.defaultProps = {
+  channelId: '',
+};
 
 const MainContainer = styled.div`
   width: 80%;
