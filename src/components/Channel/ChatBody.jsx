@@ -34,7 +34,7 @@ export default function ChatBody({ channelId }) {
 }
 
 ChatBody.propTypes = {
-  channelId: PropTypes.string.,
+  channelId: PropTypes.string,
 };
 
 const Contents = styled.div`
