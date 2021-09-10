@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import theme from '../../styles/theme';
 
 import { useSocket } from '../../hooks/socket/useSocket';
 import useChannels from '../../hooks/useChannels';
 
-import Header from '../Header';
-import ChannelItem from '../ChannelItem';
+import ChannelItem from './ChannelItem';
 import ErrorBox from '../ErrorBox';
 
 export default function ChannelList() {
@@ -19,20 +19,26 @@ export default function ChannelList() {
   }
 
   return (
-    <MainContainer>
-      <Header>V-Live</Header>
+    <ListBox>
       {activeChannels?.map((channel) => (
         <div key={channel._id}>
           <ChannelItem channel={channel} />
         </div>
       ))}
-    </MainContainer>
+    </ListBox>
   );
 }
 
-const MainContainer = styled.div`
+const ListBox = styled.div`
   display: inline-block;
-  height: 800px;
   width: 80%;
-  border: 1px solid black;
+  overflow: scroll;
+  padding: 30px 100px;
+  background: linear-gradient(
+      to right,
+      ${theme.darkNavy},
+      ${theme.navy},
+      ${theme.darkNavy}
+    ),
+    url('/images/background.jpg');
 `;
