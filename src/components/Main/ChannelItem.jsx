@@ -1,13 +1,43 @@
-import styled from '@emotion/styled';
 import React from 'react';
-import PropTypes from 'prop-types';
+import Link from 'next/link';
 
-export default function ChannelItem({ channel: { name, players, audience } }) {
+import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
+import { CHANNEL, USER_TYPE } from '../../constants/channel';
+
+import UserEntryButton from './UserEntryButton';
+
+export default function ChannelItem({
+  channel: { _id, name, players, episode },
+}) {
   return (
     <Container>
-      <h3>채널 이름: {name}</h3>
-      <p>플레이어 수: {players.length}</p>
-      <p>시청자 수: {audience.length}</p>
+      <h3>{name}</h3>
+      <p>{episode.title}</p>
+      <Link href={`/channel/${_id}`} key={`player_${_id}`} passHref>
+        <a>
+          <UserEntryButton
+            initialCount={players.length}
+            maxCount={episode.characters.length}
+            channelId={_id}
+            userType={USER_TYPE.PLAYER}
+          >
+            플레이어로 입장
+          </UserEntryButton>
+        </a>
+      </Link>
+      <Link href={`/channel/${_id}`} key={`audience_${_id}`} passHref>
+        <a>
+          <UserEntryButton
+            initialCount={players.length}
+            maxCount={CHANNEL.MAX_AUDIENCE}
+            channelId={_id}
+            userType={USER_TYPE.AUDIENCE}
+          >
+            시청자로 입장
+          </UserEntryButton>
+        </a>
+      </Link>
     </Container>
   );
 }
@@ -21,8 +51,13 @@ const Container = styled.div`
 
 ChannelItem.propTypes = {
   channel: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     players: PropTypes.array.isRequired,
     audience: PropTypes.array.isRequired,
+    episode: PropTypes.PropTypes.shape({
+      characters: PropTypes.array.isRequired,
+      title: PropTypes.string.isRequired,
+    }),
   }),
 };

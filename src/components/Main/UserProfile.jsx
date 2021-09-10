@@ -18,8 +18,6 @@ export default function UserProfile() {
   }
 
   useEffect(() => {
-    if (!isLogin) return;
-
     setUser(JSON.parse(sessionStorage.getItem('user')));
   }, [isLogin]);
 

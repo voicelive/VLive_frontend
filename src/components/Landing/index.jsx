@@ -37,6 +37,7 @@ export default function Landing() {
 const Container = styled.div`
   position: relative;
   text-align: center;
+  height: 100vh;
   background-image: linear-gradient(
       rgba(5, 5, 5, 0.746),
       rgba(58, 57, 57, 0.842),
@@ -45,7 +46,6 @@ const Container = styled.div`
       rgba(5, 5, 5, 0.746)
     ),
     url('/images/background.jpg');
-  height: 100vh;
 
   .recent-game {
     color: white;
