@@ -17,11 +17,9 @@ const Wrapper = styled.div`
   margin: 10px auto;
   border-bottom: 1px solid #575757;
   color: #ffffff;
-
   &:hover {
     border-bottom: 2px solid ${theme.pink};
   }
-
   h3 {
     font-size: 1.5em;
     font-weight: 200;

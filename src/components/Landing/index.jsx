@@ -19,7 +19,6 @@ export default function Landing() {
     <Container>
       <Header>V-Live</Header>
       <h2 className="recent-game">RECENT GAME</h2>
-
       <HistoryWrapper>
         {historyChannels?.map((channel) => (
           <Link href={`/history/${channel._id}`} key={channel._id} passHref>

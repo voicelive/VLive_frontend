@@ -13,12 +13,10 @@ export default function Header({ children }) {
 
 const Wrapper = styled.header`
   width: 100%;
-  height: 10vh;
+  height: 100px;
   text-align: left;
-  background: ${theme.navy};
-  box-shadow: inset 0px -19px 12px -6px #383650a5;
   h1 {
-    margin: 20px 0 0 50px;
+    margin-left: 50px;
     color: ${theme.pink};
     float: left;
     font-size: 2.4em;
