@@ -62,7 +62,7 @@ nextApp.prepare().then(() => {
 
 async function saveChat(channelId) {
   try {
-    const response = await fetch(`http://localhost:8000/chat`, {
+    const response = await fetch(`${process.env.API_URL}/chat`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
