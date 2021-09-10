@@ -28,7 +28,7 @@ export default function Main() {
       <MainContainer>
         <ChannelList isButtonActive={isLogin} />
         <SideBox>
-          <UserProfile setIsLogin={setIsLogin} />
+          <UserProfile setLoginState={setIsLogin} loginStatus={isLogin} />
           <Preview />
           <div className="button-wrapper">
             <Button
