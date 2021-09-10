@@ -18,7 +18,7 @@ export default function ChannelItem({
         <a>
           <UserEntryButton
             initialCount={players.length}
-            maxCount={episode.characters.length}
+            maxCount={episode.characters?.length}
             channelId={_id}
             userType={USER_TYPE.PLAYER}
           >

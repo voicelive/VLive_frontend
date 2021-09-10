@@ -10,18 +10,21 @@ async function fetcher(channelId) {
         'Content-Type': 'application/json',
       },
     });
-    const { data } = await response.json();
+    const { data: channel } = await response.json();
 
-    return data;
+    return channel;
   } catch (err) {
     alert(err.message);
   }
 }
 
 export default function useChannel(channelId) {
-  const { data: channel } = useSWR('/channel/channelId', () => {
-    return fetcher(channelId);
-  });
+  const { data: channel, error } = useSWR(
+    channelId ? '/channel/channelId' : null,
+    () => {
+      return fetcher(channelId);
+    },
+  );
 
-  return channel;
+  return { channel, error };
 }

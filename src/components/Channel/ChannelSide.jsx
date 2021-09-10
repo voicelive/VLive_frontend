@@ -1,53 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import useChannel from '../../hooks/useChannel';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
+import useChannel from '../../hooks/useChannel';
 
+import PlayerItem from './PlayerItem';
+import AudienceItem from './AudienceItem';
+import ErrorBox from '../ErrorBox';
 import Button from '../Button';
 
-export default function ChannelSide({ channelId }) {
-  const [currentUsers, setCurrentUsers] = useState([]);
-  const [players, setPlayers] = useState(null);
-  const [audience, setAudience] = useState(null);
-  const [host, setHost] = useState(null);
+export default function ChannelSide() {
+  const {
+    query: { channelId },
+  } = useRouter();
+  const { channel, error } = useChannel(channelId);
+  const currentUser = JSON.parse(sessionStorage.getItem('user'));
 
-  const channel = useChannel(channelId);
+  if (channelId == null || channel == null) {
+    return <></>;
+  }
 
-  useEffect(() => {
-    if (!channel) return;
+  if (error) {
+    return <ErrorBox message={error.message} />;
+  }
 
-    const { players, audience, host } = channel;
-
-    setPlayers(players);
-    setAudience(audience);
-    setHost(host);
-  }, [channel]);
-
-  useEffect(() => {
-    const userId = JSON.parse(sessionStorage.getItem('user'));
-
-    setCurrentUsers(currentUsers.concat(userId));
-  }, []);
+  const { host, players, audience } = channel;
 
   return (
     <SideContainer>
       <PlayerWrapper>
-        {players?.map((player) => (
-          <div key={player._id} className="player-profile">
-            <div className="player">{player.userId}</div>
-            <div className="character">{player.characterId}</div>
-          </div>
+        {players.map((player) => (
+          <PlayerItem key={player} player={player} />
         ))}
       </PlayerWrapper>
       <AudienceWrapper>
-        {audience?.map((user) => (
-          <div key={user} className="user-id">
-            {user}
-          </div>
+        {audience.map((user) => (
+          <AudienceItem key={user._id} user={user} />
         ))}
       </AudienceWrapper>
       <ButtonWrapper>
-        {currentUsers[0] === host ? (
+        {currentUser?.currentUser._id === host._id ? (
           <Button>Start</Button>
         ) : (
           <Button>Ready</Button>
@@ -58,25 +49,19 @@ export default function ChannelSide({ channelId }) {
   );
 }
 
-ChannelSide.propTypes = {
-  channelId: PropTypes.string.isRequired,
-};
-
 const SideContainer = styled.div`
   width: 20%;
-  height: 800px;
-  border: 1px solid black;
+  height: auto;
+  background: #1d2e3c;
+  opacity: 0.8;
 `;
 
 const PlayerWrapper = styled.div`
   width: 100%;
   height: 55%;
-  border: 1px solid black;
-
   .player-profile {
     width: 100%;
     height: 50px;
-    border: 1px solid black;
   }
 `;
 

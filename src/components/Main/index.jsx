@@ -57,7 +57,6 @@ const SideBox = styled.div`
   width: 20%;
   text-align: center;
   background: ${theme.navy};
-
   .button-wrapper {
     position: absolute;
     width: 100%;
