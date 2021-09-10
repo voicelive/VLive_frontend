@@ -8,11 +8,9 @@ const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
-<<<<<<< HEAD
 const { EVENTS } = require('./src/constants/socketEvent');
-=======
+
 const chatContents = {};
->>>>>>> 4510e87 (feat: connect chat socket)
 
 io.on('connection', (socket) => {
   console.log('socket connected...');
