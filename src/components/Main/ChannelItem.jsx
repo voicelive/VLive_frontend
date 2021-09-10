@@ -1,11 +1,11 @@
-import styled from '@emotion/styled';
 import React from 'react';
-import PropTypes from 'prop-types';
 import Link from 'next/link';
 
-import UserEntryButton from './UserEntryButton';
-
+import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 import { CHANNEL, USER_TYPE } from '../../constants/channel';
+
+import UserEntryButton from './UserEntryButton';
 
 export default function ChannelItem({
   channel: { _id, name, players, episode },
