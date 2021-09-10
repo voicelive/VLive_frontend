@@ -147,7 +147,6 @@ const Container = styled.div`
   border: 1px solid white;
   background-color: ${({ theme }) => theme.navy};
   color: white;
-
   .header {
     display: flex;
     justify-content: space-between;
@@ -155,7 +154,6 @@ const Container = styled.div`
     height: 10%;
     margin-top: 25px;
     padding: 0 50px;
-
     .title {
       font-size: 24px;
       line-height: 24px;
@@ -171,11 +169,9 @@ const CreatingForm = styled.form`
   padding: 30px 50px;
   box-sizing: border-box;
   text-align: left;
-
   .channel-name {
     display: block;
   }
-
   .button {
     margin: 10px auto 0 auto;
   }
@@ -183,11 +179,9 @@ const CreatingForm = styled.form`
 
 const ChannelName = styled.div`
   height: 80px;
-
   .channel-name {
     font-size: 16px;
   }
-
   input {
     width: 300px;
     margin-top: 10px;
@@ -197,11 +191,9 @@ const ChannelName = styled.div`
 
 const EpisodeOptions = styled.div`
   margin-top: 10px;
-
   .episode-select {
     font-size: 16px;
   }
-
   .episode-list {
     display: grid;
     grid-template-columns: repeat(3, minmax(100px, 170px));
@@ -217,7 +209,6 @@ const EpisodeOption = styled.li`
   font-size: 12px;
   list-style: none;
   cursor: pointer;
-
   .episode-title {
     margin-bottom: 5px;
   }

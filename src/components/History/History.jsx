@@ -25,8 +25,8 @@ export default function RecentHistory() {
   return (
     <Container>
       <header>
-        <h4 className="player-wrap">{name}</h4>
-        <h3 className="player-wrap">{episode.title}</h3>
+        <h4>{name}</h4>
+        <h3>{episode.title}</h3>
       </header>
       <VideoWrapper>
         <div className="video"></div>

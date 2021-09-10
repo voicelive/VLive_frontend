@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import useChannel from '../../hooks/useChannel';
+import PlayerItem from './PlayerItem';
+import AudienceItem from './AudienceItem';
 import ErrorBox from '../ErrorBox';
 import Button from '../Button';
 
@@ -33,17 +35,12 @@ export default function ChannelSide() {
     <SideContainer>
       <PlayerWrapper>
         {players.map((player) => (
-          <div key={player._id} className="player-profile">
-            <div className="player">{player.userId.name}</div>
-            <div className="character">{player.characterId?.name}</div>
-          </div>
+          <PlayerItem key={player} player={player} />
         ))}
       </PlayerWrapper>
       <AudienceWrapper>
         {audience.map((user) => (
-          <div key={user._id} className="user-id">
-            {user.name}
-          </div>
+          <AudienceItem key={user._id} user={user} />
         ))}
       </AudienceWrapper>
       <ButtonWrapper>
@@ -68,7 +65,6 @@ const SideContainer = styled.div`
 const PlayerWrapper = styled.div`
   width: 100%;
   height: 55%;
-
   .player-profile {
     width: 100%;
     height: 50px;

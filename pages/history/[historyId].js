@@ -1,5 +1,5 @@
 import History from '../../src/components/History';
 
-export default function ChannelPage() {
+export default function HistoryPage() {
   return <History />;
 }
