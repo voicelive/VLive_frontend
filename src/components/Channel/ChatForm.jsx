@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
-import PropTypes from 'prop-types';
 
 import { socketClient } from '../../hooks/socket/useSocket';
 
-export default function ChatForm({ channelId }) {
+export default function ChatForm() {
+  const {
+    query: { channelId },
+  } = useRouter();
   const [input, setInput] = useState('');
   const [userName, setUserName] = useState('');
 
@@ -47,10 +50,6 @@ export default function ChatForm({ channelId }) {
     </Form>
   );
 }
-
-ChatForm.propTypes = {
-  channelId: PropTypes.string.isRequired,
-};
 
 const Form = styled.form`
   display: flex;

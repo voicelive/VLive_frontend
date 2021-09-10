@@ -33,8 +33,8 @@ export default function ChannelMain() {
       </header>
       <Video />
       <Chat>
-        <ChatBody channelId={channelId} />
-        <ChatForm channelId={channelId} />
+        <ChatBody />
+        <ChatForm />
       </Chat>
     </MainContainer>
   );

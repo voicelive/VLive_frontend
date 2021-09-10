@@ -1,11 +1,14 @@
-import styled from '@emotion/styled';
 import { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
+import styled from '@emotion/styled';
 
 import useChat from '../../hooks/useChat';
 import { useSocket } from '../../hooks/socket/useSocket';
 
-export default function ChatBody({ channelId }) {
+export default function ChatBody() {
+  const {
+    query: { channelId },
+  } = useRouter();
   const { chatList, mutate } = useChat(channelId);
   const chatRef = useRef();
 
@@ -32,10 +35,6 @@ export default function ChatBody({ channelId }) {
     </Contents>
   );
 }
-
-ChatBody.propTypes = {
-  channelId: PropTypes.string,
-};
 
 const Contents = styled.div`
   height: 85%;
