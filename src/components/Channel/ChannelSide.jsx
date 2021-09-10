@@ -13,7 +13,7 @@ export default function ChannelSide() {
     query: { channelId },
   } = useRouter();
   const { channel, error } = useChannel(channelId);
-  const currentUser = JSON.parse(sessionStorage.getItem('user'));
+  const user = JSON.parse(sessionStorage.getItem('user'));
 
   if (channelId == null || channel == null) {
     return <></>;
@@ -38,7 +38,7 @@ export default function ChannelSide() {
         ))}
       </AudienceWrapper>
       <ButtonWrapper>
-        {currentUser?.currentUser._id === host._id ? (
+        {user._id === host._id ? (
           <Button>Start</Button>
         ) : (
           <Button>Ready</Button>
