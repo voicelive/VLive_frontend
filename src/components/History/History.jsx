@@ -25,8 +25,8 @@ export default function RecentHistory() {
   return (
     <Container>
       <header>
-        <h4>{name}</h4>
-        <h3>{episode.title}</h3>
+        <h4 className="user-name">{name}</h4>
+        <h3 className="episode-title">{episode.title}</h3>
       </header>
       <VideoWrapper>
         <div className="video"></div>
@@ -36,7 +36,7 @@ export default function RecentHistory() {
           <div key={player._id} className="player-profile">
             <Image
               src={player.characterId.imgUrl}
-              alt="User profile image"
+              alt="character image"
               width={70}
               height={70}
             />
@@ -55,7 +55,7 @@ const Container = styled.div`
   height: auto;
   padding: 20px;
 
-  h4 {
+  .user-name {
     margin-bottom: 10px;
     margin-top: 0px;
     text-align: left;
@@ -64,7 +64,7 @@ const Container = styled.div`
     color: #ffffff;
   }
 
-  h3 {
+  .episode-title {
     margin-top: 10px;
     margin-bottom: 0px;
     text-align: left;

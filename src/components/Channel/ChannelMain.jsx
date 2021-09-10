@@ -46,7 +46,7 @@ const MainContainer = styled.div`
     border: 1px solid black;
   }
 
-  h2 {
+  .channel-name {
     margin: 0px;
     padding-top: 15px;
     padding-bottom: 10px;
@@ -54,7 +54,7 @@ const MainContainer = styled.div`
     font-weight: 200;
   }
 
-  h3 {
+  .episode-title {
     margin: 0px;
     padding-bottom: 10px;
     font-size: 1.5em;

@@ -13,6 +13,6 @@ export default function PlayerItem({ player: { userId, characterId } }) {
 PlayerItem.propTypes = {
   player: PropTypes.shape({
     userId: PropTypes.object.isRequired,
-    characterId: PropTypes.object.isRequired,
+    characterId: PropTypes.object,
   }),
 };

@@ -26,6 +26,7 @@ export default function History() {
 
 const Container = styled.div`
   position: relative;
+  height: 100vh;
   text-align: center;
   background-image: linear-gradient(
       rgba(5, 5, 5, 0.746),
@@ -35,7 +36,6 @@ const Container = styled.div`
       rgba(5, 5, 5, 0.746)
     ),
     url('/images/background.jpg');
-  height: 100vh;
 
   .recent-game {
     margin-top: 0px;
