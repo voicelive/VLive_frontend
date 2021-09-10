@@ -25,7 +25,7 @@ export default function ChatBody() {
       <ul className="chat-list">
         {chatList
           ? chatList.map(({ author, chat }, index) => (
-              <Content key={index}>
+              <Content key={`${author}${Date.now(index)}`}>
                 <span className="author">{author}</span>
                 <span>{chat}</span>
               </Content>
