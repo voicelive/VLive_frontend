@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import theme from '../styles/theme';
 
 export default function Button({ children, ...props }) {
   return <StyledButton {...props}>{children}</StyledButton>;
@@ -27,7 +26,7 @@ const StyledButton = styled.button`
   text-align: center;
   cursor: pointer;
   border-radius: ${({ borderRadius }) => borderRadius || '20px'};
-  background-color: ${({ color }) => color || theme.pink};
+  background-color: ${({ color, theme }) => color || theme.pink};
   transition-property: scale, translateY;
   transition: scale 300ms ease-in;
   color: white;

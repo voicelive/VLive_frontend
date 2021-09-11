@@ -7,6 +7,7 @@ import useChannel from '../../hooks/channel/useChannel';
 import ErrorBox from '../ErrorBox';
 import ChatBody from './ChatBody';
 import ChatForm from './ChatForm';
+import Vote from './Vote';
 
 export default function ChannelMain() {
   const {
@@ -32,8 +33,9 @@ export default function ChannelMain() {
       </header>
       <Video />
       <ChatWrapper>
-        <ChatBody />
-        <ChatForm />
+        {/* <ChatBody />
+        <ChatForm /> */}
+        <Vote />
       </ChatWrapper>
     </MainContainer>
   );
@@ -48,16 +50,21 @@ ChannelMain.defaultProps = {
 };
 
 const MainContainer = styled.div`
-  width: 80%;
+  width: 70%;
   height: auto;
+  padding: 0 50px;
+  box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.6);
+
   header {
+    height: 10%;
     padding-left: 20px;
     text-align: left;
     background-color: rgba(0, 0, 0, 0.6);
     color: #ffffff;
     border: 1px solid black;
   }
+
   .channel-name {
     margin: 0px;
     padding-top: 15px;
@@ -65,6 +72,7 @@ const MainContainer = styled.div`
     font-size: 1.2em;
     font-weight: 200;
   }
+
   .episode-title {
     margin: 0px;
     padding-bottom: 10px;
@@ -75,10 +83,10 @@ const MainContainer = styled.div`
 
 const Video = styled.div`
   width: 100%;
-  height: 55%;
+  height: 50%;
   background-image: url('/images/background.jpg');
 `;
 
 const ChatWrapper = styled.div`
-  height: 35%;
+  height: 40%;
 `;

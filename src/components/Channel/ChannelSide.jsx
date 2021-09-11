@@ -16,7 +16,7 @@ export default function ChannelSide() {
 }
 
 const SideContainer = styled.div`
-  width: 20%;
+  width: 30%;
   height: auto;
   background: #1d2e3c;
 `;
