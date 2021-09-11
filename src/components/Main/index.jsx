@@ -38,11 +38,12 @@ export default function Main() {
             loginStatus={isLogin}
           />
           <Preview />
-          <div className="button-wrapper">
+          <div className={`button-wrapper ${!isLogin && 'disable'}`}>
             <Button
-              onClick={isLogin === true ? { openModal } : null}
+              onClick={openModal}
               width="200px"
               fontSize="1em"
+              color={!isLogin && 'gray'}
             >
               채널 개설하기
             </Button>
@@ -74,5 +75,9 @@ const SideBox = styled.div`
     position: absolute;
     width: 100%;
     margin-bottom: 20px;
+  }
+  .disable {
+    cursor: not-allowed;
+    pointer-events: none;
   }
 `;
