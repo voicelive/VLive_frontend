@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/dist/client/router';
+import { socketClient } from '../../hooks/socket/useSocket';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import useChannel from '../../hooks/useChannel';
+import useChannel from '../../hooks/channel/useChannel';
+import theme from '../../styles/theme';
 import ErrorBox from '../ErrorBox';
 import Button from '../Button';
 
@@ -17,7 +20,7 @@ export default function UserReadyButton({ isModalOpen, closeModal }) {
   } = useRouter();
   const { channel, error } = useChannel(channelId);
 
-  if (!channelId || !channel) {
+  if (channelId == null || channel == null) {
     return <></>;
   }
 
@@ -52,8 +55,6 @@ export default function UserReadyButton({ isModalOpen, closeModal }) {
     fetchData();
   }, [isModalOpen]);
 
-  const { title, characters } = episodeInfo;
-
   function handleClick({ currentTarget }) {
     const { id } = currentTarget;
 
@@ -64,6 +65,7 @@ export default function UserReadyButton({ isModalOpen, closeModal }) {
 
   async function handleSubmit(ev) {
     ev.preventDefault();
+
     const { _id } = JSON.parse(sessionStorage.getItem('user'));
 
     try {
@@ -83,10 +85,20 @@ export default function UserReadyButton({ isModalOpen, closeModal }) {
       if (result === 'error') {
         return alert(message);
       }
+
+      socketClient.emit('player ready', {
+        channelId,
+        userId: _id,
+        characterId: userRole.characterId,
+      });
+
+      closeModal();
     } catch (err) {
       alert(err.message);
     }
   }
+
+  const { title, characters } = episodeInfo;
 
   return (
     <Container>
@@ -96,27 +108,34 @@ export default function UserReadyButton({ isModalOpen, closeModal }) {
           나가기
         </button>
       </div>
-      <CreatingForm onSubmit={handleSubmit}>
+      <ReadyForm onSubmit={handleSubmit}>
         <span className="episode-select">연기할 배역을 선택하세요</span>
         <div className="episode-title">{title}</div>
-        <EpisodeOptions>
+        <ReadyOptions>
           <ul className="episode-list">
             {characters &&
               characters.map((character) => (
-                <EpisodeOption
+                <ReadyOption
                   key={character._id}
                   id={character._id}
                   onClick={handleClick}
                 >
                   <span className="episode-title">{character.name}</span>
-                </EpisodeOption>
+                  <Image
+                    className="image"
+                    src={character.imgUrl}
+                    alt="character-imgUrl"
+                    width={100}
+                    height={200}
+                  />
+                </ReadyOption>
               ))}
           </ul>
-        </EpisodeOptions>
+        </ReadyOptions>
         <div className="button">
-          <Button type="submit">Ready</Button>
+          <Button type="submit">배역 고르기</Button>
         </div>
-      </CreatingForm>
+      </ReadyForm>
     </Container>
   );
 }
@@ -132,6 +151,7 @@ const Container = styled.div`
   border: 1px solid white;
   background-color: ${({ theme }) => theme.navy};
   color: white;
+
   .header {
     display: flex;
     justify-content: space-between;
@@ -139,6 +159,7 @@ const Container = styled.div`
     height: 10%;
     margin-top: 25px;
     padding: 0 50px;
+
     .title {
       font-size: 24px;
       line-height: 24px;
@@ -146,7 +167,7 @@ const Container = styled.div`
   }
 `;
 
-const CreatingForm = styled.form`
+const ReadyForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -154,6 +175,7 @@ const CreatingForm = styled.form`
   padding: 30px 50px;
   box-sizing: border-box;
   text-align: left;
+
   .channel-name {
     display: block;
   }
@@ -162,23 +184,13 @@ const CreatingForm = styled.form`
   }
 `;
 
-const ChannelName = styled.div`
-  height: 80px;
-  .channel-name {
-    font-size: 16px;
-  }
-  input {
-    width: 300px;
-    margin-top: 10px;
-    padding: 5px 10px;
-  }
-`;
-
-const EpisodeOptions = styled.div`
+const ReadyOptions = styled.div`
   margin-top: 10px;
+
   .episode-select {
     font-size: 16px;
   }
+
   .episode-list {
     display: grid;
     grid-template-columns: repeat(3, minmax(100px, 170px));
@@ -186,15 +198,20 @@ const EpisodeOptions = styled.div`
   }
 `;
 
-const EpisodeOption = styled.li`
+const ReadyOption = styled.li`
   display: flex;
   flex-direction: column;
-  height: 100px;
+  height: 150px;
   margin: 0 15px 20px 0;
   font-size: 12px;
   list-style: none;
   cursor: pointer;
+
   .episode-title {
     margin-bottom: 5px;
+  }
+
+  &:hover {
+    border: 2px solid ${theme.pink};
   }
 `;

@@ -49,6 +49,12 @@ io.on('connection', (socket) => {
   socket.on(EVENTS.END_CHANNEL, (id) => {
     socket.broadcast.emit(EVENTS.LISTEN_END_CHANNEL, id);
   });
+
+  socket.on('player ready', (data) => {
+    const { channelId, userId, characterId } = data;
+
+    io.to(channelId).emit('listen player ready', { userId, characterId });
+  });
 });
 
 nextApp.prepare().then(() => {

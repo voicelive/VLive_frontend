@@ -8,6 +8,7 @@ module.exports = {
       'img3.daumcdn.net',
       'spnimage.edaily.co.kr',
       'cdn.entermedia.co.kr',
+      'awwdwd.s3.ap-northeast-2.amazonaws.com',
     ],
   },
 };

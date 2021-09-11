@@ -5,7 +5,7 @@ import UserReadyButton from './UserReadyButton';
 import Button from '../Button';
 import Modal from '../Modal';
 
-export default function SideButton() {
+export default function SideButtonContainer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   function openModal() {

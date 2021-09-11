@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { socketClient } from '../../hooks/socket/useSocket';
 import styled from '@emotion/styled';
 import usePlayers from '../../hooks/channel/usePlayers';
 
@@ -10,11 +11,27 @@ export default function PlayerContainer() {
   const {
     query: { channelId },
   } = useRouter();
-  const { players, error } = usePlayers(channelId);
+  const { players, error, mutate } = usePlayers(channelId);
+
+  if (channelId == null || players == null) {
+    return <></>;
+  }
 
   if (error) {
     return <ErrorBox message={error.message} />;
   }
+
+  socketClient.on('listen player ready', ({ userId, characterId }) => {
+    const newPlayers = players.map((player) => {
+      if (player.userId._id === userId) {
+        player.characterId = characterId;
+      }
+
+      return player;
+    });
+
+    mutate((data) => ({ ...data, players: [...newPlayers] }));
+  });
 
   return (
     <Wrapper>
@@ -28,6 +45,7 @@ export default function PlayerContainer() {
 const Wrapper = styled.div`
   width: 100%;
   height: 55%;
+
   .player-profile {
     width: 100%;
     height: 50px;
