@@ -18,7 +18,7 @@ export default function PlayerEntryButton({ channelId, isActive }) {
   const { players, mutate } = usePlayers(channelId);
   const socket = useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
     if (user.userType === USER_TYPE.PLAYER && user.channelId === channelId) {
-      mutate([...players, user]);
+      mutate((data) => ({ ...data, audience: [...data.audience, { user }] }));
     }
   });
 
@@ -35,15 +35,6 @@ export default function PlayerEntryButton({ channelId, isActive }) {
       sessionStorage.getItem('user'),
     );
 
-    socket.emit(EVENTS.ENTER_CHANNEL, {
-      _id,
-      name,
-      email,
-      photoUrl,
-      channelId,
-      userType: USER_TYPE.PLAYER,
-    });
-
     await fetch(`${baseUrl}/channel/${channelId}`, {
       method: 'PUT',
       headers: {
@@ -55,12 +46,21 @@ export default function PlayerEntryButton({ channelId, isActive }) {
         userId: _id,
       }),
     });
+
+    socket.emit(EVENTS.ENTER_CHANNEL, {
+      _id,
+      name,
+      email,
+      photoUrl,
+      channelId,
+      userType: USER_TYPE.PLAYER,
+    });
   }
 
   return (
     <Wrapper>
       <Link
-        href={isActive ? `/channel/${channelId}` : '/main'}
+        href={isActive ? `/channel/${channelId}` : '#'}
         key={channelId}
         passHref
       >
@@ -88,5 +88,6 @@ PlayerEntryButton.propTypes = {
 const Wrapper = styled.div`
   .disable {
     cursor: not-allowed;
+    pointer-events: none;
   }
 `;

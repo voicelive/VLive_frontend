@@ -16,7 +16,7 @@ export default function AudienceEntryButton({ channelId, isActive }) {
   const { audience, error, mutate } = useAudience(channelId);
   const socket = useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
     if (user.userType === USER_TYPE.AUDIENCE && user.channelId === channelId) {
-      mutate((data) => [...data.audience, user]);
+      mutate((data) => ({ ...data, audience: [...data.audience, { user }] }));
     }
   });
 
@@ -33,15 +33,6 @@ export default function AudienceEntryButton({ channelId, isActive }) {
       sessionStorage.getItem('user'),
     );
 
-    socket.emit(EVENTS.ENTER_CHANNEL, {
-      _id,
-      name,
-      email,
-      photoUrl,
-      channelId,
-      userType: USER_TYPE.AUDIENCE,
-    });
-
     await fetch(`${baseUrl}/channel/${channelId}`, {
       method: 'PUT',
       headers: {
@@ -52,6 +43,15 @@ export default function AudienceEntryButton({ channelId, isActive }) {
         type: USER_TYPE.AUDIENCE,
         userId: _id,
       }),
+    });
+
+    socket.emit(EVENTS.ENTER_CHANNEL, {
+      _id,
+      name,
+      email,
+      photoUrl,
+      channelId,
+      userType: USER_TYPE.AUDIENCE,
     });
   }
 
@@ -86,5 +86,6 @@ AudienceEntryButton.propTypes = {
 const Wrapper = styled.div`
   .disable {
     cursor: not-allowed;
+    pointer-events: none;
   }
 `;
