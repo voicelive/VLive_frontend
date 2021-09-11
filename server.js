@@ -31,7 +31,7 @@ io.on('connection', (socket) => {
     if (!chatContents[channelId]) {
       const data = {
         channelId,
-        chatList: [{ author: newChat.author, chat: newChat.chat }],
+        chatList: [newChat],
       };
 
       chatContents[channelId] = data;
@@ -70,7 +70,7 @@ async function saveChat(channelId) {
     const { result, message } = await response.json();
 
     if (result === 'error') {
-      return message;
+      throw new Error(message);
     }
   } catch (err) {
     alert(err.message);

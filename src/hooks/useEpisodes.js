@@ -1,10 +1,9 @@
 import useSWR from 'swr';
+import { API } from '../constants/api';
 
 async function fetcher() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
   try {
-    const response = await fetch(`${baseUrl}/episode`, {
+    const response = await fetch(`${API.URL}/episode`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

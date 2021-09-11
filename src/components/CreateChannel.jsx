@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import Button from './Button';
+import { API } from '../constants/api';
 
 export default function CreateChannel({ isModalOpen, closeModal }) {
   const [episodes, setEpisodes] = useState([]);
@@ -14,12 +15,11 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
     episodeId: '',
   });
   const router = useRouter();
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`${baseUrl}/episode`, {
+        const response = await fetch(`${API.URL}/episode`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
     const { _id } = JSON.parse(sessionStorage.getItem('user'));
 
     try {
-      const response = await fetch(`${baseUrl}/channel`, {
+      const response = await fetch(`${API.URL}/channel`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

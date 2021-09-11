@@ -1,11 +1,11 @@
 import useSWR from 'swr';
+
 import ErrorBox from '../components/ErrorBox';
+import { API } from '../constants/api';
 
 async function fetcher(channelId) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
   try {
-    const response = await fetch(`${baseUrl}/chat/${channelId}`, {
+    const response = await fetch(`${API.URL}/chat/${channelId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
