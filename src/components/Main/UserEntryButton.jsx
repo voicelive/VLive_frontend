@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSocket } from '../../hooks/socket/useSocket';
 import { EVENTS } from '../../constants/socketEvent';
 import Link from 'next/link';
 
 import Button from '../Button';
+import { API } from '../../constants/api';
 
 export default function UserEntryButton({
   initialCount,
@@ -14,9 +15,8 @@ export default function UserEntryButton({
   children,
   isActive,
 }) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [userCount, setUserCount] = useState(initialCount);
-
+  const [user, setUser] = useState(null);
   const socket = useSocket(
     EVENTS.LISTEN_ENTER_CHANNEL,
     ({ channelId: id, userType: type }) => {
@@ -26,25 +26,26 @@ export default function UserEntryButton({
     },
   );
 
+  useEffect(() => {
+    const { _id, name, email, photoIrl } = JSON.parse(
+      sessionStorage.getItem('user'),
+    );
+
+    setUser({ _id, name, email, photoIrl });
+  }, []);
+
   async function onButtonClick(channelId) {
     if (isActive === false) {
       return alert('로그인 해주세요');
     }
 
-    const { _id, name, email, photoUrl } = JSON.parse(
-      sessionStorage.getItem('user'),
-    );
-
     socket.emit(EVENTS.ENTER_CHANNEL, {
+      ...user,
       channelId,
-      _id,
-      name,
-      email,
-      photoUrl,
       userType,
     });
 
-    await fetch(`${baseUrl}/channel/${channelId}`, {
+    await fetch(`${API.URL}/channel/${channelId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -52,7 +53,7 @@ export default function UserEntryButton({
       body: JSON.stringify({
         state: 'enter',
         type: userType,
-        userId: _id,
+        userId: user._id,
       }),
     });
   }

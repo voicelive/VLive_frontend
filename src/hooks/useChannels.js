@@ -1,10 +1,9 @@
 import useSWR from 'swr';
+import { API } from '../constants/api';
 
 async function fetcher() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
   try {
-    const response = await fetch(`${baseUrl}/channel`, {
+    const response = await fetch(`${API.URL}/channel`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -20,8 +19,8 @@ async function fetcher() {
 
 export default function useChannels() {
   const { data: channels, error, mutate } = useSWR('/channel', fetcher);
-  let historyChannels = [];
-  let activeChannels = [];
+  const historyChannels = [];
+  const activeChannels = [];
 
   channels?.forEach((channel) => {
     channel.isActive

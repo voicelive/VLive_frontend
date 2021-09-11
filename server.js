@@ -10,6 +10,8 @@ const nextHandler = nextApp.getRequestHandler();
 
 const { EVENTS } = require('./src/constants/socketEvent');
 
+const chatContents = {};
+
 io.on('connection', (socket) => {
   console.log('socket connected...');
 
@@ -21,6 +23,27 @@ io.on('connection', (socket) => {
     socket.join(userData.channelId);
 
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
+  });
+
+  socket.on('new chat', ({ channelId, newChat }) => {
+    socket.join(channelId);
+
+    if (!chatContents[channelId]) {
+      const data = {
+        channelId,
+        chatList: [newChat],
+      };
+
+      chatContents[channelId] = data;
+    } else {
+      chatContents[channelId].chatList.push(newChat);
+    }
+
+    const { chatList } = chatContents[channelId];
+
+    io.to(channelId).emit('listen new chat', chatList);
+
+    saveChat(channelId);
   });
 });
 
@@ -34,3 +57,22 @@ nextApp.prepare().then(() => {
     console.log(`> Ready on http://localhost:${port}`);
   });
 });
+
+async function saveChat(channelId) {
+  try {
+    const response = await fetch(`${process.env.API_URL}/chat`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(chatContents[channelId]),
+    });
+    const { result, message } = await response.json();
+
+    if (result === 'error') {
+      throw new Error(message);
+    }
+  } catch (err) {
+    alert(err.message);
+  }
+}

@@ -6,8 +6,9 @@ import styled from '@emotion/styled';
 
 import Button from '../Button';
 import ErrorBox from '../ErrorBox';
+import { API } from '../../constants/api';
+
 export default function GoogleLoginButton({ onLogin }) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [error, setError] = useState(null);
 
   if (error) {
@@ -25,7 +26,7 @@ export default function GoogleLoginButton({ onLogin }) {
     };
 
     try {
-      const response = await fetch(`${baseUrl}/login`, {
+      const response = await fetch(`${API.URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

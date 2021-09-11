@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
+
 import useChannel from '../../hooks/useChannel';
 
 import PlayerItem from './PlayerItem';
@@ -13,7 +14,11 @@ export default function ChannelSide() {
     query: { channelId },
   } = useRouter();
   const { channel, error } = useChannel(channelId);
-  const user = JSON.parse(sessionStorage.getItem('user'));
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    setUser(JSON.parse(sessionStorage.getItem('user')));
+  }, []);
 
   if (channelId == null || channel == null) {
     return <></>;
@@ -34,15 +39,11 @@ export default function ChannelSide() {
       </PlayerWrapper>
       <AudienceWrapper>
         {audience.map((user) => (
-          <AudienceItem key={user._id} user={user} />
+          <AudienceItem key={user?._id} user={user} />
         ))}
       </AudienceWrapper>
       <ButtonWrapper>
-        {user._id === host._id ? (
-          <Button>Start</Button>
-        ) : (
-          <Button>Ready</Button>
-        )}
+        {user?._id === host ? <Button>Start</Button> : <Button>Ready</Button>}
         <Button>나가기</Button>
       </ButtonWrapper>
     </SideContainer>
