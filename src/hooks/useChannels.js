@@ -19,8 +19,8 @@ async function fetcher() {
 
 export default function useChannels() {
   const { data: channels, error, mutate } = useSWR('/channel', fetcher);
-  let historyChannels = [];
-  let activeChannels = [];
+  const historyChannels = [];
+  const activeChannels = [];
 
   channels?.forEach((channel) => {
     channel.isActive
