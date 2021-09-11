@@ -4,6 +4,7 @@ import { useSocket } from '../../hooks/socket/useSocket';
 import { EVENTS } from '../../constants/socketEvent';
 import { USER_TYPE, CHANNEL } from '../../constants/channel';
 import useAudience from '../../hooks/channel/useAudience';
+import { API } from '../../constants/api';
 
 import Link from 'next/link';
 import styled from '@emotion/styled';
@@ -12,7 +13,6 @@ import Button from '../Button';
 import ErrorBox from '../ErrorBox';
 
 export default function AudienceEntryButton({ channelId, isActive }) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const { audience, error, mutate } = useAudience(channelId);
   const socket = useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
     if (user.userType === USER_TYPE.AUDIENCE && user.channelId === channelId) {
@@ -33,7 +33,7 @@ export default function AudienceEntryButton({ channelId, isActive }) {
       sessionStorage.getItem('user'),
     );
 
-    await fetch(`${baseUrl}/channel/${channelId}`, {
+    await fetch(`${API.URL}/channel/${channelId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

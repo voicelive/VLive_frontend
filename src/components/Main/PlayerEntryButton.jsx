@@ -5,15 +5,14 @@ import { EVENTS } from '../../constants/socketEvent';
 import { USER_TYPE } from '../../constants/channel';
 import usePlayers from '../../hooks/channel/usePlayers';
 import useChannel from '../../hooks/channel/useChannel';
-
 import Link from 'next/link';
 import styled from '@emotion/styled';
 
 import Button from '../Button';
 import ErrorBox from '../ErrorBox';
+import { API } from '../../constants/api';
 
 export default function PlayerEntryButton({ channelId, isActive }) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const { channel, error } = useChannel(channelId);
   const { players, mutate } = usePlayers(channelId);
   const socket = useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
@@ -35,7 +34,7 @@ export default function PlayerEntryButton({ channelId, isActive }) {
       sessionStorage.getItem('user'),
     );
 
-    await fetch(`${baseUrl}/channel/${channelId}`, {
+    await fetch(`${API.URL}/channel/${channelId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

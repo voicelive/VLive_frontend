@@ -5,7 +5,7 @@ import theme from '../../styles/theme';
 import Header from '../Header';
 import UserProfile from './UserProfile';
 import Preview from './Preview';
-import CreateChannel from '../CreateChannel';
+import CreateChannel from './CreateChannel';
 import ChannelList from './ChannelList';
 import Button from '../Button';
 import Modal from '../Modal';

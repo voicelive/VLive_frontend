@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/dist/client/router';
-import { socketClient } from '../hooks/socket/useSocket';
+import { socketClient } from '../../hooks/socket/useSocket';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import Button from './Button';
-import { API } from '../constants/api';
+import Button from '../Button';
+import { API } from '../../constants/api';
+import { EVENTS } from '../../constants/socketEvent';
 
 export default function CreateChannel({ isModalOpen, closeModal }) {
   const [episodes, setEpisodes] = useState([]);
@@ -19,7 +20,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`${API.URL}/episode`, {
+        const response = await fetch(`${API.API_URL}/episode`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -60,7 +61,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
         return alert(message);
       }
 
-      socketClient.emit('create channel', data);
+      socketClient.emit(EVENTS.CREATE_CHANNEL, data);
 
       const channelId = data._id;
       router.push(`/channel/${channelId}`);

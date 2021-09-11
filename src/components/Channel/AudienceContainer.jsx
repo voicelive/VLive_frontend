@@ -18,8 +18,8 @@ export default function AudienceContainer() {
 
   return (
     <Wrapper>
-      {audience.map((audience) => (
-        <AudienceItem key={audience._id} user={audience} />
+      {audience.map((viewer) => (
+        <AudienceItem key={viewer._id} user={viewer} />
       ))}
     </Wrapper>
   );

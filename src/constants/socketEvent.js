@@ -5,4 +5,6 @@ module.exports.EVENTS = {
   LISTEN_CREATE_CHANNEL: 'listen create channel',
   END_CHANNEL: 'end channel',
   LISTEN_END_CHANNEL: 'listen end channel',
+  LISTEN_NEW_CHAT: 'listen new chat',
+  NEW_CHAT: 'new chat',
 };
