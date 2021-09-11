@@ -45,6 +45,10 @@ io.on('connection', (socket) => {
 
     saveChat(channelId);
   });
+
+  socket.on(EVENTS.END_CHANNEL, (id) => {
+    socket.broadcast.emit(EVENTS.LISTEN_END_CHANNEL, id);
+  });
 });
 
 nextApp.prepare().then(() => {

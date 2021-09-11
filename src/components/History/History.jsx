@@ -12,7 +12,7 @@ export default function RecentHistory() {
   } = useRouter();
   const { channel, error } = useChannel(historyId);
 
-  if (historyId == null || channel == null) {
+  if (!historyId || !channel) {
     return <></>;
   }
 

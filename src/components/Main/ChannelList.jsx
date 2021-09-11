@@ -9,10 +9,21 @@ import useChannels from '../../hooks/useChannels';
 import ChannelItem from './ChannelItem';
 import ErrorBox from '../ErrorBox';
 
+const { EVENTS } = require('../../constants/socketEvent');
+
 export default function ChannelList({ isButtonActive }) {
   const { activeChannels, error, mutate } = useChannels();
-  useSocket('listen create channel', (channel) => {
+
+  useSocket(EVENTS.LISTEN_CREATE_CHANNEL, (channel) => {
     mutate([...activeChannels, channel]);
+  });
+
+  useSocket(EVENTS.LISTEN_END_CHANNEL, (endChannelId) => {
+    const newActiveChannels = activeChannels.filter(
+      (activeChannel) => activeChannel._id !== endChannelId,
+    );
+
+    mutate(newActiveChannels);
   });
 
   if (error) {
