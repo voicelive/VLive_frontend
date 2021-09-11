@@ -23,7 +23,7 @@ export default function ChannelSide() {
     setIsHost(user._id === channel.host);
   }, []);
 
-  if (!channelId || !channel) {
+  if (channelId == null || channel == null) {
     return <></>;
   }
 

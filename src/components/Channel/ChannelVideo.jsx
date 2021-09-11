@@ -35,7 +35,7 @@ export default function ChannelVideo() {
   } = useRouter();
   const { channel, error } = useChannel(channelId);
 
-  if (!channelId || !channel) {
+  if (channelId == null || channel == null) {
     return <></>;
   }
 
