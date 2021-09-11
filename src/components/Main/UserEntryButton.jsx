@@ -5,6 +5,7 @@ import { EVENTS } from '../../constants/socketEvent';
 import Link from 'next/link';
 
 import Button from '../Button';
+import { API } from '../../constants/api';
 
 export default function UserEntryButton({
   initialCount,
@@ -44,7 +45,7 @@ export default function UserEntryButton({
       userType,
     });
 
-    await fetch(`${baseUrl}/channel/${channelId}`, {
+    await fetch(`${API.URL}/channel/${channelId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -52,7 +53,7 @@ export default function UserEntryButton({
       body: JSON.stringify({
         state: 'enter',
         type: userType,
-        userId: _id,
+        userId: user._id,
       }),
     });
   }
