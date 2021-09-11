@@ -21,7 +21,7 @@ export default function ChatForm() {
 
     const trimmedInput = input.trim();
 
-    if (!trimmedInput) return;
+    if (trimmedInput === '') return;
 
     const newChat = {
       author: userName.replace(' ', ''),
@@ -32,19 +32,15 @@ export default function ChatForm() {
     setInput('');
   }
 
-  function handleInputChange({ target }) {
-    const { value } = target;
-    setInput(value);
-  }
   return (
     <Form>
       <input
         type="text"
         value={input}
         autoComplete="off"
-        onChange={handleInputChange}
+        onChange={(e) => setInput(e.target.value)}
       />
-      <button type="submit" onClick={submitChat}>
+      <button type="submit" onSubmit={submitChat}>
         Enter
       </button>
     </Form>

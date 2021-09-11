@@ -46,8 +46,9 @@ const Contents = styled.div`
   color: white;
 
   .chat-list {
+    padding: 10px 0 0 10px;
     list-style: none;
-    padding: 0 0 0 10px;
+    text-align: left;
   }
 `;
 

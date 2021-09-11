@@ -32,10 +32,10 @@ export default function ChannelMain() {
         <h3 className="episode-title">{episode.title}</h3>
       </header>
       <Video />
-      <Chat>
+      <ChatWrapper>
         <ChatBody />
         <ChatForm />
-      </Chat>
+      </ChatWrapper>
     </MainContainer>
   );
 }
@@ -83,6 +83,6 @@ const Video = styled.div`
   background-image: url('/images/background.jpg');
 `;
 
-const Chat = styled.div`
+const ChatWrapper = styled.div`
   height: 35%;
 `;
