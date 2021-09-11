@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import Header from '../Header';
 import Button from '../Button';
-import RecentHistory from '../History/History';
+import RecentHistory from './RecentHistory';
 
 export default function History() {
   return (

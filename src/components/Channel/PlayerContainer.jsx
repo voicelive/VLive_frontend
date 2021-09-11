@@ -18,8 +18,8 @@ export default function PlayerContainer() {
 
   return (
     <Wrapper>
-      {players.map((user) => (
-        <PlayerItem key={user} player={user} />
+      {players.map((player) => (
+        <PlayerItem key={player._id} player={player} />
       ))}
     </Wrapper>
   );
