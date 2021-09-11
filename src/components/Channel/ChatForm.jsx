@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
-
 import { socketClient } from '../../hooks/socket/useSocket';
+import { EVENTS } from '../../constants/socketEvent';
 
 export default function ChatForm() {
   const {
@@ -28,7 +28,7 @@ export default function ChatForm() {
       chat: trimmedInput,
     };
 
-    socketClient.emit('new chat', { channelId, newChat });
+    socketClient.emit(EVENTS.NEW_CHAT, { channelId, newChat });
     setInput('');
   }
 

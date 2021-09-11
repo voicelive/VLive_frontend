@@ -7,7 +7,7 @@ import GoogleLoginButton from './GoogleLoginButton';
 import ErrorBox from '../ErrorBox';
 import LogoutButton from './LogoutButton';
 
-export default function UserProfile({ loginStatus, setLoginStatus }) {
+export default function UserProfile({ onLogin, onLogout, loginStatus }) {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
@@ -22,7 +22,7 @@ export default function UserProfile({ loginStatus, setLoginStatus }) {
   return (
     <ProfileBox>
       {user === null ? (
-        <GoogleLoginButton onLogin={() => setLoginStatus(true)} />
+        <GoogleLoginButton onLogin={onLogin} />
       ) : (
         <Profile>
           <div className="user-image">
@@ -36,10 +36,7 @@ export default function UserProfile({ loginStatus, setLoginStatus }) {
           <div className="user-email">{user?.email}</div>
           <div className="user-name">{user?.name}</div>
           <div className="logout">
-            <LogoutButton
-              setLogoutError={setError}
-              onLogout={() => setLoginStatus(false)}
-            />
+            <LogoutButton setLogoutError={setError} onLogout={onLogout} />
           </div>
         </Profile>
       )}
@@ -48,8 +45,9 @@ export default function UserProfile({ loginStatus, setLoginStatus }) {
 }
 
 UserProfile.propTypes = {
-  loginStatus: PropTypes.boolean,
-  setLoginStatus: PropTypes.func.isRequired,
+  loginStatus: PropTypes.bool,
+  onLogin: PropTypes.func.isRequired,
+  onLogout: PropTypes.func.isRequired,
 };
 
 const ProfileBox = styled.div`

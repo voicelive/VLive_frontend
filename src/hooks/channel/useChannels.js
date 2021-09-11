@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { API } from '../constants/api';
+import { API } from '../../constants/api';
 
 async function fetcher() {
   try {

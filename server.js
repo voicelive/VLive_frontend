@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
   });
 
-  socket.on('new chat', ({ channelId, newChat }) => {
+  socket.on(EVENTS.NEW_CHATS, ({ channelId, newChat }) => {
     socket.join(channelId);
 
     if (!chatContents[channelId]) {
@@ -41,7 +41,7 @@ io.on('connection', (socket) => {
 
     const { chatList } = chatContents[channelId];
 
-    io.to(channelId).emit('listen new chat', chatList);
+    io.to(channelId).emit(EVENTS.LISTEN_NEW_CHAT, chatList);
 
     saveChat(channelId);
   });

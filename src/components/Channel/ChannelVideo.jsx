@@ -6,14 +6,12 @@ import useChannel from '../../hooks/useChannel';
 import { socketClient } from '../../hooks/socket/useSocket';
 import Button from '../../components/Button';
 import ErrorBox from '../ErrorBox';
-
 import { EVENTS } from '../../constants/socketEvent';
+import { API } from '../../constants/api';
 
 async function endChannelHandler(id) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
   try {
-    await fetch(`${baseUrl}/channel/${id}`, {
+    await fetch(`${API.URL}/channel/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -35,7 +33,7 @@ export default function ChannelVideo() {
   } = useRouter();
   const { channel, error } = useChannel(channelId);
 
-  if (!channelId || !channel) {
+  if (channelId == null || channel == null) {
     return <></>;
   }
 

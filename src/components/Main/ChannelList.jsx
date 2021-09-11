@@ -4,14 +4,14 @@ import theme from '../../styles/theme';
 import PropTypes from 'prop-types';
 
 import { useSocket } from '../../hooks/socket/useSocket';
-import useChannels from '../../hooks/useChannels';
+import useChannels from '../../hooks/channel/useChannels';
 
 import ChannelItem from './ChannelItem';
 import ErrorBox from '../ErrorBox';
 
 const { EVENTS } = require('../../constants/socketEvent');
 
-export default function ChannelList({ isButtonActive }) {
+export default function ChannelList({ loginStatus }) {
   const { activeChannels, error, mutate } = useChannels();
 
   useSocket(EVENTS.LISTEN_CREATE_CHANNEL, (channel) => {
@@ -34,7 +34,7 @@ export default function ChannelList({ isButtonActive }) {
     <ListBox>
       {activeChannels?.map((channel) => (
         <div key={channel._id}>
-          <ChannelItem channel={channel} isButtonActive={isButtonActive} />
+          <ChannelItem channel={channel} loginStatus={loginStatus} />
         </div>
       ))}
     </ListBox>
@@ -42,7 +42,7 @@ export default function ChannelList({ isButtonActive }) {
 }
 
 ChannelList.propTypes = {
-  isButtonActive: PropTypes.boolean,
+  loginStatus: PropTypes.boolean,
 };
 
 const ListBox = styled.div`

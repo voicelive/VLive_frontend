@@ -2,14 +2,17 @@ import { useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
-import useChat from '../../hooks/useChat';
+import useChat from '../../hooks/channel/useChat';
 import { useSocket } from '../../hooks/socket/useSocket';
+
+import ErrorBox from '../ErrorBox';
 
 export default function ChatBody() {
   const {
     query: { channelId },
   } = useRouter();
-  const { chatList, mutate } = useChat(channelId);
+  const { chatList, error, mutate } = useChat(channelId);
+
   const chatRef = useRef();
 
   useSocket('listen new chat', (updatedChatList) => {
@@ -19,6 +22,10 @@ export default function ChatBody() {
   useEffect(() => {
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [chatList]);
+
+  if (error) {
+    return <ErrorBox message={error.message} />;
+  }
 
   return (
     <Contents ref={chatRef}>

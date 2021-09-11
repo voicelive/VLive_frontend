@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { API } from '../constants/api';
+import { API } from '../../constants/api';
 
 async function fetcher(channelId) {
   try {
@@ -18,12 +18,13 @@ async function fetcher(channelId) {
 }
 
 export default function useChannel(channelId) {
-  const { data: channel, error } = useSWR(
-    channelId ? '/channel/channelId' : null,
-    () => {
-      return fetcher(channelId);
-    },
-  );
+  const {
+    data: channel,
+    error,
+    mutate,
+  } = useSWR(channelId ? `/channel/${channelId}` : null, () => {
+    return fetcher(channelId);
+  });
 
-  return { channel, error };
+  return { channel, error, mutate };
 }

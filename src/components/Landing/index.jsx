@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import useChannels from '../../hooks/useChannels';
+import useChannels from '../../hooks/channel/useChannels';
 import Link from 'next/link';
 
 import Header from '../Header';
