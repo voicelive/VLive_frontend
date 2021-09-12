@@ -20,7 +20,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`${API.API_URL}/episode`, {
+        const response = await fetch(`${API.URL}/episode`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
