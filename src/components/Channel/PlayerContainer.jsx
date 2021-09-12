@@ -1,17 +1,19 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { socketClient } from '../../hooks/socket/useSocket';
 import styled from '@emotion/styled';
-import usePlayers from '../../hooks/channel/usePlayers';
 
+import { socketClient } from '../../hooks/socket/useSocket';
+import usePlayers from '../../hooks/channel/usePlayers';
 import PlayerItem from './PlayerItem';
 import ErrorBox from '../ErrorBox';
+import { EVENTS } from '../../constants/socketEvent';
 
 export default function PlayerContainer() {
   const {
     query: { channelId },
   } = useRouter();
   const { players, error, mutate } = usePlayers(channelId);
+  console.log(channelId, 'channelId');
 
   if (channelId == null || players == null) {
     return <></>;
@@ -21,10 +23,10 @@ export default function PlayerContainer() {
     return <ErrorBox message={error.message} />;
   }
 
-  socketClient.on('listen player ready', ({ userId, characterId }) => {
+  socketClient.on(EVENTS.LISTEN_PLAYER_READY, ({ _id, userRole }) => {
     const newPlayers = players.map((player) => {
-      if (player.userId._id === userId) {
-        player.characterId = characterId;
+      if (player.userId._id === _id) {
+        player.characterId = userRole.characterId;
       }
 
       return player;

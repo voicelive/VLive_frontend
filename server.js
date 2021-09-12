@@ -50,10 +50,8 @@ io.on('connection', (socket) => {
     socket.broadcast.emit(EVENTS.LISTEN_END_CHANNEL, id);
   });
 
-  socket.on('player ready', (data) => {
-    const { channelId, userId, characterId } = data;
-
-    io.to(channelId).emit('listen player ready', { userId, characterId });
+  socket.on(EVENTS.PLAYER_READY, ({ channelId, _id, userRole }) => {
+    io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, { _id, userRole });
   });
 });
 

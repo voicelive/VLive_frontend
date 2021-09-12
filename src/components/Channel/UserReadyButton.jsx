@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import useChannel from '../../hooks/channel/useChannel';
-import theme from '../../styles/theme';
 import ErrorBox from '../ErrorBox';
 import Button from '../Button';
+import { EVENTS } from '../../constants/socketEvent';
+import theme from '../../styles/theme';
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -86,10 +87,10 @@ export default function UserReadyButton({ isModalOpen, closeModal }) {
         return alert(message);
       }
 
-      socketClient.emit('player ready', {
+      socketClient.emit(EVENTS.PLAYER_READY, {
         channelId,
-        userId: _id,
-        characterId: userRole.characterId,
+        _id,
+        userRole,
       });
 
       closeModal();
