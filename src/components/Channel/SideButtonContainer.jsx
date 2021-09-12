@@ -24,7 +24,7 @@ export default function SideButtonContainer() {
     setUserId(_id);
   }, []);
 
-  const { userType, error } = useUserType(channelId, userId);
+  const { userType } = useUserType(channelId, userId);
 
   function openModal() {
     setIsModalOpen(true);
@@ -48,7 +48,7 @@ export default function SideButtonContainer() {
         }),
       });
 
-      socketClient.emit(EVENTS.EXIT_CHANNEL, { channelId, userId });
+      socketClient.emit(EVENTS.EXIT_CHANNEL, { channelId, userId, userType });
       router.push('/main');
     } catch (error) {
       return error;

@@ -58,9 +58,19 @@ io.on('connection', (socket) => {
     io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, { _id, userRole });
   });
 
-  socket.on(EVENTS.EXIT_CHANNEL, ({ channelId, userId }) => {
+  socket.on(EVENTS.EXIT_CHANNEL, ({ channelId, userId, userType }) => {
     socket.leave(channelId);
-    io.to(channelId).emit(EVENTS.LISTEN_EXIT_CHANNEL, userId);
+
+    io.to(channelId).emit(
+      EVENTS.LISTEN_EXIT_CHANNEL,
+      (channelId, userId, userType),
+    );
+
+    socket.broadcast.emit(EVENTS.LISTEN_EXIT_CHANNEL, {
+      channelId,
+      userId,
+      userType,
+    });
   });
 });
 

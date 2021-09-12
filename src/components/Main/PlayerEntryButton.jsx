@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSocket } from '../../hooks/socket/useSocket';
+import { useSocket, socketClient } from '../../hooks/socket/useSocket';
 import { EVENTS } from '../../constants/socketEvent';
 import { USER_TYPE } from '../../constants/channel';
 import usePlayers from '../../hooks/channel/usePlayers';
@@ -20,6 +20,19 @@ export default function PlayerEntryButton({ channelId, isActive }) {
       mutate((data) => ({ ...data, audience: [...data.audience, { user }] }));
     }
   });
+
+  socketClient.on(
+    EVENTS.LISTEN_EXIT_CHANNEL,
+    ({ channelId, userId, userType }) => {
+      const targetChannel = channelId;
+
+      if (userType.type === USER_TYPE.PLAYER && targetChannel === channelId) {
+        const existPlayers = players.filter((player) => player._id !== userId);
+
+        mutate((data) => ({ ...data, existPlayers }));
+      }
+    },
+  );
 
   if (error) {
     return <ErrorBox message={error.message} />;
