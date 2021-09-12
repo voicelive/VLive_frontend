@@ -19,5 +19,4 @@ const SideContainer = styled.div`
   width: 20%;
   height: auto;
   background: #1d2e3c;
-  opacity: 0.8;
 `;

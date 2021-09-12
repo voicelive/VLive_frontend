@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/dist/client/router';
-import { socketClient } from '../../hooks/socket/useSocket';
+import Image from 'next/image';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
+import { socketClient } from '../../hooks/socket/useSocket';
 import useChannel from '../../hooks/channel/useChannel';
-import ErrorBox from '../ErrorBox';
-import Button from '../Button';
+
 import { EVENTS } from '../../constants/socketEvent';
+
+import Button from '../Button';
+import ErrorBox from '../ErrorBox';
 import theme from '../../styles/theme';
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export default function UserReadyButton({ isModalOpen, closeModal }) {
+export default function UserReady({ isModalOpen, closeModal }) {
   const [episodeInfo, setEpisodeInfo] = useState([]);
   const [userRole, setUserRole] = useState({ characterId: '' });
   const {
@@ -44,7 +46,7 @@ export default function UserReadyButton({ isModalOpen, closeModal }) {
         const { result, data, message } = await response.json();
 
         if (result === 'error') {
-          return alert(message);
+          throw new Error(message);
         }
 
         setEpisodeInfo(data);
@@ -84,7 +86,7 @@ export default function UserReadyButton({ isModalOpen, closeModal }) {
       const { result, message } = await response.json();
 
       if (result === 'error') {
-        return alert(message);
+        throw new Error(message);
       }
 
       socketClient.emit(EVENTS.PLAYER_READY, {
@@ -110,10 +112,10 @@ export default function UserReadyButton({ isModalOpen, closeModal }) {
         </button>
       </div>
       <ReadyForm onSubmit={handleSubmit}>
-        <span className="episode-select">연기할 배역을 선택하세요</span>
+        <span className="character-select">연기할 배역을 선택하세요</span>
         <div className="episode-title">{title}</div>
         <ReadyOptions>
-          <ul className="episode-list">
+          <ul className="character-list">
             {characters &&
               characters.map((character) => (
                 <ReadyOption
@@ -121,14 +123,16 @@ export default function UserReadyButton({ isModalOpen, closeModal }) {
                   id={character._id}
                   onClick={handleClick}
                 >
-                  <span className="episode-title">{character.name}</span>
-                  <Image
-                    className="image"
-                    src={character.imgUrl}
-                    alt="character-imgUrl"
-                    width={100}
-                    height={200}
-                  />
+                  <span className="character-name">{character.name}</span>
+                  <div className="character-image">
+                    <Image
+                      src={character.imgUrl}
+                      alt="character-imgUrl"
+                      width={90}
+                      height={100}
+                      layout="responsive"
+                    />
+                  </div>
                 </ReadyOption>
               ))}
           </ul>
@@ -141,7 +145,7 @@ export default function UserReadyButton({ isModalOpen, closeModal }) {
   );
 }
 
-UserReadyButton.propTypes = {
+UserReady.propTypes = {
   isModalOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -181,21 +185,31 @@ const ReadyForm = styled.form`
     display: block;
   }
   .button {
-    margin: 10px auto 0 auto;
+    margin: 25px auto 0 auto;
   }
 `;
 
 const ReadyOptions = styled.div`
   margin-top: 10px;
 
-  .episode-select {
+  .character-select {
     font-size: 16px;
   }
 
-  .episode-list {
+  .character-list {
     display: grid;
     grid-template-columns: repeat(3, minmax(100px, 170px));
     padding: 0;
+  }
+
+  .character-image {
+    &:hover {
+      border: 2px solid ${theme.pink};
+    }
+  }
+
+  .image {
+    margin-top: 10px;
   }
 `;
 
@@ -208,11 +222,7 @@ const ReadyOption = styled.li`
   list-style: none;
   cursor: pointer;
 
-  .episode-title {
+  .character-name {
     margin-bottom: 5px;
-  }
-
-  &:hover {
-    border: 2px solid ${theme.pink};
   }
 `;

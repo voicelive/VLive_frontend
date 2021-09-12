@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
-import UserReadyButton from './UserReadyButton';
+import UserReady from './UserReady';
 import Button from '../Button';
 import Modal from '../Modal';
 
@@ -23,7 +23,7 @@ export default function SideButtonContainer() {
       </div>
       {isModalOpen && (
         <Modal closeModal={closeModal}>
-          <UserReadyButton closeModal={closeModal} isModalOpen={isModalOpen} />
+          <UserReady closeModal={closeModal} isModalOpen={isModalOpen} />
         </Modal>
       )}
     </ButtonWrapper>

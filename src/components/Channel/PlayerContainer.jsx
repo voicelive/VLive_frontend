@@ -13,7 +13,6 @@ export default function PlayerContainer() {
     query: { channelId },
   } = useRouter();
   const { players, error, mutate } = usePlayers(channelId);
-  console.log(channelId, 'channelId');
 
   if (channelId == null || players == null) {
     return <></>;
