@@ -21,7 +21,6 @@ export default function RecentHistory() {
   }
 
   const { name, episode, players } = channel;
-  console.log(player.characterId.imgUrl, 'player.characterId.imgUrl');
 
   return (
     <Container>
