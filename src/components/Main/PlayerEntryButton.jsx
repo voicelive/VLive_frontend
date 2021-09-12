@@ -67,6 +67,7 @@ export default function PlayerEntryButton({ channelId, isActive }) {
           <Button
             onClick={() => onButtonClick(channelId)}
             color={!isActive && 'gray'}
+            disabled={players.length === channel.episode.characters.length}
           >
             <h3>플레이어로 입장</h3>
             <p>
