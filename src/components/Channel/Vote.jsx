@@ -1,35 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import styled from '@emotion/styled';
 
 import usePlayers from '../../hooks/channel/usePlayers';
 
+import { API } from '../../constants/api';
+
 import ErrorBox from '../ErrorBox';
+import { id } from 'prelude-ls';
 
 export default function Vote() {
   const {
     query: { channelId },
   } = useRouter();
-  const { players, error, mutate } = usePlayers(channelId);
-  const [votes, setVotes] = useState({});
+  const [userId, setUserId] = useState('');
+  const [characterId, setCharacterId] = useState('');
+  const { players, error } = usePlayers(channelId);
 
   if (error) {
     return <ErrorBox message={error.message} />;
   }
-  players;
-  function addVoteCount(ev) {
-    const { id } = ev.currentTarget;
-    setVotes({
-      ...votes,
-      [id]: votes[id] ? votes[id] + 1 : 1,
-    });
-    console.log(votes);
+
+  useEffect(() => {
+    const { _id } = JSON.parse(sessionStorage.getItem('user'));
+    setUserId(_id);
+  }, []);
+
+  async function addVoteCount(ev) {
+    if (characterId) {
+      return;
+    }
+
+    setCharacterId(ev.currentTarget.id);
+    ev.currentTarget.childNodes[1].classList.add('clicked');
+
+    try {
+      await fetch(`${API.URL}/channel/${channelId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          state: 'voting',
+          userId,
+          characterId,
+        }),
+      });
+    } catch (err) {
+      return <ErrorBox message={error.message} />;
+    }
   }
 
   return (
     <Wrapper>
-      <h1 className="vote-title">최고의- 캐릭터에게 투표해주세요</h1>
+      <h1 className="vote-title">최고의 캐릭터에게 투표해주세요</h1>
       <span className="vote-subtitle">10초동안 투표가 진행됩니다.</span>
       <div className="characters">
         {players &&
@@ -99,6 +124,10 @@ const Wrapper = styled.div`
       font-weight: 700;
       font-size: 13px;
       color: black;
+    }
+
+    .clicked {
+      color: ${({ theme }) => theme.pink};
     }
   }
 `;
