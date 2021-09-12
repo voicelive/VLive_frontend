@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import React from 'react';
 import styled from '@emotion/styled';
 
 import usePlayers from '../../hooks/channel/usePlayers';
@@ -7,6 +8,8 @@ import ErrorBox from '../ErrorBox';
 import { useEffect, useState } from 'react';
 
 export default function VoteResult() {
+  // 투표끝나고 리다이렉트
+  // const router = useRouter();
   const {
     query: { channelId },
   } = useRouter();
@@ -16,6 +19,14 @@ export default function VoteResult() {
   if (error) {
     return <ErrorBox message={error.message} />;
   }
+
+  // useEffect(() => {
+  //   const timeId = setTimeout(() => {
+  //     router.push('/main');
+  //   }, 5000);
+
+  //   return () => clearTimeout(timeId);
+  // }, []);
 
   useEffect(() => {
     const voteCounts = players.map((player) => player.voteCount);
@@ -134,6 +145,8 @@ const Character = styled.div`
     border-radius: 5px;
     font-weight: 700;
     font-size: 18px;
+    color: ${({ iswinner, theme }) =>
+      iswinner === 'true' ? theme.pink : 'white'};
   }
 
   .voting-result {
