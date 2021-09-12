@@ -27,7 +27,6 @@ export default function VoteResult() {
   useEffect(() => {
     const timeId = setTimeout(() => {
       router.push('/main');
-      console.log('end game');
     }, 5000);
 
     return () => {
@@ -63,7 +62,7 @@ export default function VoteResult() {
         }),
       });
     } catch (err) {
-      return <ErrorBox message={error.message} />;
+      return <ErrorBox message={err.message} />;
     }
   }
 

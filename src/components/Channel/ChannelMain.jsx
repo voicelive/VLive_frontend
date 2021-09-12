@@ -33,7 +33,7 @@ export default function ChannelMain() {
         <h3 className="episode-title">{episode.title}</h3>
       </header>
       <VideoWrapper>
-        {/* 비디오 */}
+        {/* Video Component expected to come*/}
         <VoteResult />
       </VideoWrapper>
       <ChatWrapper>
@@ -45,9 +45,6 @@ export default function ChannelMain() {
             <ChatForm />
           </>
         )}
-        {/* <ChatBody />
-        <ChatForm />
-        <Vote /> */}
       </ChatWrapper>
     </MainContainer>
   );

@@ -56,7 +56,7 @@ export default function Vote() {
       <div className="characters">
         {players &&
           players.map((player) => (
-            <div
+            <Character
               className="character"
               key={player._id}
               id={player._id}
@@ -70,7 +70,7 @@ export default function Vote() {
               />
               <span className="character-name">{player.characterId?.name}</span>
               <span className="user-name">{player.userId?.name}</span>
-            </div>
+            </Character>
           ))}
       </div>
     </Wrapper>
@@ -97,34 +97,33 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     margin-top: 10px;
+`;
 
-    .character {
-      margin: 0 20px;
-      cursor: pointer;
-      transition: all 100ms ease-out;
+const Character = styled.div`
+  margin: 0 20px;
+  cursor: pointer;
+  transition: all 100ms ease-out;
 
-      &:hover {
-        transform: scale(1.02);
-      }
-    }
+  &:hover {
+    transform: scale(1.02);
+  }
 
-    .character-name {
-      display: block;
-      padding: 4px 0;
-      font-size: 18px;
-    }
+  .character-name {
+    display: block;
+    padding: 4px 0;
+    font-size: 18px;
+  }
 
-    .user-name {
-      background-color: #898bf3;
-      padding: 0px 4px;
-      border-radius: 5px;
-      font-weight: 700;
-      font-size: 13px;
-      color: black;
-    }
+  .user-name {
+    background-color: #898bf3;
+    padding: 0px 4px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 13px;
+    color: black;
+  }
 
-    .clicked {
-      color: ${({ theme }) => theme.pink};
-    }
+  .clicked {
+    color: ${({ theme }) => theme.pink};
   }
 `;
