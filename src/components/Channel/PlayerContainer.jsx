@@ -23,7 +23,7 @@ export default function PlayerContainer() {
   }
 
   socketClient.on(EVENTS.LISTEN_PLAYER_READY, ({ _id, userRole }) => {
-    const newPlayers = players.map((player) => {
+    const readyPlayers = players.map((player) => {
       if (player.userId._id === _id) {
         player.characterId = userRole.characterId;
       }
@@ -31,7 +31,7 @@ export default function PlayerContainer() {
       return player;
     });
 
-    mutate((data) => ({ ...data, players: [...newPlayers] }));
+    mutate((prevPlayers) => ({ ...prevPlayers, readyPlayers }));
   });
 
   return (
