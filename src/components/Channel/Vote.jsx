@@ -4,11 +4,8 @@ import Image from 'next/image';
 import styled from '@emotion/styled';
 
 import usePlayers from '../../hooks/channel/usePlayers';
-
 import { API } from '../../constants/api';
-
 import ErrorBox from '../ErrorBox';
-import { id } from 'prelude-ls';
 
 export default function Vote() {
   const {

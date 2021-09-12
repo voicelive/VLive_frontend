@@ -8,6 +8,7 @@ import ErrorBox from '../ErrorBox';
 import ChatBody from './ChatBody';
 import ChatForm from './ChatForm';
 import Vote from './Vote';
+import VoteResult from './VoteResult';
 
 export default function ChannelMain() {
   const {
@@ -31,11 +32,22 @@ export default function ChannelMain() {
         <h2 className="channel-name">{name}</h2>
         <h3 className="episode-title">{episode.title}</h3>
       </header>
-      <Video />
+      <VideoWrapper>
+        {/* 비디오 */}
+        <VoteResult />
+      </VideoWrapper>
       <ChatWrapper>
+        {channel.isPlaying ? (
+          <Vote />
+        ) : (
+          <>
+            <ChatBody />
+            <ChatForm />
+          </>
+        )}
         {/* <ChatBody />
-        <ChatForm /> */}
-        <Vote />
+        <ChatForm />
+        <Vote /> */}
       </ChatWrapper>
     </MainContainer>
   );
@@ -81,7 +93,7 @@ const MainContainer = styled.div`
   }
 `;
 
-const Video = styled.div`
+const VideoWrapper = styled.div`
   width: 100%;
   height: 50%;
   background-image: url('/images/background.jpg');
