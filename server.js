@@ -46,8 +46,12 @@ io.on('connection', (socket) => {
     saveChat(channelId);
   });
 
-  socket.on(EVENTS.END_CHANNEL, (id) => {
-    socket.broadcast.emit(EVENTS.LISTEN_END_CHANNEL, id);
+  socket.on(EVENTS.END_CHANNEL, (channelId) => {
+    socket.broadcast.emit(EVENTS.LISTEN_END_CHANNEL, channelId);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('socket disconnected...');
   });
 
   socket.on(EVENTS.PLAYER_READY, ({ channelId, _id, userRole }) => {

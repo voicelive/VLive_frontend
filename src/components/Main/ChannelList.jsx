@@ -42,7 +42,7 @@ export default function ChannelList({ loginStatus }) {
 }
 
 ChannelList.propTypes = {
-  loginStatus: PropTypes.boolean,
+  loginStatus: PropTypes.bool,
 };
 
 const ListBox = styled.div`

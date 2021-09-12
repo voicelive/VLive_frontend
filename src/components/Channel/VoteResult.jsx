@@ -1,18 +1,22 @@
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import React from 'react';
 import styled from '@emotion/styled';
 
 import usePlayers from '../../hooks/channel/usePlayers';
+import { API } from '../../constants/api';
+import { socketClient } from '../../hooks/socket/useSocket';
+
+import { EVENTS } from '../../constants/socketEvent';
+
 import ErrorBox from '../ErrorBox';
-import { useEffect, useState } from 'react';
 
 export default function VoteResult() {
-  // 투표끝나고 리다이렉트
-  // const router = useRouter();
   const {
     query: { channelId },
   } = useRouter();
+  const router = useRouter();
   const { players, error } = usePlayers(channelId);
   const [winners, setWinners] = useState([]);
 
@@ -20,13 +24,21 @@ export default function VoteResult() {
     return <ErrorBox message={error.message} />;
   }
 
-  // useEffect(() => {
-  //   const timeId = setTimeout(() => {
-  //     router.push('/main');
-  //   }, 5000);
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      router.push('/main');
+      console.log('end game');
+    }, 5000);
 
-  //   return () => clearTimeout(timeId);
-  // }, []);
+    return () => {
+      clearTimeout(timeId);
+      removeUserInChannel();
+
+      socketClient.emit(EVENTS.END_CHANNEL, channelId);
+      socketClient.off(EVENTS.LISTEN_ENTER_CHANNEL);
+      socketClient.off(EVENTS.LISTEN_NEW_CHAT);
+    };
+  }, []);
 
   useEffect(() => {
     const voteCounts = players.map((player) => player.voteCount);
@@ -37,6 +49,23 @@ export default function VoteResult() {
       }
     });
   }, []);
+
+  async function removeUserInChannel() {
+    try {
+      await fetch(`${API.URL}/channel/${channelId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          state: 'end',
+          channelId,
+        }),
+      });
+    } catch (err) {
+      return <ErrorBox message={error.message} />;
+    }
+  }
 
   function checkWinner(playerId) {
     return winners?.includes(playerId).toString();
