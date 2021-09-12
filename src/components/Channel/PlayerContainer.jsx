@@ -34,6 +34,11 @@ export default function PlayerContainer() {
     mutate((prevPlayers) => ({ ...prevPlayers, readyPlayers }));
   });
 
+  socketClient.on(EVENTS.LISTEN_EXIT_CHANNEL, (userId) => {
+    const existPlayers = players.filter((player) => player.userId !== userId);
+    mutate((prevPlayers) => ({ ...prevPlayers, existPlayers }));
+  });
+
   return (
     <Wrapper>
       {players.map((player) => (

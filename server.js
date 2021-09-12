@@ -53,6 +53,15 @@ io.on('connection', (socket) => {
   socket.on(EVENTS.PLAYER_READY, ({ channelId, _id, userRole }) => {
     io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, { _id, userRole });
   });
+
+  socket.on(EVENTS.PLAYER_READY, ({ channelId, _id, userRole }) => {
+    io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, { _id, userRole });
+  });
+
+  socket.on(EVENTS.EXIT_CHANNEL, ({ channelId, userId }) => {
+    socket.leave(channelId);
+    io.to(channelId).emit(EVENTS.LISTEN_EXIT_CHANNEL, userId);
+  });
 });
 
 nextApp.prepare().then(() => {
