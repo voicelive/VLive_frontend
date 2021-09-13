@@ -90,8 +90,8 @@ export default function VoteResult() {
             const isWinner = checkWinner(player._id);
 
             return (
-              <Character key={player._id} id={player._id}>
-                <div className="img" iswinner={isWinner}>
+              <Character key={player._id} id={player._id} iswinner={isWinner}>
+                <div className="img">
                   <Image
                     src={player.characterId?.imgUrl}
                     alt="character-image"
@@ -99,15 +99,11 @@ export default function VoteResult() {
                     height={200}
                   />
                 </div>
-                <span className="character-name" iswinner={isWinner}>
+                <span className="character-name">
                   {player.characterId?.name}
                 </span>
-                <span className="user-name" iswinner={isWinner}>
-                  {player.userId?.name}
-                </span>
-                <span className="voting-result" iswinner={isWinner}>
-                  {player.voteCount} 표
-                </span>
+                <span className="user-name">{player.userId?.name}</span>
+                <span className="voting-result">{player.voteCount} 표</span>
               </Character>
             );
           })}
@@ -157,31 +153,34 @@ const Character = styled.div`
     align-items: center;
     width: 153px;
     height: 203px;
-    border: none;
+    border: ${({ iswinner, theme }) =>
+      iswinner === 'true' ? '3px solid' + theme.pink : 'none'};
   }
 
   .character-name {
     display: block;
     padding: 10px 0;
     font-size: 18px;
-    color: white;
+    color: ${({ iswinner, theme }) =>
+      iswinner === 'true' ? theme.pink : 'white'};
   }
 
   .user-name {
     background-color: #898bf3;
-    padding: 0px 4px;
+    padding: 1px 4px;
     border-radius: 5px;
     font-weight: 700;
     font-size: 18px;
     color: ${({ iswinner, theme }) =>
-      iswinner === 'true' ? theme.pink : 'white'};
+      iswinner === 'true' ? 'white' : 'black'};
   }
 
   .voting-result {
     display: block;
     padding: 10px 0;
     font-size: 24px;
-    color: white;
+    color: ${({ iswinner, theme }) =>
+      iswinner === 'true' ? theme.pink : 'white'};
   }
 
   .clicked {
