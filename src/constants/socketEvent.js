@@ -9,4 +9,8 @@ module.exports.EVENTS = {
   LISTEN_NEW_CHAT: 'listen new chat',
   PLAYER_READY: 'player ready',
   LISTEN_PLAYER_READY: 'listen player ready',
+  SEND_SIGNAL: 'send signal',
+  RETURN_SIGNAL: 'return signal',
+  LISTEN_SEND_SIGNAL: 'listen send signal',
+  LISTEN_RETURN_SIGNAL: 'listen return signal',
 };
