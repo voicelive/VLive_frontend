@@ -37,8 +37,7 @@ export default function ChannelMain() {
         {showResult && <VoteResult />}
       </VideoWrapper>
       <ChatWrapper>
-        {!showResult && <Vote endVoting={setShowResult} />}
-        {channel?.isPlaying ? (
+        {showResult ? (
           <Vote endVoting={setShowResult} />
         ) : (
           <>
