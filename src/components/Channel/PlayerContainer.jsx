@@ -43,10 +43,10 @@ export default function PlayerContainer() {
     });
   });
 
-  socketClient.on(EVENTS.LISTEN_PLAYER_READY, ({ _id, userRole }) => {
+  socketClient.on('EVENTS.LISTEN_PLAYER_READY', (user) => {
     const readyPlayers = players.map((player) => {
-      if (player.userId._id === _id) {
-        player.characterId = userRole.characterId;
+      if (player.userId._id === user._id) {
+        player.characterId = user.userRole.characterId;
       }
 
       return player;

@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on(EVENTS.PLAYER_READY, ({ channelId, _id, userRole }) => {
-    io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, { _id, userRole });
+    io.to(channelId).emit('EVENTS.LISTEN_PLAYER_READY', { _id, userRole });
   });
 });
 
