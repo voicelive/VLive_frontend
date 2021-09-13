@@ -30,10 +30,10 @@ export default function ChatBody() {
   return (
     <Contents ref={chatRef}>
       <ul className="chat-list">
-        {chatList?.map(({ author, chat }, index) => (
-          <Content key={`${author} ${Date.now(index)}`}>
-            <span className="author">{author}</span>
-            <span>{chat}</span>
+        {chatList?.map((chat) => (
+          <Content key={chat._id}>
+            <span className="author">{chat.author}</span>
+            <span>{chat.chat}</span>
           </Content>
         ))}
       </ul>
