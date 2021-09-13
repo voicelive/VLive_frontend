@@ -38,12 +38,12 @@ export default function Main() {
             loginStatus={isLogin}
           />
           <Preview />
-          <div className={`button-wrapper ${!isLogin && 'disable'}`}>
+          <div className={`button-wrapper ${!isLogin ? 'disable' : null}`}>
             <Button
               onClick={openModal}
               width="200px"
               fontSize="1em"
-              color={!isLogin && 'gray'}
+              color={!isLogin ? 'gray' : null}
             >
               채널 개설하기
             </Button>

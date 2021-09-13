@@ -6,7 +6,8 @@ import theme from '../../styles/theme';
 export default function HistoryItem({ channel: { name, episode } }) {
   return (
     <Wrapper>
-      <h3>{`${name} ${episode}`}</h3>
+      <h3>{name}</h3>
+      <p>{episode.title}</p>
     </Wrapper>
   );
 }
@@ -23,6 +24,10 @@ const Wrapper = styled.div`
   h3 {
     font-size: 1.5em;
     font-weight: 200;
+    margin-bottom: 5px;
+  }
+  p {
+    font-weight: 100;
   }
 `;
 
