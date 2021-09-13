@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import usePlayers from '../../hooks/channel/usePlayers';
 import { API } from '../../constants/api';
 import ErrorBox from '../ErrorBox';
 
-export default function Vote() {
+export default function Vote({ endVoting }) {
   const {
     query: { channelId },
   } = useRouter();
@@ -20,39 +21,52 @@ export default function Vote() {
   }
 
   useEffect(() => {
+    const timeId = setTimeout(() => {
+      (async function addVoteCount() {
+        try {
+          await fetch(`${API.URL}/channel/${channelId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              state: 'voting',
+              userId,
+              characterId,
+            }),
+          });
+
+          endVoting(true);
+        } catch (err) {
+          return <ErrorBox message={err.message} />;
+        }
+      })();
+    }, 5000);
+
+    return () => clearTimeout(timeId);
+  }, []);
+
+  useEffect(() => {
     const { _id } = JSON.parse(sessionStorage.getItem('user'));
     setUserId(_id);
   }, []);
 
-  async function addVoteCount(ev) {
+  function selectCharacter({ currentTarget }) {
     if (characterId) {
-      return;
+      document.querySelector('.border')?.classList.remove('border');
+      document.querySelector('.color')?.classList.remove('color');
     }
 
-    setCharacterId(ev.currentTarget.id);
-    ev.currentTarget.childNodes[1].classList.add('clicked');
+    setCharacterId(currentTarget.id);
 
-    try {
-      await fetch(`${API.URL}/channel/${channelId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          state: 'voting',
-          userId,
-          characterId,
-        }),
-      });
-    } catch (err) {
-      return <ErrorBox message={error.message} />;
-    }
+    currentTarget.childNodes[0].classList.add('border');
+    currentTarget.childNodes[1].classList.add('color');
   }
 
   return (
     <Wrapper>
       <h1 className="vote-title">최고의 캐릭터에게 투표해주세요</h1>
-      <span className="vote-subtitle">10초동안 투표가 진행됩니다.</span>
+      <span className="vote-subtitle">투표는 한 번만 참여 가능합니다.</span>
       <div className="characters">
         {players &&
           players.map((player) => (
@@ -60,14 +74,16 @@ export default function Vote() {
               className="character"
               key={player._id}
               id={player._id}
-              onClick={addVoteCount}
+              onClick={selectCharacter}
             >
-              <Image
-                src={player.characterId?.imgUrl}
-                alt="character-image"
-                width={110}
-                height={150}
-              />
+              <div className="img">
+                <Image
+                  src={player.characterId?.imgUrl}
+                  alt="character-image"
+                  width={110}
+                  height={150}
+                />
+              </div>
               <span className="character-name">{player.characterId?.name}</span>
               <span className="user-name">{player.userId?.name}</span>
             </Character>
@@ -76,6 +92,10 @@ export default function Vote() {
     </Wrapper>
   );
 }
+
+Vote.propTypes = {
+  isOnVoting: PropTypes.func.isRequired,
+};
 
 const Wrapper = styled.div`
   color: white;
@@ -109,6 +129,14 @@ const Character = styled.div`
     transform: scale(1.02);
   }
 
+  .img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 113px;
+    height: 153px;
+  }
+
   .character-name {
     display: block;
     padding: 4px 0;
@@ -124,7 +152,11 @@ const Character = styled.div`
     color: black;
   }
 
-  .clicked {
+  .color {
     color: ${({ theme }) => theme.pink};
+  }
+
+  .border {
+    border: ${({ theme }) => '3px solid' + theme.pink};
   }
 `;
