@@ -18,7 +18,7 @@ export default function PlayerEntryButton({ channelId, isActive }) {
 
   const socket = useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
     if (user.userType === USER_TYPE.PLAYER && user.channelId === channelId) {
-      mutate((data) => ({ ...data, audience: [...data.audience, { user }] }));
+      mutate((data) => ({ ...data, players: [...data.players, { user }] }));
     }
   });
 
