@@ -12,6 +12,7 @@ import ErrorBox from '../ErrorBox';
 const { EVENTS } = require('../../constants/socketEvent');
 
 export default function ChannelList({ loginStatus }) {
+  console.log('ChannelList');
   const { activeChannels, error, mutate } = useChannels();
 
   useSocket(EVENTS.LISTEN_CREATE_CHANNEL, (channel) => {

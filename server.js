@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
     socket.join(userData.channelId);
 
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
+    socket.to(userData.channelId).emit('player로 가자', userData);
   });
 
   socket.on(EVENTS.NEW_CHATS, ({ channelId, newChat }) => {
@@ -52,6 +53,8 @@ io.on('connection', (socket) => {
 
   socket.on(EVENTS.PLAYER_READY, ({ channelId, _id, userRole }) => {
     io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, { _id, userRole });
+
+    io.to(channelId).emit('ready to start', { _id });
   });
 
   socket.on(EVENTS.PLAYER_READY, ({ channelId, _id, userRole }) => {

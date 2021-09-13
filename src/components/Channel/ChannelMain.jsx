@@ -9,6 +9,7 @@ import ChatBody from './ChatBody';
 import ChatForm from './ChatForm';
 
 export default function ChannelMain() {
+  console.log('main');
   const {
     query: { channelId },
   } = useRouter();

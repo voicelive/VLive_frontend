@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSocket, socketClient } from '../../hooks/socket/useSocket';
+import { useSocket } from '../../hooks/socket/useSocket';
 import { EVENTS } from '../../constants/socketEvent';
 import { USER_TYPE } from '../../constants/channel';
 import usePlayers from '../../hooks/channel/usePlayers';
@@ -21,18 +21,15 @@ export default function PlayerEntryButton({ channelId, isActive }) {
     }
   });
 
-  socketClient.on(
-    EVENTS.LISTEN_EXIT_CHANNEL,
-    ({ channelId, userId, userType }) => {
-      const targetChannel = channelId;
+  socket.on(EVENTS.LISTEN_EXIT_CHANNEL, ({ channelId, userId, userType }) => {
+    const targetChannel = channelId;
 
-      if (userType.type === USER_TYPE.PLAYER && targetChannel === channelId) {
-        const existPlayers = players.filter((player) => player._id !== userId);
+    if (userType === USER_TYPE.PLAYER && targetChannel === channelId) {
+      const existPlayers = players.filter((player) => player._id !== userId);
 
-        mutate((data) => ({ ...data, existPlayers }));
-      }
-    },
-  );
+      mutate((data) => ({ ...data, existPlayers }));
+    }
+  });
 
   if (error) {
     return <ErrorBox message={error.message} />;
@@ -46,18 +43,21 @@ export default function PlayerEntryButton({ channelId, isActive }) {
     const { _id, name, email, photoUrl } = JSON.parse(
       sessionStorage.getItem('user'),
     );
-
-    await fetch(`${API.URL}/channel/${channelId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        state: 'enter',
-        type: USER_TYPE.PLAYER,
-        userId: _id,
-      }),
-    });
+    try {
+      await fetch(`${API.URL}/channel/${channelId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          state: 'enter',
+          type: USER_TYPE.PLAYER,
+          userId: _id,
+        }),
+      });
+    } catch (err) {
+      console.error(err);
+    }
 
     socket.emit(EVENTS.ENTER_CHANNEL, {
       _id,

@@ -14,6 +14,7 @@ import Modal from '../Modal';
 export default function SideButtonContainer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [readyCount, setReadyCount] = useState([]);
   const {
     query: { channelId },
   } = useRouter();
@@ -54,6 +55,10 @@ export default function SideButtonContainer() {
       return error;
     }
   }
+
+  socketClient.on('ready to start', (userId) => {
+    setReadyCount((oldArray) => [...oldArray, userId]);
+  });
 
   return (
     <ButtonWrapper>

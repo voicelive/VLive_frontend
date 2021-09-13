@@ -19,13 +19,15 @@ export default function AudienceContainer() {
   }
 
   socketClient.on(EVENTS.LISTEN_EXIT_CHANNEL, (userId) => {
-    const existAudience = audience.filter((viewer) => viewer !== userId);
-    mutate((prevAudience) => ({ ...prevAudience, existAudience }));
+    const audiencetest = audience?.filter((viewer) => viewer !== userId);
+    mutate((prevAudience) => {
+      return { ...prevAudience, audiencetest };
+    }, false);
   });
 
   return (
     <Wrapper>
-      {audience.map((viewer) => (
+      {audience?.map((viewer) => (
         <AudienceItem key={viewer._id} user={viewer} />
       ))}
     </Wrapper>

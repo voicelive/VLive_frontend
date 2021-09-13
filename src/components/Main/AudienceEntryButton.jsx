@@ -25,7 +25,7 @@ export default function AudienceEntryButton({ channelId, isActive }) {
     ({ channelId, userId, userType }) => {
       const targetChannel = channelId;
 
-      if (userType.type === USER_TYPE.AUDIENCE && targetChannel === channelId) {
+      if (userType === USER_TYPE.AUDIENCE && targetChannel === channelId) {
         const existAudience = audience.filter(
           (viewer) => viewer._id !== userId,
         );
