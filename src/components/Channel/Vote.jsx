@@ -94,7 +94,7 @@ export default function Vote({ endVoting }) {
 }
 
 Vote.propTypes = {
-  isOnVoting: PropTypes.func.isRequired,
+  endVoting: PropTypes.func.isRequired,
 };
 
 const Wrapper = styled.div`
