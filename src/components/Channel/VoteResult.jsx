@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import React from 'react';
 import styled from '@emotion/styled';
 
 import usePlayers from '../../hooks/channel/usePlayers';
-import { API } from '../../constants/api';
 import { socketClient } from '../../hooks/socket/useSocket';
 
+import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
 
 import ErrorBox from '../ErrorBox';
@@ -25,13 +24,13 @@ export default function VoteResult() {
   }
 
   useEffect(() => {
-    const timeId = setTimeout(() => {
+    const timer = setTimeout(() => {
       router.push('/main');
     }, 5000);
 
     return () => {
-      clearTimeout(timeId);
-      removeUserInChannel();
+      clearTimeout(timer);
+      deactivateChannel();
 
       socketClient.emit(EVENTS.END_CHANNEL, channelId);
       socketClient.off(EVENTS.LISTEN_ENTER_CHANNEL);
@@ -49,9 +48,9 @@ export default function VoteResult() {
     });
   }, []);
 
-  async function removeUserInChannel() {
+  async function deactivateChannel() {
     try {
-      await fetch(`${API.URL}/channel/${channelId}`, {
+      const response = await fetch(`${API.URL}/channel/${channelId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -61,6 +60,12 @@ export default function VoteResult() {
           channelId,
         }),
       });
+
+      const { result, message } = await response.json();
+
+      if (result === 'error') {
+        throw new Error(message);
+      }
     } catch (err) {
       return <ErrorBox message={err.message} />;
     }

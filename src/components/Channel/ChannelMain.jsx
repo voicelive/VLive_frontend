@@ -37,8 +37,8 @@ export default function ChannelMain() {
         {showResult && <VoteResult />}
       </VideoWrapper>
       <ChatWrapper>
-        {showResult ? (
-          <Vote endVoting={setShowResult} />
+        {!showResult ? (
+          <Vote onVotingEnd={() => setShowResult(true)} />
         ) : (
           <>
             <ChatBody />
