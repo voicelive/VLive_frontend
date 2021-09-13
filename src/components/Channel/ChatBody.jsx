@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import useChat from '../../hooks/channel/useChat';
 import { useSocket } from '../../hooks/socket/useSocket';
 
+import { EVENTS } from '../../constants/socketEvent';
 import ErrorBox from '../ErrorBox';
 
 export default function ChatBody() {
@@ -12,11 +13,10 @@ export default function ChatBody() {
     query: { channelId },
   } = useRouter();
   const { chatList, error, mutate } = useChat(channelId);
-
   const chatRef = useRef();
 
-  useSocket('listen new chat', (updatedChatList) => {
-    mutate(updatedChatList);
+  useSocket(EVENTS.LISTEN_NEW_CHAT, (newChat) => {
+    mutate([...chatList, newChat]);
   });
 
   useEffect(() => {
@@ -30,14 +30,12 @@ export default function ChatBody() {
   return (
     <Contents ref={chatRef}>
       <ul className="chat-list">
-        {chatList
-          ? chatList.map(({ author, chat }, index) => (
-              <Content key={`${author}${Date.now(index)}`}>
-                <span className="author">{author}</span>
-                <span>{chat}</span>
-              </Content>
-            ))
-          : null}
+        {chatList?.map(({ author, chat }, index) => (
+          <Content key={`${author} ${Date.now(index)}`}>
+            <span className="author">{author}</span>
+            <span>{chat}</span>
+          </Content>
+        ))}
       </ul>
     </Contents>
   );

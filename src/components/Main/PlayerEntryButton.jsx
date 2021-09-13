@@ -15,6 +15,7 @@ import { API } from '../../constants/api';
 export default function PlayerEntryButton({ channelId, isActive }) {
   const { channel, error } = useChannel(channelId);
   const { players, mutate } = usePlayers(channelId);
+
   const socket = useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
     if (user.userType === USER_TYPE.PLAYER && user.channelId === channelId) {
       mutate((data) => ({ ...data, audience: [...data.audience, { user }] }));
@@ -67,7 +68,6 @@ export default function PlayerEntryButton({ channelId, isActive }) {
           <Button
             onClick={() => onButtonClick(channelId)}
             color={!isActive && 'gray'}
-            disabled={players.length === channel.episode.characters.length}
           >
             <h3>플레이어로 입장</h3>
             <p>

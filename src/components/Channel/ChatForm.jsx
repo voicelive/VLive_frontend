@@ -1,14 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
+
 import { socketClient } from '../../hooks/socket/useSocket';
+import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
+
+import ErrorBox from '../ErrorBox';
 
 export default function ChatForm() {
   const {
     query: { channelId },
   } = useRouter();
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState({
+    author: '',
+    chat: '',
+  });
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
@@ -16,33 +23,59 @@ export default function ChatForm() {
     setUserName(name);
   }, []);
 
-  function submitChat(ev) {
+  async function submitChat(ev) {
     ev.preventDefault();
 
-    const trimmedInput = input.trim();
+    try {
+      const response = await fetch(`${API.URL}/chat`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          channelId,
+          input,
+        }),
+      });
 
-    if (trimmedInput === '') return;
+      const { result, message } = await response.json();
 
-    const newChat = {
+      if (result === 'error') {
+        throw new Error(message);
+      }
+    } catch (err) {
+      return <ErrorBox message={err.message} />;
+    }
+
+    socketClient.emit(EVENTS.NEW_CHAT, { channelId, input });
+
+    setInput({
+      author: '',
+      chat: '',
+    });
+  }
+
+  function handleChatInput({ target }) {
+    const { value } = target;
+    const trimmedChat = value.trim();
+
+    if (trimmedChat === '') return;
+
+    setInput({
       author: userName.replace(' ', ''),
-      chat: trimmedInput,
-    };
-
-    socketClient.emit(EVENTS.NEW_CHAT, { channelId, newChat });
-    setInput('');
+      chat: trimmedChat,
+    });
   }
 
   return (
-    <Form>
+    <Form onSubmit={submitChat}>
       <input
         type="text"
-        value={input}
+        value={input.chat}
         autoComplete="off"
-        onChange={(e) => setInput(e.target.value)}
+        onChange={handleChatInput}
       />
-      <button type="submit" onSubmit={submitChat}>
-        Enter
-      </button>
+      <button type="submit">Enter</button>
     </Form>
   );
 }
