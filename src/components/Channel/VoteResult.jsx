@@ -82,8 +82,8 @@ export default function VoteResult() {
 
   return (
     <Wrapper>
-      <h1 className="vote-title">투표 결과</h1>
-      <span className="vote-subtitle">{getWinnerNames()} 축하합니다!</span>
+      <h1 className="result-title">투표 결과</h1>
+      <span className="result-subtitle">{getWinnerNames()} 축하합니다!</span>
       <div className="characters">
         {winners &&
           players.map((player) => {
@@ -120,14 +120,14 @@ const Wrapper = styled.div`
   height: 100%;
   background-color: black;
 
-  .vote-title {
+  .result-title {
     margin: 0;
     padding: 30px 0 10px 0;
     font-size: 20px;
     color: white;
   }
 
-  .vote-subtitle {
+  .result-subtitle {
     padding: 30px 0 30px 0;
     font-weight: 200px;
     font-size: 22px;
