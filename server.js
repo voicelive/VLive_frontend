@@ -23,6 +23,8 @@ io.on('connection', (socket) => {
     socket.join(userData.channelId);
 
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
+
+    io.to(userData.channelId).emit('player list', userData);
   });
 
   socket.on(EVENTS.NEW_CHATS, ({ channelId, newChat }) => {
@@ -46,8 +48,20 @@ io.on('connection', (socket) => {
     saveChat(channelId);
   });
 
-  socket.on(EVENTS.END_CHANNEL, (id) => {
-    socket.broadcast.emit(EVENTS.LISTEN_END_CHANNEL, id);
+  socket.on(EVENTS.EXIT_CHANNEL, ({ channelId, userId, userType }) => {
+    socket.leave(channelId);
+
+    io.to(channelId).emit(EVENTS.LISTEN_EXIT_CHANNEL, {
+      channelId,
+      userId,
+      userType,
+    });
+
+    socket.broadcast.emit('listen exit channel list', {
+      channelId,
+      userId,
+      userType,
+    });
   });
 
   socket.on(EVENTS.PLAYER_READY, ({ channelId, _id, userRole }) => {

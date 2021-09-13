@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
 
 export default function PlayerItem({ player: { userId, characterId } }) {
+  const [ready, setReady] = useState(null);
+
+  useEffect(() => {
+    if (characterId?._id) {
+      setReady({ state: 'ready' });
+    }
+  }, []);
+
   return (
-    <div key={userId._id} className="player-profile">
-      <div className="player-name">{userId.name}</div>
+    <Contents key={userId._id}>
+      <div className={ready?.state}>{userId.name}</div>
       <div className="character-name">{characterId?.name}</div>
-    </div>
+    </Contents>
   );
 }
 
@@ -16,3 +25,13 @@ PlayerItem.propTypes = {
     characterId: PropTypes.object,
   }),
 };
+
+const Contents = styled.div`
+  height: 10%;
+  padding: 5px;
+  border: 2px solid darkNavy;
+
+  .ready {
+    border: 2px solid pink;
+  }
+`;

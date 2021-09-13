@@ -1,6 +1,7 @@
 module.exports.EVENTS = {
   ENTER_CHANNEL: 'enter channel',
   LISTEN_ENTER_CHANNEL: 'listen enter channel',
+  LISTEN_ENTER_CHANNEL_PAGE: 'listen enter channel List',
   CREATE_CHANNEL: 'create channel',
   LISTEN_CREATE_CHANNEL: 'listen create channel',
   END_CHANNEL: 'end channel',
@@ -9,4 +10,7 @@ module.exports.EVENTS = {
   LISTEN_NEW_CHAT: 'listen new chat',
   PLAYER_READY: 'player ready',
   LISTEN_PLAYER_READY: 'listen player ready',
+  EXIT_CHANNEL: 'exit channel',
+  LISTEN_EXIT_CHANNEL: 'listen exit channel',
+  LISTEN_EXIT_CHANNEL_LIST: 'listen exit channel list',
 };

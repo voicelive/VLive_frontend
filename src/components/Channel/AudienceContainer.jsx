@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import useAudience from '../../hooks/channel/useAudience';
 
+import { socketClient } from '../../hooks/socket/useSocket';
+import { EVENTS } from '../../constants/socketEvent';
 import AudienceItem from './AudienceItem';
 import ErrorBox from '../ErrorBox';
 
@@ -10,15 +12,22 @@ export default function AudienceContainer() {
   const {
     query: { channelId },
   } = useRouter();
-  const { audience, error } = useAudience(channelId);
+  const { audience, error, mutate } = useAudience(channelId);
 
   if (error) {
     return <ErrorBox message={error.message} />;
   }
 
+  socketClient.on(EVENTS.LISTEN_EXIT_CHANNEL, (userId) => {
+    const newAudience = audience?.filter((viewer) => viewer !== userId);
+    mutate((prevAudience) => {
+      return { ...prevAudience, newAudience };
+    }, false);
+  });
+
   return (
     <Wrapper>
-      {audience.map((viewer) => (
+      {audience?.map((viewer) => (
         <AudienceItem key={viewer._id} user={viewer} />
       ))}
     </Wrapper>

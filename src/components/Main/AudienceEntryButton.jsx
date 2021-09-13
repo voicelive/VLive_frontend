@@ -20,6 +20,16 @@ export default function AudienceEntryButton({ channelId, isActive }) {
     }
   });
 
+  socket.on(EVENTS.LISTEN_EXIT_CHANNEL, ({ channelId, userId, userType }) => {
+    const targetChannel = channelId;
+
+    if (userType === USER_TYPE.AUDIENCE && targetChannel === channelId) {
+      const existAudience = audience.filter((viewer) => viewer._id !== userId);
+
+      mutate((data) => ({ ...data, existAudience }));
+    }
+  });
+
   if (error) {
     return <ErrorBox message={error.message} />;
   }

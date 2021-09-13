@@ -14,13 +14,34 @@ export default function PlayerContainer() {
   } = useRouter();
   const { players, error, mutate } = usePlayers(channelId);
 
-  if (channelId == null || players == null) {
+  if (channelId == null || players.length == null) {
     return <></>;
   }
 
   if (error) {
     return <ErrorBox message={error.message} />;
   }
+
+  socketClient.on('player list', (user) => {
+    const newUser = {
+      userId: user.userId,
+      voteCount: 0,
+    };
+
+    mutate((prevPlayers) => {
+      return { ...prevPlayers, newUser };
+    });
+  });
+
+  socketClient.on(EVENTS.LISTEN_EXIT_CHANNEL, (user) => {
+    const newPlayers = players.filter(
+      (player) => player.userId._id !== user.userId,
+    );
+
+    mutate((prevPlayers) => {
+      return { ...prevPlayers, newPlayers };
+    });
+  });
 
   socketClient.on(EVENTS.LISTEN_PLAYER_READY, ({ _id, userRole }) => {
     const readyPlayers = players.map((player) => {
