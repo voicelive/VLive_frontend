@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
   });
 
-  socket.on(EVENTS.NEW_CHATS, ({ channelId, newChat }) => {
+  socket.on(EVENTS.NEW_CHAT, ({ channelId, newChat }) => {
     socket.join(channelId);
 
     if (!chatContents[channelId]) {

@@ -7,6 +7,6 @@ export default function AudienceItem({ user: { name } }) {
 
 AudienceItem.propTypes = {
   user: PropTypes.shape({
-    name: PropTypes.object.isRequired,
+    name: PropTypes.string.isRequired,
   }),
 };

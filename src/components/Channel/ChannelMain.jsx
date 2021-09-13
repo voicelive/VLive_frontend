@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import useChannel from '../../hooks/channel/useChannel';
@@ -15,6 +14,7 @@ export default function ChannelMain() {
     query: { channelId },
   } = useRouter();
   const { channel, error } = useChannel(channelId);
+  const [showResult, setShowResult] = useState(false);
 
   if (channelId == null || channel == null) {
     return <></>;
@@ -34,11 +34,12 @@ export default function ChannelMain() {
       </header>
       <VideoWrapper>
         {/* Video Component expected to come*/}
-        <VoteResult />
+        {showResult && <VoteResult />}
       </VideoWrapper>
       <ChatWrapper>
-        {channel.isPlaying ? (
-          <Vote />
+        {!showResult && <Vote endVoting={setShowResult} />}
+        {channel?.isPlaying ? (
+          <Vote endVoting={setShowResult} />
         ) : (
           <>
             <ChatBody />
@@ -49,14 +50,6 @@ export default function ChannelMain() {
     </MainContainer>
   );
 }
-
-ChannelMain.propTypes = {
-  channelId: PropTypes.string,
-};
-
-ChannelMain.defaultProps = {
-  channelId: '',
-};
 
 const MainContainer = styled.div`
   width: 70%;
