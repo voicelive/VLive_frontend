@@ -23,7 +23,6 @@ io.on('connection', (socket) => {
     socket.join(userData.channelId);
 
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
-    socket.to(userData.channelId).emit('player로 가자', userData);
   });
 
   socket.on(EVENTS.NEW_CHATS, ({ channelId, newChat }) => {
