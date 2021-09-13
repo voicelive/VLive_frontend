@@ -67,15 +67,17 @@ export default function VoteResult() {
   }
 
   function checkWinner(playerId) {
-    return winners?.includes(playerId).toString();
+    return winners?.includes(playerId);
   }
 
   function getWinnerNames() {
-    const winnerNames = players.map((player) => {
+    const winnerNames = [];
+
+    for (const player of players) {
       if (winners.includes(player._id)) {
-        return `, ${player.userId.name}님`;
+        winnerNames.push(`, ${player.userId.name}님`);
       }
-    });
+    }
 
     return winnerNames.join(' ').slice(2);
   }
@@ -154,15 +156,14 @@ const Character = styled.div`
     width: 153px;
     height: 203px;
     border: ${({ iswinner, theme }) =>
-      iswinner === 'true' ? '3px solid' + theme.pink : 'none'};
+      iswinner ? '3px solid' + theme.pink : 'none'};
   }
 
   .character-name {
     display: block;
     padding: 10px 0;
     font-size: 18px;
-    color: ${({ iswinner, theme }) =>
-      iswinner === 'true' ? theme.pink : 'white'};
+    color: ${({ iswinner, theme }) => (iswinner ? theme.pink : 'white')};
   }
 
   .user-name {
@@ -171,16 +172,14 @@ const Character = styled.div`
     border-radius: 5px;
     font-weight: 700;
     font-size: 18px;
-    color: ${({ iswinner, theme }) =>
-      iswinner === 'true' ? 'white' : 'black'};
+    color: ${({ iswinner }) => (iswinner ? 'white' : 'black')};
   }
 
   .voting-result {
     display: block;
     padding: 10px 0;
     font-size: 24px;
-    color: ${({ iswinner, theme }) =>
-      iswinner === 'true' ? theme.pink : 'white'};
+    color: ${({ iswinner, theme }) => (iswinner ? theme.pink : 'white')};
   }
 
   .clicked {
