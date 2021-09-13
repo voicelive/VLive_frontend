@@ -10,13 +10,12 @@ import { API } from '../../constants/api';
 
 import ErrorBox from '../ErrorBox';
 
-export default function Vote({ endVoting }) {
+export default function Vote({ onVotingEnd }) {
   const {
     query: { channelId },
   } = useRouter();
-  const [userId, setUserId] = useState('');
-  const [characterId, setCharacterId] = useState('');
   const { players, error } = usePlayers(channelId);
+  const [playerId, setPlayerId] = useState('');
 
   if (error) {
     return <ErrorBox message={error.message} />;
@@ -24,19 +23,15 @@ export default function Vote({ endVoting }) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      endVoting(true);
+      onVotingEnd();
     }, 10000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    const { _id } = JSON.parse(sessionStorage.getItem('user'));
+  async function selectCharacter({ currentTarget }) {
+    setPlayerId(currentTarget.id);
 
-    setUserId(_id);
-  }, []);
-
-  async function addVoteCount() {
     try {
       const response = await fetch(`${API.URL}/channel/${channelId}`, {
         method: 'PUT',
@@ -45,8 +40,7 @@ export default function Vote({ endVoting }) {
         },
         body: JSON.stringify({
           state: 'voting',
-          userId,
-          characterId,
+          playerId: currentTarget.id,
         }),
       });
 
@@ -58,20 +52,6 @@ export default function Vote({ endVoting }) {
     } catch (err) {
       return <ErrorBox message={err.message} />;
     }
-  }
-
-  function selectCharacter({ currentTarget }) {
-    if (characterId) {
-      document.querySelector('.border')?.classList.remove('border');
-      document.querySelector('.color')?.classList.remove('color');
-    }
-
-    setCharacterId(currentTarget.id);
-
-    currentTarget.childNodes[0].classList.add('border');
-    currentTarget.childNodes[1].classList.add('color');
-
-    addVoteCount();
   }
 
   return (
@@ -87,7 +67,7 @@ export default function Vote({ endVoting }) {
               id={player._id}
               onClick={selectCharacter}
             >
-              <div className="img">
+              <div className={`img ${playerId === player._id && 'border'}`}>
                 <Image
                   src={player.characterId?.imgUrl}
                   alt="character-image"
@@ -95,7 +75,9 @@ export default function Vote({ endVoting }) {
                   height={150}
                 />
               </div>
-              <span className="character-name">{player.characterId?.name}</span>
+              <span className={`img ${playerId === player._id && 'color'}`}>
+                {player.characterId?.name}
+              </span>
               <span className="user-name">{player.userId?.name}</span>
             </Character>
           ))}
@@ -105,7 +87,7 @@ export default function Vote({ endVoting }) {
 }
 
 Vote.propTypes = {
-  endVoting: PropTypes.func.isRequired,
+  onVotingEnd: PropTypes.func.isRequired,
 };
 
 const Wrapper = styled.div`
