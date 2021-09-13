@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import usePlayers from '../../hooks/channel/usePlayers';
+
 import { API } from '../../constants/api';
+
 import ErrorBox from '../ErrorBox';
 
 export default function Vote({ endVoting }) {
@@ -21,35 +23,42 @@ export default function Vote({ endVoting }) {
   }
 
   useEffect(() => {
-    const timeId = setTimeout(() => {
-      (async function addVoteCount() {
-        try {
-          await fetch(`${API.URL}/channel/${channelId}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              state: 'voting',
-              userId,
-              characterId,
-            }),
-          });
+    const timer = setTimeout(() => {
+      endVoting(true);
+    }, 10000);
 
-          endVoting(true);
-        } catch (err) {
-          return <ErrorBox message={err.message} />;
-        }
-      })();
-    }, 5000);
-
-    return () => clearTimeout(timeId);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     const { _id } = JSON.parse(sessionStorage.getItem('user'));
+
     setUserId(_id);
   }, []);
+
+  async function addVoteCount() {
+    try {
+      const response = await fetch(`${API.URL}/channel/${channelId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          state: 'voting',
+          userId,
+          characterId,
+        }),
+      });
+
+      const { result, message } = await response.json();
+
+      if (result === 'error') {
+        throw new Error(message);
+      }
+    } catch (err) {
+      return <ErrorBox message={err.message} />;
+    }
+  }
 
   function selectCharacter({ currentTarget }) {
     if (characterId) {
@@ -61,6 +70,8 @@ export default function Vote({ endVoting }) {
 
     currentTarget.childNodes[0].classList.add('border');
     currentTarget.childNodes[1].classList.add('color');
+
+    addVoteCount();
   }
 
   return (
