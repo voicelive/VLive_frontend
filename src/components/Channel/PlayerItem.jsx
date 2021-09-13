@@ -9,7 +9,7 @@ export default function PlayerItem({ player: { userId, characterId } }) {
     if (characterId?._id) {
       setReady({ state: 'ready' });
     }
-  }, []);
+  }, [characterId]);
 
   return (
     <Contents key={userId._id}>

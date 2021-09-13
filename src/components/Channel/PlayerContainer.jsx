@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
@@ -9,6 +9,7 @@ import ErrorBox from '../ErrorBox';
 import { EVENTS } from '../../constants/socketEvent';
 
 export default function PlayerContainer() {
+  const [ready, setReady] = useState([]);
   const {
     query: { channelId },
   } = useRouter();
@@ -49,6 +50,7 @@ export default function PlayerContainer() {
         player.characterId = user.userRole.characterId;
       }
 
+      setReady((prev) => [...prev, user]);
       return player;
     });
 
@@ -58,7 +60,7 @@ export default function PlayerContainer() {
   return (
     <Wrapper>
       {players.map((player) => (
-        <PlayerItem key={player._id} player={player} />
+        <PlayerItem key={player._id} player={player} ready={ready} />
       ))}
     </Wrapper>
   );
