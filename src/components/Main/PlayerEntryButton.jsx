@@ -21,13 +21,17 @@ export default function PlayerEntryButton({ channelId, isActive }) {
     }
   });
 
-  socket.on(EVENTS.LISTEN_EXIT_CHANNEL, ({ channelId, userId, userType }) => {
-    const targetChannel = channelId;
+  socket.on('listen exit channel list', (user) => {
+    const targetChannel = user.channelId;
+    if (
+      user.userType.type === USER_TYPE.PLAYER &&
+      targetChannel === channelId
+    ) {
+      const existPlayers = players.filter(
+        (player) => player._id !== user.userId,
+      );
 
-    if (userType === USER_TYPE.PLAYER && targetChannel === channelId) {
-      const existPlayers = players.filter((player) => player._id !== userId);
-
-      mutate((data) => ({ ...data, existPlayers }));
+      mutate((prevPlayers) => ({ ...prevPlayers, existPlayers }));
     }
   });
 

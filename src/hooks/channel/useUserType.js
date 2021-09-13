@@ -25,9 +25,12 @@ export default function useUserType(channelId, userId) {
     data: userType,
     error,
     mutate,
-  } = useSWR(channelId ? `/channel/${channelId}/users/${userId}` : null, () => {
-    return fetcher(channelId, userId);
-  });
+  } = useSWR(
+    channelId && userId ? `/channel/${channelId}/users/${userId}` : null,
+    () => {
+      return fetcher(channelId, userId);
+    },
+  );
 
   return { userType, error, mutate };
 }

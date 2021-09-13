@@ -64,12 +64,13 @@ io.on('connection', (socket) => {
   socket.on(EVENTS.EXIT_CHANNEL, ({ channelId, userId, userType }) => {
     socket.leave(channelId);
 
-    io.to(channelId).emit(
-      EVENTS.LISTEN_EXIT_CHANNEL,
-      (channelId, userId, userType),
-    );
+    io.to(channelId).emit(EVENTS.LISTEN_EXIT_CHANNEL, {
+      channelId,
+      userId,
+      userType,
+    });
 
-    socket.broadcast.emit(EVENTS.LISTEN_EXIT_CHANNEL, {
+    socket.broadcast.emit('listen exit channel list', {
       channelId,
       userId,
       userType,

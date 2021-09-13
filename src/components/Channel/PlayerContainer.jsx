@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import { socketClient } from '../../hooks/socket/useSocket';
-import useChannel from '../../hooks/channel/useChannel';
+import usePlayers from '../../hooks/channel/usePlayers';
 import PlayerItem from './PlayerItem';
 import ErrorBox from '../ErrorBox';
 import { EVENTS } from '../../constants/socketEvent';
@@ -12,10 +12,7 @@ export default function PlayerContainer() {
   const {
     query: { channelId },
   } = useRouter();
-
-  const { channel, error, mutate } = useChannel(channelId);
-  const players = channel ? channel.players : [];
-  console.log(players, 'PlayerContainer players');
+  const { players, error, mutate } = usePlayers(channelId);
 
   if (channelId == null || players.length == null) {
     return <></>;
@@ -25,36 +22,14 @@ export default function PlayerContainer() {
     return <ErrorBox message={error.message} />;
   }
 
-  socketClient.on('player로 가자', (userData) => {
-    console.log('업데이트 x ');
-    console.log(userData, 'userData');
-    const user = {
-      userId: {
-        email: userData.email,
-        name: userData.name,
-        photoUrl: userData.photoUrl,
-      },
-      voteCount: 0,
-    };
+  socketClient.on(EVENTS.LISTEN_EXIT_CHANNEL, (user) => {
+    const newPlayers = players.filter(
+      (player) => player.userId._id !== user.userId,
+    );
 
-    mutate((prevPlayers) => ({ ...prevPlayers, user }));
-  });
-
-  socketClient.on(EVENTS.LISTEN_PLAYER_READY, ({ _id, userRole }) => {
-    const readyPlayers = players.map((player) => {
-      if (player.userId._id === _id) {
-        player.characterId = userRole.characterId;
-      }
-
-      return player;
+    mutate((prevPlayers) => {
+      return { ...prevPlayers, newPlayers };
     });
-
-    mutate((prevPlayers) => ({ ...prevPlayers, readyPlayers }));
-  });
-
-  socketClient.on(EVENTS.LISTEN_EXIT_CHANNEL, (userId) => {
-    const existPlayers = players.filter((player) => player.userId !== userId);
-    mutate((prevPlayers) => ({ ...prevPlayers, existPlayers }));
   });
 
   return (
