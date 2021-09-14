@@ -20,6 +20,7 @@ async function fetcher(channelId) {
     return err;
   }
 }
+
 export default function useChat(channelId) {
   const { data: chatList, mutate } = useSWR(
     channelId ? '/chat/channelId' : null,

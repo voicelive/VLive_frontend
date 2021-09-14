@@ -25,7 +25,7 @@ export default function AudienceEntryButton({ channelId, isActive }) {
   }
 
   if (audience == null) {
-    return <></>;
+    return null;
   }
 
   async function onButtonClick(channelId) {
@@ -66,6 +66,7 @@ export default function AudienceEntryButton({ channelId, isActive }) {
           <Button
             onClick={() => onButtonClick(channelId)}
             color={!isActive && 'gray'}
+            disabled={audience.length === USER_TYPE.AUDIENCE_MAX_NUMBER}
           >
             <h3>시청자로 입장</h3>
             <p>

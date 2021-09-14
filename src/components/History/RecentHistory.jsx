@@ -12,12 +12,12 @@ export default function RecentHistory() {
   } = useRouter();
   const { channel, error } = useChannel(historyId);
 
-  if (historyId == null || channel == null) {
-    return <></>;
-  }
-
   if (error) {
     return <ErrorBox message={error.message} />;
+  }
+
+  if (historyId == null || channel == null) {
+    return null;
   }
 
   const { name, episode, players } = channel;

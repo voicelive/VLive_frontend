@@ -1,25 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import useChannel from '../../hooks/channel/useChannel';
 import ErrorBox from '../ErrorBox';
 import ChatBody from './ChatBody';
 import ChatForm from './ChatForm';
+import Vote from './Vote';
+import VoteResult from './VoteResult';
 
 export default function ChannelMain() {
   const {
     query: { channelId },
   } = useRouter();
   const { channel, error } = useChannel(channelId);
-
-  if (channelId == null || channel == null) {
-    return <></>;
-  }
+  const [showResult, setShowResult] = useState(false);
 
   if (error) {
     return <ErrorBox message={error.message} />;
+  }
+
+  if (channelId == null || channel == null) {
+    return null;
   }
 
   const { name, episode } = channel;
@@ -30,34 +32,37 @@ export default function ChannelMain() {
         <h2 className="channel-name">{name}</h2>
         <h3 className="episode-title">{episode.title}</h3>
       </header>
-      <Video />
+      <VideoWrapper>
+        {/* Video Component expected to come*/}
+        {showResult && <VoteResult />}
+      </VideoWrapper>
       <ChatWrapper>
+        {/* 영상컴포넌트 추가되면 영상 종료이용해서 분기처리로 채팅, 투표 렌더 분기처리해줘야 합니다 */}
         <ChatBody />
         <ChatForm />
+        {/* 역할배정되어 있지 않은 채로 Vote 컴포넌트 렌더하면 img없다는 에러 뜹니다 , Vote활성화 할 때 위에 두개 주석도 풀어주세요*/}
+        {false && <Vote onVotingEnd={() => setShowResult(true)} />}
       </ChatWrapper>
     </MainContainer>
   );
 }
 
-ChannelMain.propTypes = {
-  channelId: PropTypes.string,
-};
-
-ChannelMain.defaultProps = {
-  channelId: '',
-};
-
 const MainContainer = styled.div`
-  width: 80%;
+  width: 70%;
   height: auto;
+  padding: 0 50px;
+  box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.6);
+
   header {
+    height: 10%;
     padding-left: 20px;
     text-align: left;
     background-color: rgba(0, 0, 0, 0.6);
     color: #ffffff;
     border: 1px solid black;
   }
+
   .channel-name {
     margin: 0px;
     padding-top: 15px;
@@ -65,6 +70,7 @@ const MainContainer = styled.div`
     font-size: 1.2em;
     font-weight: 200;
   }
+
   .episode-title {
     margin: 0px;
     padding-bottom: 10px;
@@ -73,12 +79,12 @@ const MainContainer = styled.div`
   }
 `;
 
-const Video = styled.div`
+const VideoWrapper = styled.div`
   width: 100%;
-  height: 55%;
+  height: 50%;
   background-image: url('/images/background.jpg');
 `;
 
 const ChatWrapper = styled.div`
-  height: 35%;
+  height: 40%;
 `;

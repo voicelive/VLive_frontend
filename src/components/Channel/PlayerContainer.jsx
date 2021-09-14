@@ -15,7 +15,7 @@ export default function PlayerContainer() {
   const { players, error, mutate } = usePlayers(channelId);
 
   if (channelId == null || players == null) {
-    return <></>;
+    return null;
   }
 
   if (error) {

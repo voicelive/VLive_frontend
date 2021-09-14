@@ -24,7 +24,7 @@ export default function UserReady({ isModalOpen, closeModal }) {
   const { channel, error } = useChannel(channelId);
 
   if (channelId == null || channel == null) {
-    return <></>;
+    return null;
   }
 
   if (error) {

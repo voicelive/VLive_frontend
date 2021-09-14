@@ -71,11 +71,13 @@ const SideBox = styled.div`
   width: 20%;
   text-align: center;
   background: ${theme.navy};
+
   .button-wrapper {
     position: absolute;
     width: 100%;
     margin-bottom: 20px;
   }
+
   .disable {
     cursor: not-allowed;
     pointer-events: none;
