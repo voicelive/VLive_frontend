@@ -30,6 +30,7 @@ io.on('connection', (socket) => {
 
   socket.on(EVENTS.END_CHANNEL, (channelId) => {
     socket.broadcast.emit(EVENTS.LISTEN_END_CHANNEL, channelId);
+    socket.leave(channelId);
   });
 
   socket.on('disconnect', () => {

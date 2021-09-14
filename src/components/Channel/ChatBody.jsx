@@ -15,22 +15,28 @@ export default function ChatBody() {
   const { chatList, error, mutate } = useChat(channelId);
   const chatRef = useRef();
 
+  if (error) {
+    return <ErrorBox message={error.message} />;
+  }
+
+  useEffect(() => {
+    if (chatList == null) return;
+
+    chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [chatList]);
+
   useSocket(EVENTS.LISTEN_NEW_CHAT, (newChat) => {
     mutate([...chatList, newChat]);
   });
 
-  useEffect(() => {
-    chatRef.current.scrollTop = chatRef.current.scrollHeight;
-  }, [chatList]);
-
-  if (error) {
-    return <ErrorBox message={error.message} />;
+  if (channelId == null || chatList == null) {
+    return null;
   }
 
   return (
     <Contents ref={chatRef}>
       <ul className="chat-list">
-        {chatList?.map((chat) => (
+        {chatList.map((chat) => (
           <Content key={chat._id}>
             <span className="author">{chat.author}</span>
             <span>{chat.chat}</span>

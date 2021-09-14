@@ -21,6 +21,10 @@ export default function Vote({ onVotingEnd }) {
     return <ErrorBox message={error.message} />;
   }
 
+  if (channelId == null || players == null) {
+    return null;
+  }
+
   useEffect(() => {
     const timer = setTimeout(() => {
       onVotingEnd();
@@ -59,28 +63,27 @@ export default function Vote({ onVotingEnd }) {
       <h1 className="vote-title">최고의 캐릭터에게 투표해주세요</h1>
       <span className="vote-subtitle">투표는 한 번만 참여 가능합니다.</span>
       <div className="characters">
-        {players &&
-          players.map((player) => (
-            <Character
-              className="character"
-              key={player._id}
-              id={player._id}
-              onClick={selectCharacter}
-            >
-              <div className={`img ${playerId === player._id && 'border'}`}>
-                <Image
-                  src={player.characterId?.imgUrl}
-                  alt="character-image"
-                  width={110}
-                  height={150}
-                />
-              </div>
-              <span className={`img ${playerId === player._id && 'color'}`}>
-                {player.characterId?.name}
-              </span>
-              <span className="user-name">{player.userId?.name}</span>
-            </Character>
-          ))}
+        {players.map((player) => (
+          <Character
+            className="character"
+            key={player._id}
+            id={player._id}
+            onClick={selectCharacter}
+          >
+            <div className={`img ${playerId === player._id && 'border'}`}>
+              <Image
+                src={player.characterId?.imgUrl}
+                alt="character-image"
+                width={110}
+                height={150}
+              />
+            </div>
+            <span className={`img ${playerId === player._id && 'color'}`}>
+              {player.characterId?.name}
+            </span>
+            <span className="user-name">{player.userId?.name}</span>
+          </Character>
+        ))}
       </div>
     </Wrapper>
   );

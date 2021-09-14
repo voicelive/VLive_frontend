@@ -16,12 +16,12 @@ export default function ChannelMain() {
   const { channel, error } = useChannel(channelId);
   const [showResult, setShowResult] = useState(false);
 
-  if (channelId == null || channel == null) {
-    return <></>;
-  }
-
   if (error) {
     return <ErrorBox message={error.message} />;
+  }
+
+  if (channelId == null || channel == null) {
+    return null;
   }
 
   const { name, episode } = channel;
@@ -37,14 +37,11 @@ export default function ChannelMain() {
         {showResult && <VoteResult />}
       </VideoWrapper>
       <ChatWrapper>
-        {channel?.isPlaying && !showResult ? (
-          <Vote onVotingEnd={() => setShowResult(true)} />
-        ) : (
-          <>
-            <ChatBody />
-            <ChatForm />
-          </>
-        )}
+        {/* 영상컴포넌트 추가되면 영상 종료이용해서 분기처리로 채팅, 투표 렌더 분기처리해줘야 합니다 */}
+        <ChatBody />
+        <ChatForm />
+        {/* 역할배정되어 있지 않은 채로 Vote 컴포넌트 렌더하면 img없다는 에러 뜹니다 */}
+        {/* <Vote onVotingEnd={() => setShowResult(true)} /> */}
       </ChatWrapper>
     </MainContainer>
   );
