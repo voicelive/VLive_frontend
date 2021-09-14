@@ -51,7 +51,7 @@ export default function UserReady({ isModalOpen, closeModal }) {
 
         setEpisodeInfo(data);
       } catch (err) {
-        console.error(err.message);
+        return <ErrorBox message={err.message} />;
       }
     }
 
