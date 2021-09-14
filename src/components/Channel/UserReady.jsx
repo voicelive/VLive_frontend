@@ -125,7 +125,12 @@ export default function UserReady({ isModalOpen, closeModal }) {
                   onClick={handleClick}
                 >
                   <span className="character-name">{character.name}</span>
-                  <div className="character-image">
+                  <div
+                    className={
+                      userRole.characterId === character._id &&
+                      'character-image'
+                    }
+                  >
                     <Image
                       src={character.imgUrl}
                       alt="character-imgUrl"
@@ -204,9 +209,7 @@ const ReadyOptions = styled.div`
   }
 
   .character-image {
-    &:hover {
-      border: 2px solid ${theme.pink};
-    }
+    border: 2px solid ${theme.pink};
   }
 
   .image {

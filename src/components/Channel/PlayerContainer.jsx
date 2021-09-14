@@ -34,7 +34,7 @@ export default function PlayerContainer() {
     mutate((prevPlayers) => ({ ...prevPlayers, readyPlayers }));
   });
 
-  socketClient.on('listen enter channel player list', (user) => {
+  socketClient.on(EVENTS.LISTEN_ENTER_CHANNEL_LIST, (user) => {
     const newUser = {
       userId: user.userId,
       voteCount: 0,

@@ -39,10 +39,7 @@ io.on('connection', (socket) => {
     socket.emit('all users', usersInThisChannel);
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
 
-    io.to(userData.channelId).emit(
-      'listen enter channel player list',
-      userData,
-    );
+    io.to(userData.channelId).emit(EVENTS.LISTEN_ENTER_CHANNEL_LIST, userData);
   });
 
   socket.on(EVENTS.EXIT_CHANNEL, ({ channelId, userId, userType }) => {
@@ -54,7 +51,7 @@ io.on('connection', (socket) => {
       userType,
     });
 
-    socket.broadcast.emit('listen exit channel list', {
+    socket.broadcast.emit(EVENTS.LISTEN_EXIT_CHANNEL_LIST, {
       channelId,
       userId,
       userType,
@@ -102,14 +99,14 @@ io.on('connection', (socket) => {
       }
 
       if (readyPlayers[channelId].length === episodeInfo.characters.length) {
-        io.to(channelId).emit('LISTEN_PLAYER_READY', 'start');
+        io.to(channelId).emit(EVENTS.LISTEN_GAME_START, 'start');
         readyPlayers[channelId] = [];
       }
     },
   );
 
-  socket.on('start game', (id) => {
-    socket.broadcast.emit('start game list', id);
+  socket.on(EVENTS.READY_TO_START, (id) => {
+    socket.broadcast.emit(EVENTS.LISTEN_READY_TO_START, id);
   });
 
   socket.on('disconnect', () => {

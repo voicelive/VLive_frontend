@@ -58,7 +58,7 @@ export default function SideButtonContainer() {
     }
   }
 
-  socketClient.on('LISTEN_PLAYER_READY', (start) => {
+  socketClient.on(EVENTS.LISTEN_PLAYER_READY, (start) => {
     if (start && userId === channel?.host._id) {
       setReady(true);
     }
@@ -77,7 +77,7 @@ export default function SideButtonContainer() {
         }),
       });
 
-      socketClient.emit('start game', channelId);
+      socketClient.emit(EVENTS.READY_TO_START, channelId);
     } catch (error) {
       return error;
     }

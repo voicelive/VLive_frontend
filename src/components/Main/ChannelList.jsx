@@ -26,7 +26,7 @@ export default function ChannelList({ loginStatus }) {
     mutate(newActiveChannels);
   });
 
-  useSocket('start game list', (id) => {
+  useSocket(EVENTS.LISTEN_READY_TO_START, (id) => {
     const isplayingChannels = activeChannels.map((activeChannel) => {
       if (activeChannel._id === id) {
         activeChannel.isPlaying = true;
