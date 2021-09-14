@@ -25,7 +25,7 @@ export default function AudienceEntryButton({ channelId, isActive }) {
   }
 
   if (audience == null) {
-    return <></>;
+    return null;
   }
 
   async function onButtonClick(channelId) {

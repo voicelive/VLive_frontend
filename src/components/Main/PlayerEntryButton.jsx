@@ -27,7 +27,7 @@ export default function PlayerEntryButton({ channelId, isActive }) {
   }
 
   if (channelId == null || channel == null || players == null) {
-    return <></>;
+    return null;
   }
 
   async function onButtonClick(channelId) {
