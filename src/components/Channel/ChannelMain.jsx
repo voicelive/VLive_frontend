@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
@@ -15,6 +15,7 @@ export default function ChannelMain() {
   } = useRouter();
   const { channel, error } = useChannel(channelId);
   const [showResult, setShowResult] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   if (error) {
     return <ErrorBox message={error.message} />;
@@ -34,14 +35,20 @@ export default function ChannelMain() {
       </header>
       <VideoWrapper>
         {/* Video Component expected to come*/}
-        {showResult && <VoteResult />}
+        {showResult ? <VoteResult /> : <h1>비디오</h1>}
       </VideoWrapper>
       <ChatWrapper>
-        {/* 영상컴포넌트 추가되면 영상 종료이용해서 분기처리로 채팅, 투표 렌더 분기처리해줘야 합니다 */}
-        <ChatBody />
-        <ChatForm />
-        {/* 역할배정되어 있지 않은 채로 Vote 컴포넌트 렌더하면 img없다는 에러 뜹니다 , Vote활성화 할 때 위에 두개 주석도 풀어주세요*/}
-        {false && <Vote onVotingEnd={() => setShowResult(true)} />}
+        {showChat ? (
+          <>
+            <ChatBody />
+            <ChatForm />
+          </>
+        ) : (
+          <Vote
+            onShowResult={() => setShowResult(true)}
+            onShowChat={() => setShowChat(true)}
+          />
+        )}
       </ChatWrapper>
     </MainContainer>
   );
