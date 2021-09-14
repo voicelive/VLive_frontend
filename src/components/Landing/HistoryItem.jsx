@@ -36,6 +36,6 @@ HistoryItem.propTypes = {
     name: PropTypes.string.isRequired,
     players: PropTypes.array.isRequired,
     audience: PropTypes.array.isRequired,
-    episode: PropTypes.string.isRequired,
+    episode: PropTypes.object.isRequired,
   }),
 };
