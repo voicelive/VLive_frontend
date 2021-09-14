@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
@@ -34,8 +34,7 @@ export default function ChannelMain() {
         <h3 className="episode-title">{episode.title}</h3>
       </header>
       <VideoWrapper>
-        {/* Video Component expected to come*/}
-        {showResult ? <VoteResult /> : <h1>비디오</h1>}
+        {showResult ? <VoteResult /> : <h1>비디오컴포넌트</h1>}
       </VideoWrapper>
       <ChatWrapper>
         {showChat ? (
