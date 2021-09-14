@@ -6,7 +6,7 @@ import useChannel from '../../hooks/channel/useChannel';
 import ErrorBox from '../ErrorBox';
 import ChatBody from './ChatBody';
 import ChatForm from './ChatForm';
-// import Vote from './Vote';
+import Vote from './Vote';
 import VoteResult from './VoteResult';
 
 export default function ChannelMain() {
@@ -14,7 +14,7 @@ export default function ChannelMain() {
     query: { channelId },
   } = useRouter();
   const { channel, error } = useChannel(channelId);
-  // const [showResult, setShowResult] = useState(false);
+  const [showResult, setShowResult] = useState(false);
 
   if (error) {
     return <ErrorBox message={error.message} />;
@@ -41,7 +41,7 @@ export default function ChannelMain() {
         <ChatBody />
         <ChatForm />
         {/* 역할배정되어 있지 않은 채로 Vote 컴포넌트 렌더하면 img없다는 에러 뜹니다 , Vote활성화 할 때 위에 두개 주석도 풀어주세요*/}
-        {/* <Vote onVotingEnd={() => setShowResult(true)} /> */}
+        {false && <Vote onVotingEnd={() => setShowResult(true)} />}
       </ChatWrapper>
     </MainContainer>
   );
