@@ -13,7 +13,7 @@ import Button from '../Button';
 import ErrorBox from '../ErrorBox';
 import theme from '../../styles/theme';
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import { API } from '../../constants/api';
 
 export default function UserReady({ isModalOpen, closeModal }) {
   const [episodeInfo, setEpisodeInfo] = useState([]);
@@ -35,7 +35,7 @@ export default function UserReady({ isModalOpen, closeModal }) {
     async function fetchData() {
       try {
         const response = await fetch(
-          `${baseUrl}/episode/${channel.episode._id}`,
+          `${API.URL}/episode/${channel.episode._id}`,
           {
             method: 'GET',
             headers: {
@@ -72,7 +72,7 @@ export default function UserReady({ isModalOpen, closeModal }) {
     const { _id } = JSON.parse(sessionStorage.getItem('user'));
 
     try {
-      const response = await fetch(`${baseUrl}/channel/${channelId}`, {
+      const response = await fetch(`${API.URL}/channel/${channelId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -93,6 +93,7 @@ export default function UserReady({ isModalOpen, closeModal }) {
         channelId,
         _id,
         userRole,
+        episodeInfo,
       });
 
       closeModal();

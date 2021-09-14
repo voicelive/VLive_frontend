@@ -63,7 +63,6 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
         return alert(message);
       }
 
-      socketClient.emit(EVENTS.CREATE_CHANNEL, data);
       socketClient.emit(EVENTS.ENTER_CHANNEL, {
         _id: user._id,
         name: user.name,

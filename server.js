@@ -11,8 +11,8 @@ const nextHandler = nextApp.getRequestHandler();
 const { EVENTS } = require('./src/constants/socketEvent');
 
 const users = {};
-
 const socketToChannel = {};
+const readyPlayers = {};
 
 io.on('connection', (socket) => {
   console.log('socket connected...');
@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
 
   socket.on(EVENTS.ENTER_CHANNEL, (userData) => {
     const { channelId } = userData;
+    socket.join(channelId);
 
     if (users[channelId]) {
       users[channelId].push(socket.id);
@@ -36,10 +37,28 @@ io.on('connection', (socket) => {
     );
 
     socket.emit('all users', usersInThisChannel);
-
-    socket.join(channelId);
-
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
+
+    io.to(userData.channelId).emit(
+      'listen enter channel player list',
+      userData,
+    );
+  });
+
+  socket.on(EVENTS.EXIT_CHANNEL, ({ channelId, userId, userType }) => {
+    socket.leave(channelId);
+
+    io.to(channelId).emit(EVENTS.LISTEN_EXIT_CHANNEL, {
+      channelId,
+      userId,
+      userType,
+    });
+
+    socket.broadcast.emit('listen exit channel list', {
+      channelId,
+      userId,
+      userType,
+    });
   });
 
   socket.on(EVENTS.SENDING_SIGNAL, ({ userToSignal, callerId, signal }) => {
@@ -70,8 +89,27 @@ io.on('connection', (socket) => {
     console.log('socket disconnected...');
   });
 
-  socket.on(EVENTS.PLAYER_READY, ({ channelId, _id, userRole }) => {
-    io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, { _id, userRole });
+  socket.on(
+    EVENTS.PLAYER_READY,
+    ({ channelId, userId, userRole, episodeInfo }) => {
+      socket.join(channelId);
+      io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, { userId, userRole });
+
+      if (!readyPlayers[channelId]) {
+        readyPlayers[channelId] = [userRole];
+      } else {
+        readyPlayers[channelId].push(userRole);
+      }
+
+      if (readyPlayers[channelId].length === episodeInfo.characters.length) {
+        io.to(channelId).emit('LISTEN_PLAYER_READY', 'start');
+        readyPlayers[channelId] = [];
+      }
+    },
+  );
+
+  socket.on('start game', (id) => {
+    socket.broadcast.emit('start game list', id);
   });
 
   socket.on('disconnect', () => {

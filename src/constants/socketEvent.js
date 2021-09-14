@@ -18,4 +18,5 @@ module.exports.EVENTS = {
   RETURNING_SIGNAL: 'returning signal',
   USER_JOINED: 'user joined',
   RECEIVING_RETURNED_SIGNAL: 'receiving returned signal',
+  READY_TO_START: 'ready to start',
 };

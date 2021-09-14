@@ -34,6 +34,29 @@ export default function PlayerContainer() {
     mutate((prevPlayers) => ({ ...prevPlayers, readyPlayers }));
   });
 
+  socketClient.on('listen enter channel player list', (user) => {
+    const newUser = {
+      userId: user.userId,
+      voteCount: 0,
+    };
+
+    mutate((prevPlayers) => {
+      return { ...prevPlayers, newUser };
+    });
+  });
+
+  socketClient.on(EVENTS.LISTEN_PLAYER_READY, (user) => {
+    const readyPlayers = players.map((player) => {
+      if (player.userId._id === user._id) {
+        player.characterId = user.userRole.characterId;
+      }
+
+      return player;
+    });
+
+    mutate((prevPlayers) => ({ ...prevPlayers, readyPlayers }));
+  });
+
   return (
     <Wrapper>
       {players.map((player) => (

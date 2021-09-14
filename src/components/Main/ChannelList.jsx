@@ -26,6 +26,17 @@ export default function ChannelList({ loginStatus }) {
     mutate(newActiveChannels);
   });
 
+  useSocket('start game list', (id) => {
+    const isplayingChannels = activeChannels.map((activeChannel) => {
+      if (activeChannel._id === id) {
+        activeChannel.isPlaying = true;
+      }
+      return activeChannel;
+    });
+
+    mutate(isplayingChannels);
+  });
+
   if (error) {
     return <ErrorBox message={error.message} />;
   }
