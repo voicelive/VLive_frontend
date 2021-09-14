@@ -13,4 +13,9 @@ module.exports.EVENTS = {
   RETURN_SIGNAL: 'return signal',
   LISTEN_SEND_SIGNAL: 'listen send signal',
   LISTEN_RETURN_SIGNAL: 'listen return signal',
+  ALL_USER: 'all user',
+  SENDING_SIGNAL: 'sending signal',
+  RETURNING_SIGNAL: 'returning signal',
+  USER_JOINED: 'user joined',
+  RECEIVING_RETURNED_SIGNAL: 'receiving returned signal',
 };
