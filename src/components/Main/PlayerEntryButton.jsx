@@ -16,9 +16,9 @@ export default function PlayerEntryButton({ channelId, isActive }) {
   const { channel, error } = useChannel(channelId);
   const { players, mutate } = usePlayers(channelId);
 
-  const socket = useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
+  useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
     if (user.userType === USER_TYPE.PLAYER && user.channelId === channelId) {
-      mutate((data) => ({ ...data, audience: [...data.audience, { user }] }));
+      mutate((data) => ({ ...data, players: [...data.players, { user }] }));
     }
   });
 
@@ -31,30 +31,29 @@ export default function PlayerEntryButton({ channelId, isActive }) {
   }
 
   async function onButtonClick(channelId) {
-    const { _id, name, email, photoUrl } = JSON.parse(
-      sessionStorage.getItem('user'),
-    );
+    try {
+      const { _id } = JSON.parse(sessionStorage.getItem('user'));
 
-    await fetch(`${API.URL}/channel/${channelId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        state: 'enter',
-        type: USER_TYPE.PLAYER,
-        userId: _id,
-      }),
-    });
+      const response = await fetch(`${API.URL}/channel/${channelId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          state: 'enter',
+          type: USER_TYPE.PLAYER,
+          userId: _id,
+        }),
+      });
 
-    socket.emit(EVENTS.ENTER_CHANNEL, {
-      _id,
-      name,
-      email,
-      photoUrl,
-      channelId,
-      userType: USER_TYPE.PLAYER,
-    });
+      const { result, message } = await response.json();
+
+      if (result === 'error') {
+        throw new Error(message);
+      }
+    } catch (err) {
+      return <ErrorBox message={err.message} />;
+    }
   }
 
   return (
@@ -64,10 +63,10 @@ export default function PlayerEntryButton({ channelId, isActive }) {
         key={channelId}
         passHref
       >
-        <a className={!isActive && 'disable'}>
+        <a className={!isActive ? 'disable' : null}>
           <Button
             onClick={() => onButtonClick(channelId)}
-            color={!isActive && 'gray'}
+            color={!isActive ? 'gray' : null}
           >
             <h3>플레이어로 입장</h3>
             <p>

@@ -8,6 +8,7 @@ import styled from '@emotion/styled';
 import Button from '../Button';
 import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
+import { USER_TYPE } from '../../constants/channel';
 
 export default function CreateChannel({ isModalOpen, closeModal }) {
   const [episodes, setEpisodes] = useState([]);
@@ -45,7 +46,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
     ev.preventDefault();
 
     const { name, episodeId } = inputValue;
-    const { _id } = JSON.parse(sessionStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem('user'));
 
     try {
       const response = await fetch(`${API.URL}/channel`, {
@@ -53,17 +54,25 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, episodeId, host: _id }),
+        body: JSON.stringify({ name, episodeId, host: user._id }),
       });
       const { result, data, message } = await response.json();
+      const channelId = data._id;
 
       if (result === 'error') {
         return alert(message);
       }
 
       socketClient.emit(EVENTS.CREATE_CHANNEL, data);
+      socketClient.emit(EVENTS.ENTER_CHANNEL, {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        photoUrl: user.photoUrl,
+        channelId,
+        userType: USER_TYPE.PLAYER,
+      });
 
-      const channelId = data._id;
       router.push(`/channel/${channelId}`);
     } catch (err) {
       alert(err.message);

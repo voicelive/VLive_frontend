@@ -45,7 +45,7 @@ export default function UserProfile({ onLogin, onLogout, loginStatus }) {
 }
 
 UserProfile.propTypes = {
-  loginStatus: PropTypes.bool,
+  loginStatus: PropTypes.bool.isRequired,
   onLogin: PropTypes.func.isRequired,
   onLogout: PropTypes.func.isRequired,
 };

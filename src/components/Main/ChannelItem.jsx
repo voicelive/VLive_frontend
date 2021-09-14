@@ -36,6 +36,7 @@ ChannelItem.propTypes = {
 };
 
 const Container = styled.div`
+  display: flex;
   height: 160px;
   margin: 30px;
   padding: 8px;

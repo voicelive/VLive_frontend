@@ -10,6 +10,10 @@ const nextHandler = nextApp.getRequestHandler();
 
 const { EVENTS } = require('./src/constants/socketEvent');
 
+const users = {};
+
+const socketToChannel = {};
+
 io.on('connection', (socket) => {
   console.log('socket connected...');
 
@@ -18,9 +22,38 @@ io.on('connection', (socket) => {
   });
 
   socket.on(EVENTS.ENTER_CHANNEL, (userData) => {
-    socket.join(userData.channelId);
+    const { channelId } = userData;
+
+    if (users[channelId]) {
+      users[channelId].push(socket.id);
+    } else {
+      users[channelId] = [socket.id];
+    }
+    socketToChannel[socket.id] = channelId;
+
+    const usersInThisChannel = users[channelId].filter(
+      (id) => id !== socket.id,
+    );
+
+    socket.emit('all users', usersInThisChannel);
+
+    socket.join(channelId);
 
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
+  });
+
+  socket.on(EVENTS.SENDING_SIGNAL, ({ userToSignal, callerId, signal }) => {
+    io.to(userToSignal).emit(EVENTS.USER_JOINED, {
+      signal: signal,
+      callerId: callerId,
+    });
+  });
+
+  socket.on(EVENTS.RETURNING_SIGNAL, ({ callerId, signal }) => {
+    io.to(callerId).emit(EVENTS.RECEIVING_RETURNED_SIGNAL, {
+      signal: signal,
+      id: socket.id,
+    });
   });
 
   socket.on(EVENTS.NEW_CHAT, ({ channelId, newChat }) => {
@@ -39,6 +72,16 @@ io.on('connection', (socket) => {
 
   socket.on(EVENTS.PLAYER_READY, ({ channelId, _id, userRole }) => {
     io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, { _id, userRole });
+  });
+
+  socket.on('disconnect', () => {
+    const channelId = socketToChannel[socket.id];
+    let channel = users[channelId];
+
+    if (channel) {
+      channel = channel.filter((id) => id !== socket.id);
+      users[channelId] = channel;
+    }
   });
 });
 
