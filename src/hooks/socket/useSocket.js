@@ -3,6 +3,8 @@ import io from 'socket.io-client';
 
 const socket = io();
 
+export const getMySocketId = () => socket.id;
+
 export function useSocket(eventName, cb) {
   useEffect(() => {
     socket.on(eventName, cb);

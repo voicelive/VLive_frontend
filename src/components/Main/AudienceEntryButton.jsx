@@ -14,7 +14,7 @@ import ErrorBox from '../ErrorBox';
 
 export default function AudienceEntryButton({ channelId, isActive }) {
   const { audience, error, mutate } = useAudience(channelId);
-  const socket = useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
+  useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
     if (user.userType === USER_TYPE.AUDIENCE && user.channelId === channelId) {
       mutate((data) => ({ ...data, audience: [...data.audience, { user }] }));
     }
@@ -29,30 +29,28 @@ export default function AudienceEntryButton({ channelId, isActive }) {
   }
 
   async function onButtonClick(channelId) {
-    const { _id, name, email, photoUrl } = JSON.parse(
-      sessionStorage.getItem('user'),
-    );
+    try {
+      const { _id } = JSON.parse(sessionStorage.getItem('user'));
 
-    await fetch(`${API.URL}/channel/${channelId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        state: 'enter',
-        type: USER_TYPE.AUDIENCE,
-        userId: _id,
-      }),
-    });
+      const response = await fetch(`${API.URL}/channel/${channelId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          state: 'enter',
+          type: USER_TYPE.AUDIENCE,
+          userId: _id,
+        }),
+      });
+      const { result, message } = await response.json();
 
-    socket.emit(EVENTS.ENTER_CHANNEL, {
-      _id,
-      name,
-      email,
-      photoUrl,
-      channelId,
-      userType: USER_TYPE.AUDIENCE,
-    });
+      if (result === 'error') {
+        throw new Error(message);
+      }
+    } catch (err) {
+      return <ErrorBox message={err.message} />;
+    }
   }
 
   return (
@@ -62,11 +60,11 @@ export default function AudienceEntryButton({ channelId, isActive }) {
         key={channelId}
         passHref
       >
-        <a className={!isActive && 'disable'}>
+        <a className={!isActive ? 'disable' : null}>
           <Button
             onClick={() => onButtonClick(channelId)}
-            color={!isActive && 'gray'}
             disabled={audience.length === USER_TYPE.AUDIENCE_MAX_NUMBER}
+            color={!isActive ? 'gray' : null}
           >
             <h3>시청자로 입장</h3>
             <p>
