@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import styled from '@emotion/styled';
+
 import useEpisodes from '../../hooks/channel/useEpisodes';
+
+import EpisodeVideo from './EpisodeVideo';
+import Modal from '../Modal';
 import ErrorBox from '../ErrorBox';
 
 export default function Preview() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [episode, setEpisode] = useState(null);
   const { episodes, error } = useEpisodes();
 
   if (error) {
     return <ErrorBox message={error.message} />;
+  }
+
+  function openModal(episode) {
+    setEpisode(episode);
+    setIsModalOpen(true);
+  }
+
+  function closeModal() {
+    setIsModalOpen(false);
   }
 
   return (
@@ -17,11 +32,11 @@ export default function Preview() {
       <ListContainer>
         {episodes?.map((episode) => {
           return (
-            <div key={episode._id}>
+            <div key={episode._id} onClick={() => openModal(episode)}>
               <h3 className="episode-title">{episode.title}</h3>
               <div className="episode-thumbnail">
                 <Image
-                  src="https://source.unsplash.com/random"
+                  src={episode.thumbnail}
                   alt="Episode thumbnail"
                   width={100}
                   height={100}
@@ -31,6 +46,14 @@ export default function Preview() {
           );
         })}
       </ListContainer>
+      {isModalOpen && (
+        <Modal closeModal={closeModal}>
+          <EpisodeVideo
+            closeModal={closeModal}
+            episode={episode}
+          ></EpisodeVideo>
+        </Modal>
+      )}
     </PreviewContainer>
   );
 }
@@ -38,11 +61,13 @@ export default function Preview() {
 const PreviewContainer = styled.div`
   text-align: center;
   margin: 30px 20px 20px;
+
   .preview-title {
     margin: 2px;
     color: white;
     font-weight: 500;
   }
+
   .episode:hover {
     border: 1px solid black;
   }
