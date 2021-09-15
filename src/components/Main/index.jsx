@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import theme from '../../styles/theme';
 
 import Header from '../Header';
 import UserProfile from './UserProfile';
