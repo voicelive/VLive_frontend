@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import useChannel from '../../hooks/channel/useChannel';
-import useUserType from '../../hooks/channel/useUserType';
 import { socketClient } from '../../hooks/socket/useSocket';
 import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
@@ -27,7 +26,6 @@ export default function SideButtonContainer() {
     setUserId(_id);
   }, []);
 
-  const { userType } = useUserType(channelId, userId);
   const { channel } = useChannel(channelId);
 
   function openModal() {
@@ -48,7 +46,6 @@ export default function SideButtonContainer() {
         body: JSON.stringify({
           state: 'exit',
           userId,
-          type: userType?.type,
         }),
       });
 
@@ -58,7 +55,7 @@ export default function SideButtonContainer() {
         throw new Error(message);
       }
 
-      socketClient.emit(EVENTS.EXIT_CHANNEL, { channelId, userId, userType });
+      socketClient.emit(EVENTS.EXIT_CHANNEL, { channelId, userId });
       router.push('/main');
     } catch (err) {
       return <ErrorBox message={err.message} />;

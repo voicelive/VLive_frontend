@@ -7,7 +7,6 @@ import { useSocket } from '../../hooks/socket/useSocket';
 import usePlayers from '../../hooks/channel/usePlayers';
 import useChannel from '../../hooks/channel/useChannel';
 import { API } from '../../constants/api';
-import { USER_TYPE } from '../../constants/channel';
 import { EVENTS } from '../../constants/socketEvent';
 
 import Button from '../Button';
@@ -18,17 +17,20 @@ export default function PlayerEntryButton({ channelId, isActive }) {
   const { players, mutate } = usePlayers(channelId);
 
   useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
-    if (user.userType === USER_TYPE.PLAYER && user.channelId === channelId) {
-      mutate((data) => ({ ...data, players: [...data.players, { user }] }));
+    if (user.channelId === channelId) {
+      mutate((prev) => ({ ...prev, players: [...prev.players, { user }] }));
     }
   });
 
-  useSocket(EVENTS.LISTEN_EXIT_CHANNEL_LIST, (user) => {
-    if (
-      user.userType.type === USER_TYPE.PLAYER &&
-      user.channelId === channelId
-    ) {
-      mutate((data) => ({ ...data, players: [...data.players, { user }] }));
+  useSocket(EVENTS.LISTEN_EXIT_CHANNEL, (user) => {
+    if (user.channelId === channelId) {
+      const newPlayers = players.filter(
+        (player) => player.userId._id !== user.userId,
+      );
+
+      mutate((data) => {
+        return { ...data, players: newPlayers };
+      });
     }
   });
 
@@ -51,7 +53,6 @@ export default function PlayerEntryButton({ channelId, isActive }) {
         },
         body: JSON.stringify({
           state: 'enter',
-          type: USER_TYPE.PLAYER,
           userId: _id,
         }),
       });

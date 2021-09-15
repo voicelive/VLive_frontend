@@ -39,29 +39,14 @@ io.on('connection', (socket) => {
     socket.emit(EVENTS.ALL_USER, usersInThisChannel);
 
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
-
-    io.to(userData.channelId).emit(EVENTS.LISTEN_ENTER_CHANNEL_LIST, userData);
   });
 
-  socket.on(EVENTS.EXIT_CHANNEL, ({ channelId, userId, userType }) => {
-    console.log(
-      channelId,
-      userId,
-      userType,
-      ' channelId, userId, userType in server',
-    );
+  socket.on(EVENTS.EXIT_CHANNEL, ({ channelId, userId }) => {
     socket.leave(channelId);
 
-    io.to(channelId).emit(EVENTS.LISTEN_EXIT_CHANNEL, {
+    socket.broadcast.emit(EVENTS.LISTEN_EXIT_CHANNEL, {
       channelId,
       userId,
-      userType,
-    });
-
-    socket.broadcast.emit(EVENTS.LISTEN_EXIT_CHANNEL_LIST, {
-      channelId,
-      userId,
-      userType,
     });
   });
 
@@ -92,7 +77,6 @@ io.on('connection', (socket) => {
   socket.on(
     EVENTS.PLAYER_READY,
     ({ channelId, userId, userRole, episodeInfo }) => {
-      socket.join(channelId);
       io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, { userId, userRole });
 
       if (!readyPlayers[channelId]) {
@@ -110,7 +94,6 @@ io.on('connection', (socket) => {
   );
 
   socket.on(EVENTS.READY_TO_START, (id) => {
-    //리스트 변경
     socket.broadcast.emit(EVENTS.LISTEN_READY_TO_START, id);
   });
 

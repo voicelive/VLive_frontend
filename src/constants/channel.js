@@ -4,6 +4,4 @@ module.exports.CHANNEL = {
 
 module.exports.USER_TYPE = {
   PLAYER: 'player',
-  AUDIENCE: 'audience',
-  AUDIENCE_MAX_NUMBER: 3,
 };
