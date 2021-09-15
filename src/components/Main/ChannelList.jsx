@@ -14,6 +14,10 @@ const { EVENTS } = require('../../constants/socketEvent');
 export default function ChannelList({ loginStatus }) {
   const { activeChannels, error, mutate } = useChannels();
 
+  if (error) {
+    return <ErrorBox message={error.message} />;
+  }
+
   useSocket(EVENTS.LISTEN_CREATE_CHANNEL, (channel) => {
     mutate([...activeChannels, channel]);
   });
@@ -27,19 +31,15 @@ export default function ChannelList({ loginStatus }) {
   });
 
   useSocket(EVENTS.LISTEN_READY_TO_START, (id) => {
-    const isplayingChannels = activeChannels.map((activeChannel) => {
+    const isStartChannels = activeChannels.map((activeChannel) => {
       if (activeChannel._id === id) {
         activeChannel.isPlaying = true;
       }
       return activeChannel;
     });
 
-    mutate(isplayingChannels);
+    mutate(isStartChannels);
   });
-
-  if (error) {
-    return <ErrorBox message={error.message} />;
-  }
 
   return (
     <ListBox>

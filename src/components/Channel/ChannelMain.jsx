@@ -17,12 +17,12 @@ export default function ChannelMain() {
   const [showResult, setShowResult] = useState(false);
   const [showChat, setShowChat] = useState(false);
 
-  if (error) {
-    return <ErrorBox message={error.message} />;
-  }
-
   if (channelId == null || channel == null) {
     return null;
+  }
+
+  if (error) {
+    return <ErrorBox message={error.message} />;
   }
 
   const { name, episode } = channel;
@@ -37,7 +37,7 @@ export default function ChannelMain() {
         {showResult ? <VoteResult /> : <h1>비디오컴포넌트</h1>}
       </VideoWrapper>
       <ChatWrapper>
-        {showChat ? (
+        {!showChat ? (
           <>
             <ChatBody />
             <ChatForm />
