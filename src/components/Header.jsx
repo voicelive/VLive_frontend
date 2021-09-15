@@ -16,7 +16,7 @@ Header.propTypes = {
 
 const HeaderWrapper = styled.header`
   width: 100%;
-  height: 8vh;
+  height: 10vh;
   text-align: left;
   background-color: ${({ theme }) => theme.darkNavy};
   box-shadow: ${({ theme }) => theme.whiteShadow};

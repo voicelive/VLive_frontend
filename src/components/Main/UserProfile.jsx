@@ -33,10 +33,10 @@ export default function UserProfile({ onLogin, onLogout, loginStatus }) {
         </div>
         <div className="profile">
           <div className="user-email">
-            {user ? user?.email : 'email : 로그인이 필요합니다'}
+            {user ? user?.email : '로그인이 필요합니다'}
           </div>
           <div className="user-name">
-            {user ? user?.name : 'name : 로그인이 필요합니다'}
+            {user ? user?.name : '로그인이 필요합니다'}
           </div>
         </div>
       </ProfileBox>
@@ -58,7 +58,7 @@ UserProfile.propTypes = {
 };
 
 const Container = styled.div`
-  padding: 20px;
+  padding: 0 20px;
   text-align: center;
   height: 30%;
 `;
@@ -85,7 +85,7 @@ const ProfileBox = styled.div`
       width: 80%;
       padding: 15px 0;
       font-size: 0.8em;
-      color: white;
+      color: gray;
       border-bottom: 1px solid ${({ theme }) => theme.blue};
     }
   }

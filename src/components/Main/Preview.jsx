@@ -66,7 +66,7 @@ const PreviewContainer = styled.div`
   text-align: center;
   margin: 30px 20px 20px;
   height: 50%;
-  padding: 20px 0;
+  padding-top: 20px;
   box-sizing: border-box;
 
   .preview-title {

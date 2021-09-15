@@ -52,7 +52,7 @@ const Container = styled.div`
   box-shadow: ${({ isPlaying, theme }) =>
     isPlaying ? theme.pinkShadow : theme.blueShadow};
   background-color: ${({ isPlaying, theme }) =>
-    isPlaying ? theme.darkNavy : theme.navy}60;
+    isPlaying ? theme.onAirBg : theme.waitingBg};
 
   .title-box {
     text-align: left;
