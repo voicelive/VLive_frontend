@@ -4,9 +4,10 @@ import styled from '@emotion/styled';
 
 import { socketClient } from '../../hooks/socket/useSocket';
 import usePlayers from '../../hooks/channel/usePlayers';
+import { EVENTS } from '../../constants/socketEvent';
+
 import PlayerItem from './PlayerItem';
 import ErrorBox from '../ErrorBox';
-import { EVENTS } from '../../constants/socketEvent';
 
 export default function PlayerContainer() {
   const {
@@ -22,10 +23,27 @@ export default function PlayerContainer() {
     return <ErrorBox message={error.message} />;
   }
 
-  socketClient.on(EVENTS.LISTEN_PLAYER_READY, ({ _id, userRole }) => {
+  socketClient.on(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
+    const newUser = {
+      userId: user._id,
+      voteCount: 0,
+    };
+
+    mutate((prev) => ({ ...prev, players: [...prev.players, newUser] }));
+  });
+
+  socketClient.on(EVENTS.LISTEN_EXIT_CHANNEL, (user) => {
+    const newPlayers = players.filter(
+      (player) => player.userId._id !== user.userId,
+    );
+
+    mutate((prevPlayers) => ({ ...prevPlayers, newPlayers }));
+  });
+
+  socketClient.on(EVENTS.LISTEN_PLAYER_READY, (user) => {
     const readyPlayers = players.map((player) => {
-      if (player.userId._id === _id) {
-        player.characterId = userRole.characterId;
+      if (player.userId._id === user._id) {
+        player.characterId = user.userRole.characterId;
       }
 
       return player;

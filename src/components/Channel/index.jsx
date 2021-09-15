@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 
+import useChannel from '../../hooks/channel/useChannel';
+import { socketClient } from '../../hooks/socket/useSocket';
+import { EVENTS } from '../../constants/socketEvent';
+
 import ChannelMain from './ChannelMain';
 import ChannelSide from './ChannelSide';
 import ErrorBox from '../ErrorBox';
-import { socketClient } from '../../hooks/socket/useSocket';
-import { EVENTS } from '../../constants/socketEvent';
-import useChannel from '../../hooks/channel/useChannel';
-import { getUser } from '../../utils/user';
 
 export default function Channel() {
   const {
@@ -17,25 +17,27 @@ export default function Channel() {
   const { channel, error } = useChannel(channelId);
 
   useEffect(() => {
-    if (channelId == null) return;
+    const { _id, name, email, photoUrl } = JSON.parse(
+      sessionStorage.getItem('user'),
+    );
 
-    try {
-      (async () => {
-        const user = await getUser(channelId);
+    const user = {
+      _id,
+      name,
+      email,
+      photoUrl,
+      channelId,
+    };
 
-        socketClient.emit(EVENTS.ENTER_CHANNEL, user);
-      })();
-    } catch (err) {
-      return <ErrorBox message={err.message} />;
-    }
+    socketClient.emit(EVENTS.ENTER_CHANNEL, user);
   }, []);
-
-  if (channelId == null || channel == null) {
-    return <></>;
-  }
 
   if (error) {
     return <ErrorBox message={error.message} />;
+  }
+
+  if (channelId == null || channel == null) {
+    return null;
   }
 
   return (

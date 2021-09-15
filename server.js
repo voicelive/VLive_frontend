@@ -11,8 +11,8 @@ const nextHandler = nextApp.getRequestHandler();
 const { EVENTS } = require('./src/constants/socketEvent');
 
 const users = {};
-
 const socketToChannel = {};
+const readyPlayers = {};
 
 io.on('connection', (socket) => {
   console.log('socket connected...');
@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
 
   socket.on(EVENTS.ENTER_CHANNEL, (userData) => {
     const { channelId } = userData;
+    socket.join(channelId);
 
     if (users[channelId]) {
       users[channelId].push(socket.id);
@@ -35,11 +36,18 @@ io.on('connection', (socket) => {
       (id) => id !== socket.id,
     );
 
-    socket.emit('all users', usersInThisChannel);
-
-    socket.join(channelId);
+    socket.emit(EVENTS.ALL_USER, usersInThisChannel);
 
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
+  });
+
+  socket.on(EVENTS.EXIT_CHANNEL, ({ channelId, userId }) => {
+    socket.leave(channelId);
+
+    socket.broadcast.emit(EVENTS.LISTEN_EXIT_CHANNEL, {
+      channelId,
+      userId,
+    });
   });
 
   socket.on(EVENTS.SENDING_SIGNAL, ({ userToSignal, callerId, signal }) => {
@@ -66,15 +74,32 @@ io.on('connection', (socket) => {
     socket.leave(channelId);
   });
 
+  socket.on(
+    EVENTS.PLAYER_READY,
+    ({ channelId, userId, userRole, episodeInfo }) => {
+      io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, { userId, userRole });
+
+      if (!readyPlayers[channelId]) {
+        readyPlayers[channelId] = [userRole];
+      } else {
+        readyPlayers[channelId].push(userRole);
+      }
+
+      if (readyPlayers[channelId].length === episodeInfo.characters.length) {
+        io.to(channelId).emit(EVENTS.LISTEN_GAME_START, 'start');
+
+        readyPlayers[channelId] = [];
+      }
+    },
+  );
+
+  socket.on(EVENTS.READY_TO_START, (id) => {
+    socket.broadcast.emit(EVENTS.LISTEN_READY_TO_START, id);
+  });
+
   socket.on('disconnect', () => {
     console.log('socket disconnected...');
-  });
 
-  socket.on(EVENTS.PLAYER_READY, ({ channelId, _id, userRole }) => {
-    io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, { _id, userRole });
-  });
-
-  socket.on('disconnect', () => {
     const channelId = socketToChannel[socket.id];
     let channel = users[channelId];
 

@@ -32,7 +32,7 @@ export default function RecentHistory() {
         <div className="video"></div>
       </VideoWrapper>
       <ResultWrapper>
-        {players.map((player) => (
+        {players?.map((player) => (
           <div key={player._id} className="player-profile">
             <Image
               src={player.characterId.imgUrl}

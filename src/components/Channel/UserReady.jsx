@@ -13,7 +13,7 @@ import Button from '../Button';
 import ErrorBox from '../ErrorBox';
 import theme from '../../styles/theme';
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import { API } from '../../constants/api';
 
 export default function UserReady({ isModalOpen, closeModal }) {
   const [episodeInfo, setEpisodeInfo] = useState([]);
@@ -35,7 +35,7 @@ export default function UserReady({ isModalOpen, closeModal }) {
     async function fetchData() {
       try {
         const response = await fetch(
-          `${baseUrl}/episode/${channel.episode._id}`,
+          `${API.URL}/episode/${channel.episode._id}`,
           {
             method: 'GET',
             headers: {
@@ -72,7 +72,7 @@ export default function UserReady({ isModalOpen, closeModal }) {
     const { _id } = JSON.parse(sessionStorage.getItem('user'));
 
     try {
-      const response = await fetch(`${baseUrl}/channel/${channelId}`, {
+      const response = await fetch(`${API.URL}/channel/${channelId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -93,11 +93,12 @@ export default function UserReady({ isModalOpen, closeModal }) {
         channelId,
         _id,
         userRole,
+        episodeInfo,
       });
 
       closeModal();
     } catch (err) {
-      alert(err.message);
+      return <ErrorBox message={err.message} />;
     }
   }
 
@@ -116,25 +117,28 @@ export default function UserReady({ isModalOpen, closeModal }) {
         <div className="episode-title">{title}</div>
         <ReadyOptions>
           <ul className="character-list">
-            {characters &&
-              characters.map((character) => (
-                <ReadyOption
-                  key={character._id}
-                  id={character._id}
-                  onClick={handleClick}
+            {characters?.map((character) => (
+              <ReadyOption
+                key={character._id}
+                id={character._id}
+                onClick={handleClick}
+              >
+                <span className="character-name">{character.name}</span>
+                <div
+                  className={
+                    userRole.characterId === character._id && 'character-image'
+                  }
                 >
-                  <span className="character-name">{character.name}</span>
-                  <div className="character-image">
-                    <Image
-                      src={character.imgUrl}
-                      alt="character-imgUrl"
-                      width={90}
-                      height={100}
-                      layout="responsive"
-                    />
-                  </div>
-                </ReadyOption>
-              ))}
+                  <Image
+                    src={character?.imgUrl}
+                    alt="character-imgUrl"
+                    width={90}
+                    height={100}
+                    layout="responsive"
+                  />
+                </div>
+              </ReadyOption>
+            ))}
           </ul>
         </ReadyOptions>
         <div className="button">
@@ -184,6 +188,7 @@ const ReadyForm = styled.form`
   .channel-name {
     display: block;
   }
+
   .button {
     margin: 25px auto 0 auto;
   }
@@ -203,9 +208,7 @@ const ReadyOptions = styled.div`
   }
 
   .character-image {
-    &:hover {
-      border: 2px solid ${theme.pink};
-    }
+    border: 2px solid ${theme.pink};
   }
 
   .image {

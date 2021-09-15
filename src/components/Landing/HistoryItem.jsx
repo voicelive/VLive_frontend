@@ -35,7 +35,6 @@ HistoryItem.propTypes = {
   channel: PropTypes.shape({
     name: PropTypes.string.isRequired,
     players: PropTypes.array.isRequired,
-    audience: PropTypes.array.isRequired,
     episode: PropTypes.object.isRequired,
   }),
 };

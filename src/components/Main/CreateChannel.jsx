@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/dist/client/router';
-import { socketClient } from '../../hooks/socket/useSocket';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import Button from '../Button';
 import { API } from '../../constants/api';
-import { EVENTS } from '../../constants/socketEvent';
-import { USER_TYPE } from '../../constants/channel';
 
 export default function CreateChannel({ isModalOpen, closeModal }) {
   const [episodes, setEpisodes] = useState([]);
@@ -62,16 +59,6 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
       if (result === 'error') {
         return alert(message);
       }
-
-      socketClient.emit(EVENTS.CREATE_CHANNEL, data);
-      socketClient.emit(EVENTS.ENTER_CHANNEL, {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        photoUrl: user.photoUrl,
-        channelId,
-        userType: USER_TYPE.PLAYER,
-      });
 
       router.push(`/channel/${channelId}`);
     } catch (err) {
