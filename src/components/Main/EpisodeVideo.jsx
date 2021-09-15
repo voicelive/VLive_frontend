@@ -49,3 +49,8 @@ const Container = styled.div`
     }
   }
 `;
+
+EpisodeVideo.propTypes = {
+  closeModal: PropTypes.func.isRequired,
+  episode: PropTypes.object,
+};
