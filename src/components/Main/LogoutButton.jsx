@@ -2,6 +2,7 @@ import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import PropTypes from 'prop-types';
+import theme from '../../styles/theme';
 
 import Button from '../Button';
 
@@ -18,12 +19,7 @@ export default function LogoutButton({ setLogoutError, onLogout }) {
   }
 
   return (
-    <Button
-      onClick={signOutGoogle}
-      width="230px"
-      height="8px"
-      borderRadius="15px"
-    >
+    <Button onClick={signOutGoogle} width="200px" bgColor={theme.pink}>
       로그아웃
     </Button>
   );

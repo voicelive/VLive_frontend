@@ -28,7 +28,7 @@ export default function Main() {
 
   return (
     <>
-      <Header>V-Live</Header>
+      <Header>VLIVE</Header>
       <MainContainer>
         <ChannelList loginStatus={isLogin} />
         <SideBox>
@@ -38,7 +38,7 @@ export default function Main() {
             loginStatus={isLogin}
           />
           <Preview />
-          <div className={`button-wrapper ${!isLogin ? 'disable' : null}`}>
+          <CreateButton isLogin={isLogin}>
             <Button
               onClick={openModal}
               width="200px"
@@ -47,7 +47,7 @@ export default function Main() {
             >
               채널 개설하기
             </Button>
-          </div>
+          </CreateButton>
         </SideBox>
       </MainContainer>
       {isModalOpen && (
@@ -68,18 +68,30 @@ const MainContainer = styled.div`
 const SideBox = styled.div`
   position: relative;
   display: inline-block;
-  width: 20%;
+  width: 25%;
   text-align: center;
-  background: ${theme.navy};
-
-  .button-wrapper {
-    position: absolute;
-    width: 100%;
-    margin-bottom: 20px;
-  }
+  background-size: cover;
+  background-image: linear-gradient(
+      rgba(5, 3, 19, 0.801),
+      rgba(5, 3, 19, 0.788),
+      rgba(5, 3, 19, 0.568),
+      rgba(5, 3, 19, 0.788),
+      rgba(5, 3, 19, 0.801)
+    ),
+    url('/images/11.jpg');
 
   .disable {
     cursor: not-allowed;
     pointer-events: none;
   }
+`;
+
+const CreateButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 15%;
+  cursor: ${({ isLogin }) => (!isLogin ? 'not-allowed' : 'pointer')};
+  pointer-events: ${({ isLogin }) => (!isLogin ? 'none' : 'auto')};
 `;
