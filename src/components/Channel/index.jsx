@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 
+import { socketClient } from '../../hooks/socket/useSocket';
+import useChannel from '../../hooks/channel/useChannel';
+import { EVENTS } from '../../constants/socketEvent';
+import { API } from '../../constants/api';
+
 import ChannelMain from './ChannelMain';
 import ChannelSide from './ChannelSide';
 import ErrorBox from '../ErrorBox';
-import { socketClient } from '../../hooks/socket/useSocket';
-import { EVENTS } from '../../constants/socketEvent';
-import useChannel from '../../hooks/channel/useChannel';
-import { getUser } from '../../utils/user';
 
 export default function Channel() {
   const {
@@ -16,22 +17,47 @@ export default function Channel() {
   } = useRouter();
   const { channel, error } = useChannel(channelId);
 
-  useEffect(() => {
+  useEffect(async () => {
     if (channelId == null) return;
 
     try {
-      (async () => {
-        const user = await getUser(channelId);
+      const { _id, name, email, photoUrl } = JSON.parse(
+        sessionStorage.getItem('user'),
+      );
 
-        socketClient.emit(EVENTS.ENTER_CHANNEL, user);
-      })();
+      const response = await fetch(
+        `${API.URL}/channel/${channelId}/users/${_id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      const { result, type, message } = await response.json();
+
+      if (result === 'error') {
+        throw new Error(message);
+      }
+
+      const user = {
+        _id,
+        name,
+        email,
+        photoUrl,
+        channelId,
+        userType: type,
+      };
+
+      socketClient.emit(EVENTS.ENTER_CHANNEL, user);
     } catch (err) {
       return <ErrorBox message={err.message} />;
     }
   }, []);
 
   if (channelId == null || channel == null) {
-    return <></>;
+    return null;
   }
 
   if (error) {

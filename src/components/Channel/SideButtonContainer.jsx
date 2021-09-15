@@ -11,6 +11,7 @@ import { EVENTS } from '../../constants/socketEvent';
 import UserReady from './UserReady';
 import Button from '../Button';
 import Modal from '../Modal';
+import ErrorBox from '../ErrorBox';
 
 export default function SideButtonContainer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +28,7 @@ export default function SideButtonContainer() {
   }, []);
 
   const { userType } = useUserType(channelId, userId);
-  const { channel, error } = useChannel(channelId);
+  const { channel } = useChannel(channelId);
 
   function openModal() {
     setIsModalOpen(true);
@@ -39,7 +40,7 @@ export default function SideButtonContainer() {
 
   async function handleClick() {
     try {
-      await fetch(`${API.URL}/channel/${channelId}`, {
+      const response = await fetch(`${API.URL}/channel/${channelId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -47,18 +48,24 @@ export default function SideButtonContainer() {
         body: JSON.stringify({
           state: 'exit',
           userId,
-          type: userType.type,
+          type: userType?.type,
         }),
       });
 
+      const { result, message } = response;
+
+      if (result === 'error') {
+        throw new Error(message);
+      }
+
       socketClient.emit(EVENTS.EXIT_CHANNEL, { channelId, userId, userType });
       router.push('/main');
-    } catch (error) {
-      return error;
+    } catch (err) {
+      return <ErrorBox message={err.message} />;
     }
   }
 
-  socketClient.on(EVENTS.LISTEN_PLAYER_READY, (start) => {
+  socketClient.on(EVENTS.LISTEN_GAME_START, (start) => {
     if (start && userId === channel?.host._id) {
       setReady(true);
     }
@@ -66,7 +73,7 @@ export default function SideButtonContainer() {
 
   async function startGameHandleClick() {
     try {
-      await fetch(`${API.URL}/channel/${channelId}`, {
+      const response = await fetch(`${API.URL}/channel/${channelId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -77,9 +84,15 @@ export default function SideButtonContainer() {
         }),
       });
 
+      const { result, message } = await response.json();
+
+      if (result === 'error') {
+        throw new Error(message);
+      }
+
       socketClient.emit(EVENTS.READY_TO_START, channelId);
-    } catch (error) {
-      return error;
+    } catch (err) {
+      return <ErrorBox message={err.message} />;
     }
   }
 

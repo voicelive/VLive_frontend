@@ -98,7 +98,7 @@ export default function UserReady({ isModalOpen, closeModal }) {
 
       closeModal();
     } catch (err) {
-      alert(err.message);
+      return <ErrorBox message={err.message} />;
     }
   }
 
@@ -117,30 +117,28 @@ export default function UserReady({ isModalOpen, closeModal }) {
         <div className="episode-title">{title}</div>
         <ReadyOptions>
           <ul className="character-list">
-            {characters &&
-              characters.map((character) => (
-                <ReadyOption
-                  key={character._id}
-                  id={character._id}
-                  onClick={handleClick}
+            {characters?.map((character) => (
+              <ReadyOption
+                key={character._id}
+                id={character._id}
+                onClick={handleClick}
+              >
+                <span className="character-name">{character.name}</span>
+                <div
+                  className={
+                    userRole.characterId === character._id && 'character-image'
+                  }
                 >
-                  <span className="character-name">{character.name}</span>
-                  <div
-                    className={
-                      userRole.characterId === character._id &&
-                      'character-image'
-                    }
-                  >
-                    <Image
-                      src={character.imgUrl}
-                      alt="character-imgUrl"
-                      width={90}
-                      height={100}
-                      layout="responsive"
-                    />
-                  </div>
-                </ReadyOption>
-              ))}
+                  <Image
+                    src={character?.imgUrl}
+                    alt="character-imgUrl"
+                    width={90}
+                    height={100}
+                    layout="responsive"
+                  />
+                </div>
+              </ReadyOption>
+            ))}
           </ul>
         </ReadyOptions>
         <div className="button">
@@ -190,6 +188,7 @@ const ReadyForm = styled.form`
   .channel-name {
     display: block;
   }
+
   .button {
     margin: 25px auto 0 auto;
   }
