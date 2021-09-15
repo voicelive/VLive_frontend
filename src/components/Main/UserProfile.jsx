@@ -27,8 +27,8 @@ export default function UserProfile({ onLogin, onLogout, loginStatus }) {
             className="img"
             src={user ? user?.photoUrl : '/images/profile.png'}
             alt="profile-img"
-            width={90}
-            height={90}
+            width={80}
+            height={80}
           />
         </div>
         <div className="profile">
@@ -69,12 +69,8 @@ const ProfileBox = styled.div`
   align-items: center;
   height: 70%;
 
-  .user-image {
-    min-width: 100px;
-
-    .img {
-      border-radius: 50%;
-    }
+  .img {
+    border-radius: 50%;
   }
 
   .profile {
@@ -86,9 +82,8 @@ const ProfileBox = styled.div`
 
     .user-email,
     .user-name {
-      width: 90%;
-      height: 40px;
-      padding: 12px 0 2px;
+      width: 80%;
+      padding: 15px 0;
       font-size: 0.8em;
       color: white;
       border-bottom: 1px solid ${({ theme }) => theme.blue};

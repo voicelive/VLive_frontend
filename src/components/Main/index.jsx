@@ -41,7 +41,7 @@ export default function Main() {
           <CreateButton isLogin={isLogin}>
             <Button
               onClick={openModal}
-              width="200px"
+              width="60%"
               fontSize="1em"
               color={!isLogin ? 'gray' : null}
             >
@@ -68,7 +68,7 @@ const MainContainer = styled.div`
 const SideBox = styled.div`
   position: relative;
   display: inline-block;
-  width: 25%;
+  width: 30%;
   text-align: center;
   background-size: cover;
   background-image: linear-gradient(
@@ -91,7 +91,7 @@ const CreateButton = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 15%;
+  height: 20%;
   cursor: ${({ isLogin }) => (!isLogin ? 'not-allowed' : 'pointer')};
   pointer-events: ${({ isLogin }) => (!isLogin ? 'none' : 'auto')};
 `;

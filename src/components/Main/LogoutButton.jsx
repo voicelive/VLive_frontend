@@ -19,7 +19,7 @@ export default function LogoutButton({ setLogoutError, onLogout }) {
   }
 
   return (
-    <Button onClick={signOutGoogle} width="200px" bgColor={theme.pink}>
+    <Button onClick={signOutGoogle} width="60%" bgColor={theme.pink}>
       로그아웃
     </Button>
   );

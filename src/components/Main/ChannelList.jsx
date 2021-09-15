@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import theme from '../../styles/theme';
 import PropTypes from 'prop-types';
 
 import { useSocket } from '../../hooks/socket/useSocket';
@@ -42,13 +41,15 @@ export default function ChannelList({ loginStatus }) {
   });
 
   return (
-    <ListBox>
+    <List>
       {activeChannels?.map((channel) => (
-        <div key={channel._id}>
-          <ChannelItem channel={channel} loginStatus={loginStatus} />
-        </div>
+        <ChannelItem
+          key={channel._id}
+          channel={channel}
+          loginStatus={loginStatus}
+        />
       ))}
-    </ListBox>
+    </List>
   );
 }
 
@@ -56,16 +57,33 @@ ChannelList.propTypes = {
   loginStatus: PropTypes.bool.isRequired,
 };
 
-const ListBox = styled.div`
+const List = styled.div`
   display: inline-block;
-  width: 80%;
+  width: 75%;
+  margin: auto;
+  padding: 60px 100px;
   overflow: scroll;
-  padding: 30px 100px;
-  background: linear-gradient(
-      to right,
-      ${theme.darkNavy},
-      ${theme.navy},
-      ${theme.darkNavy}
+  background-image: linear-gradient(
+      rgba(5, 3, 19, 0.801),
+      rgba(5, 3, 19, 0.788),
+      rgba(5, 3, 19, 0.568),
+      rgba(5, 3, 19, 0.788),
+      rgba(5, 3, 19, 0.801)
     ),
-    url('/images/background.jpg');
+    url(/images/background.jpg);
+
+  &::-webkit-scrollbar {
+    width: 13px;
+    background-color: ${({ theme }) => theme.darkNavy};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 30px;
+    background-color: ${({ theme }) => theme.blue};
+
+    &:hover {
+      background-color: ${({ theme }) => theme.white};
+      border: none;
+    }
+  }
 `;

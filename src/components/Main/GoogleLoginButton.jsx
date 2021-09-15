@@ -57,7 +57,7 @@ export default function GoogleLoginButton({ onLogin }) {
     <Button
       onClick={signInGoogle}
       bgColor={theme.blue}
-      width="75%"
+      width="60%"
       fontSize="1.2em"
     >
       Google

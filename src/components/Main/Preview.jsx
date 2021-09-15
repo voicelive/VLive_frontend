@@ -42,8 +42,8 @@ export default function Preview() {
                 <Image
                   src={episode.thumbnail}
                   alt="Episode thumbnail"
-                  width={160}
-                  height={100}
+                  width={230}
+                  height={120}
                 />
               </div>
             </div>
@@ -67,6 +67,7 @@ const PreviewContainer = styled.div`
   margin: 30px 20px 20px;
   height: 50%;
   padding: 20px 0;
+  box-sizing: border-box;
 
   .preview-title {
     margin: 2px;
@@ -82,12 +83,13 @@ const PreviewContainer = styled.div`
 
 const List = styled.div`
   .episode-title {
-    color: white;
+    margin: 10px 0;
     font-weight: 300;
     font-size: 1em;
+    color: white;
   }
 
   .episode-thumbnail {
-    margin: 0 auto;
+    margin: 20px auto;
   }
 `;
