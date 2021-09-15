@@ -4,9 +4,10 @@ import styled from '@emotion/styled';
 
 import { socketClient } from '../../hooks/socket/useSocket';
 import usePlayers from '../../hooks/channel/usePlayers';
+import { EVENTS } from '../../constants/socketEvent';
+
 import PlayerItem from './PlayerItem';
 import ErrorBox from '../ErrorBox';
-import { EVENTS } from '../../constants/socketEvent';
 
 export default function PlayerContainer() {
   const {
@@ -14,7 +15,7 @@ export default function PlayerContainer() {
   } = useRouter();
   const { players, error, mutate } = usePlayers(channelId);
 
-  if (channelId == null || players == null) {
+  if (channelId == null || players.length == 0) {
     return null;
   }
 
@@ -22,16 +23,12 @@ export default function PlayerContainer() {
     return <ErrorBox message={error.message} />;
   }
 
-  socketClient.on(EVENTS.LISTEN_PLAYER_READY, ({ _id, userRole }) => {
-    const readyPlayers = players.map((player) => {
-      if (player.userId._id === _id) {
-        player.characterId = userRole.characterId;
-      }
+  socketClient.on(EVENTS.LISTEN_EXIT_CHANNEL, (user) => {
+    const newPlayers = players.filter(
+      (player) => player.userId._id !== user.userId,
+    );
 
-      return player;
-    });
-
-    mutate((prevPlayers) => ({ ...prevPlayers, readyPlayers }));
+    mutate((prevPlayers) => ({ ...prevPlayers, newPlayers }));
   });
 
   socketClient.on(EVENTS.LISTEN_ENTER_CHANNEL_LIST, (user) => {
@@ -40,9 +37,7 @@ export default function PlayerContainer() {
       voteCount: 0,
     };
 
-    mutate((prevPlayers) => {
-      return { ...prevPlayers, newUser };
-    });
+    mutate((prevPlayers) => ({ ...prevPlayers, newUser }));
   });
 
   socketClient.on(EVENTS.LISTEN_PLAYER_READY, (user) => {

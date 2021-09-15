@@ -27,7 +27,7 @@ export default function UserProfile({ onLogin, onLogout, loginStatus }) {
         <Profile>
           <div className="user-image">
             <Image
-              src={user.photoUrl}
+              src={user?.photoUrl}
               alt="User profile image"
               width={72}
               height={72}

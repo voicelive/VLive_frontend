@@ -1,6 +1,8 @@
 import useSWR from 'swr';
 import { API } from '../../constants/api';
 
+import ErrorBox from '../../components/ErrorBox';
+
 async function fetcher(channelId, userId) {
   try {
     const response = await fetch(
@@ -12,11 +14,15 @@ async function fetcher(channelId, userId) {
         },
       },
     );
-    const userType = await response.json();
+    const { result, userType, message } = await response.json();
+
+    if (result === 'error') {
+      throw new Error(message);
+    }
 
     return userType;
   } catch (err) {
-    alert(err.message);
+    return <ErrorBox message={err.message} />;
   }
 }
 
@@ -27,9 +33,7 @@ export default function useUserType(channelId, userId) {
     mutate,
   } = useSWR(
     channelId && userId ? `/channel/${channelId}/users/${userId}` : null,
-    () => {
-      return fetcher(channelId, userId);
-    },
+    () => fetcher(channelId, userId),
   );
 
   return { userType, error, mutate };

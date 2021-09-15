@@ -36,13 +36,20 @@ io.on('connection', (socket) => {
       (id) => id !== socket.id,
     );
 
-    socket.emit('all users', usersInThisChannel);
+    socket.emit(EVENTS.ALL_USER, usersInThisChannel);
+
     socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
 
     io.to(userData.channelId).emit(EVENTS.LISTEN_ENTER_CHANNEL_LIST, userData);
   });
 
   socket.on(EVENTS.EXIT_CHANNEL, ({ channelId, userId, userType }) => {
+    console.log(
+      channelId,
+      userId,
+      userType,
+      ' channelId, userId, userType in server',
+    );
     socket.leave(channelId);
 
     io.to(channelId).emit(EVENTS.LISTEN_EXIT_CHANNEL, {
@@ -82,10 +89,6 @@ io.on('connection', (socket) => {
     socket.leave(channelId);
   });
 
-  socket.on('disconnect', () => {
-    console.log('socket disconnected...');
-  });
-
   socket.on(
     EVENTS.PLAYER_READY,
     ({ channelId, userId, userRole, episodeInfo }) => {
@@ -100,16 +103,20 @@ io.on('connection', (socket) => {
 
       if (readyPlayers[channelId].length === episodeInfo.characters.length) {
         io.to(channelId).emit(EVENTS.LISTEN_GAME_START, 'start');
+
         readyPlayers[channelId] = [];
       }
     },
   );
 
   socket.on(EVENTS.READY_TO_START, (id) => {
+    //리스트 변경
     socket.broadcast.emit(EVENTS.LISTEN_READY_TO_START, id);
   });
 
   socket.on('disconnect', () => {
+    console.log('socket disconnected...');
+
     const channelId = socketToChannel[socket.id];
     let channel = users[channelId];
 
