@@ -9,7 +9,7 @@ export default function EpisodeVideo({ closeModal, episode }) {
     <Container>
       <div className="header">
         <span className="title">{episode.title}</span>
-        <Button onClick={() => closeModal()}>나가기</Button>
+        <Button onClick={closeModal}>나가기</Button>
       </div>
       <video autoPlay>
         <source src={episode.videoUrl} />
