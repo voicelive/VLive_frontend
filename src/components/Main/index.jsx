@@ -4,29 +4,18 @@ import styled from '@emotion/styled';
 import Header from '../Header';
 import UserProfile from './UserProfile';
 import Preview from './Preview';
-import CreateChannel from './CreateChannel';
 import ChannelList from './ChannelList';
-import Modal from '../Modal';
 
 export default function Main() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
     setIsLogin(!!sessionStorage.getItem('user'));
   }, []);
 
-  function openModal() {
-    setIsModalOpen(true);
-  }
-
-  function closeModal() {
-    setIsModalOpen(false);
-  }
-
   return (
     <>
-      <Header openModal={openModal} loginStatus={isLogin} />
+      <Header />
       <MainContainer>
         <ChannelList loginStatus={isLogin} />
         <SideBox>
@@ -38,11 +27,6 @@ export default function Main() {
           <Preview />
         </SideBox>
       </MainContainer>
-      {isModalOpen && (
-        <Modal closeModal={closeModal}>
-          <CreateChannel closeModal={closeModal} isModalOpen={isModalOpen} />
-        </Modal>
-      )}
     </>
   );
 }

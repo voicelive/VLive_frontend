@@ -26,14 +26,6 @@ export default function ChannelMain() {
     return <ErrorBox message={error.message} />;
   }
 
-  if (channelId == null || channel == null) {
-    return null;
-  }
-
-  if (error) {
-    return <ErrorBox message={error.message} />;
-  }
-
   const { name, episode } = channel;
 
   return (
