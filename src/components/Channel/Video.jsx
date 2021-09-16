@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Peer from 'simple-peer';
 import {
-  getSocketClient,
+  socketClient,
   getMySocketId,
   useSocket,
 } from '../../hooks/socket/useSocket';
@@ -83,15 +83,9 @@ export default function Video({ isVideoEnd }) {
     });
 
     return () => {
-      getSocketClient().removeAllListeners(EVENTS.ALL_USER);
-      getSocketClient().removeAllListeners(EVENTS.USER_JOINED);
-      getSocketClient().removeAllListeners(EVENTS.RECEIVING_RETURNED_SIGNAL);
-      if (!stream) return;
-
-      stream.getVideoTracks().forEach((track) => {
-        track.stop();
-        stream.removeTrack(track);
-      });
+      socketClient.removeAllListeners(EVENTS.ALL_USER);
+      socketClient.removeAllListeners(EVENTS.USER_JOINED);
+      socketClient.removeAllListeners(EVENTS.RECEIVING_RETURNED_SIGNAL);
 
       delete peersRef.current;
       setPeers((peers) => {
@@ -100,6 +94,13 @@ export default function Video({ isVideoEnd }) {
         });
 
         return [];
+      });
+
+      if (!stream) return;
+
+      stream.getVideoTracks().forEach((track) => {
+        track.stop();
+        stream.removeTrack(track);
       });
     };
   }, []);
@@ -147,7 +148,7 @@ export default function Video({ isVideoEnd }) {
         ref={episodeVideo}
         playsInline
         src="https://awwdwd.s3.ap-northeast-2.amazonaws.com/sampleVideo.mp4"
-        onEnded={onEndedHandler}
+        onEnded={() => isVideoEnd()}
         muted
       />
       <PlayerVideoContainer>
