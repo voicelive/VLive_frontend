@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
-import { socketClient } from '../../hooks/socket/useSocket';
+import { socketClient, useSocket } from '../../hooks/socket/useSocket';
 import usePlayers from '../../hooks/channel/usePlayers';
 import { EVENTS } from '../../constants/socketEvent';
 
@@ -15,15 +15,7 @@ export default function PlayerContainer() {
   } = useRouter();
   const { players, error, mutate } = usePlayers(channelId);
 
-  if (channelId == null || players == null) {
-    return null;
-  }
-
-  if (error) {
-    return <ErrorBox message={error.message} />;
-  }
-
-  socketClient.on(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
+  useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
     const newUser = {
       userId: user._id,
       voteCount: 0,
@@ -32,7 +24,7 @@ export default function PlayerContainer() {
     mutate((prev) => ({ ...prev, players: [...prev.players, newUser] }));
   });
 
-  socketClient.on(EVENTS.LISTEN_EXIT_CHANNEL, (user) => {
+  useSocket(EVENTS.LISTEN_EXIT_CHANNEL, (user) => {
     const newPlayers = players.filter(
       (player) => player.userId._id !== user.userId,
     );
@@ -40,7 +32,7 @@ export default function PlayerContainer() {
     mutate((prevPlayers) => ({ ...prevPlayers, newPlayers }));
   });
 
-  socketClient.on(EVENTS.LISTEN_PLAYER_READY, (user) => {
+  useSocket(EVENTS.LISTEN_PLAYER_READY, (user) => {
     const readyPlayers = players.map((player) => {
       if (player.userId._id === user._id) {
         player.characterId = user.userRole.characterId;
@@ -51,6 +43,14 @@ export default function PlayerContainer() {
 
     mutate((prevPlayers) => ({ ...prevPlayers, readyPlayers }));
   });
+
+  if (channelId == null || players == null) {
+    return null;
+  }
+
+  if (error) {
+    return <ErrorBox message={error.message} />;
+  }
 
   return (
     <Wrapper>
@@ -64,6 +64,7 @@ export default function PlayerContainer() {
 const Wrapper = styled.div`
   width: 100%;
   height: 55%;
+  color: white;
 
   .player-profile {
     width: 100%;
