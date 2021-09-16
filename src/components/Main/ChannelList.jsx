@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
-import { socketClient, useSocket } from '../../hooks/socket/useSocket';
+import { useSocket } from '../../hooks/socket/useSocket';
 import useChannels from '../../hooks/channel/useChannels';
 
 import ChannelItem from './ChannelItem';

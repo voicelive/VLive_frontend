@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
-import { socketClient, useSocket } from '../../hooks/socket/useSocket';
+import { useSocket } from '../../hooks/socket/useSocket';
 import usePlayers from '../../hooks/channel/usePlayers';
 import { EVENTS } from '../../constants/socketEvent';
 
