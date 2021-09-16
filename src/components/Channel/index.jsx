@@ -16,22 +16,6 @@ export default function Channel() {
   } = useRouter();
   const { channel, error } = useChannel(channelId);
 
-  useEffect(() => {
-    const { _id, name, email, photoUrl } = JSON.parse(
-      sessionStorage.getItem('user'),
-    );
-
-    const user = {
-      _id,
-      name,
-      email,
-      photoUrl,
-      channelId,
-    };
-
-    socketClient.emit(EVENTS.ENTER_CHANNEL, user);
-  }, []);
-
   if (error) {
     return <ErrorBox message={error.message} />;
   }
