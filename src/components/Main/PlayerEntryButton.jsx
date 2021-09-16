@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styled from '@emotion/styled';
+import theme from '../../styles/theme';
 
 import { useSocket } from '../../hooks/socket/useSocket';
 import usePlayers from '../../hooks/channel/usePlayers';
@@ -68,7 +69,7 @@ export default function PlayerEntryButton({ channelId, isActive }) {
   }
 
   return (
-    <Wrapper>
+    <Wrapper isActive={isActive}>
       <Link
         href={isActive ? `/channel/${channelId}` : '#'}
         key={channelId}
@@ -76,15 +77,16 @@ export default function PlayerEntryButton({ channelId, isActive }) {
       >
         <a className={!isActive ? 'disable' : null}>
           <Button
+            className="entry-button"
             onClick={() => onButtonClick(channelId)}
-            color={!isActive ? 'gray' : null}
-            width="140px"
-            height="40px"
+            bgColor={!isActive ? 'gray' : theme.blue}
+            width="100px"
+            height="50px"
           >
-            <h3 className="entry-text">플레이어로 입장</h3>
-            <p className="entry-count">
+            <span className="entry-text">PLAY</span>
+            <span className="entry-count">
               {players.length} / {channel.episode.characters.length}
-            </p>
+            </span>
           </Button>
         </a>
       </Link>
@@ -104,9 +106,27 @@ const Wrapper = styled.div`
     text-decoration: none;
   }
 
-  .entry-text {
-    font-size: 1.2em;
-    font-weight: 400;
+  .entry-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .entry-text {
+      padding: 5%;
+      font-size: 1.6em;
+      font-weight: 800;
+      color: ${({ isActive, theme }) =>
+        !isActive ? theme.darkNavy : theme.white};
+    }
+
+    .entry-count {
+      padding: 3%;
+      font-size: 1.1em;
+      font-weight: 700;
+      color: ${({ isActive, theme }) =>
+        !isActive ? theme.darkNavy : theme.navy};
+    }
   }
 
   .disable {

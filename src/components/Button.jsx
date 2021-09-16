@@ -37,6 +37,6 @@ const StyledButton = styled.button`
     opacity: 80%;
     background-color: ${({ hoverBgColor, theme }) =>
       hoverBgColor || theme.gray};
-    color: ${({ color, theme }) => color || theme.black};
+    color: ${({ hoverColor, theme }) => hoverColor || theme.darkNavy};
   }
 `;

@@ -41,12 +41,12 @@ const Container = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin: auto;
-  padding: 0 15px;
+  margin: 60px auto 0;
+  padding: 0 30px;
   text-align: center;
-  max-width: 80%;
+  width: 90%;
+  min-width: 400px;
   height: 150px;
-  margin-top: 60px;
   border: 2px solid
     ${({ isPlaying, theme }) => (isPlaying ? theme.pink : theme.blue)};
   box-shadow: ${({ isPlaying, theme }) =>
@@ -68,25 +68,28 @@ const Container = styled.div`
     height: 40px;
     line-height: 50px;
     color: gray;
-    font-weight: 700;
-    font: italic bold 30px/30px godic;
+    font: italic bold 28px/28px godic;
   }
 
   .state.onAir {
     color: ${({ theme }) => theme.pink};
     text-shadow: ${({ theme }) => theme.textWhiteShadow};
+    font-weight: 900;
+    font: italic bold 32px/32px godic;
   }
 
   .title {
-    font-size: 1.6em;
+    font-size: 1.3em;
+    font-weight: 700;
+    text-overflow: ellipsis;
     color: white;
-    font-weight: 400;
   }
 
   .episode-title {
-    color: #bbbbbb;
-    font-size: 1.3em;
-    font-weight: 300;
     margin-top: -12px;
+    font-size: 1.1em;
+    font-weight: 400;
+    text-overflow: ellipsis;
+    color: #bbbbbb;
   }
 `;

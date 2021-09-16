@@ -20,7 +20,7 @@ export default function Landing() {
 
   return (
     <Container>
-      <Header>VLIVE</Header>
+      <Header />
       <HistoryWrapper bounce={bounce}>
         <h2 className="history-title">RECENT LIVE</h2>
         <div className="history-list">
@@ -35,7 +35,9 @@ export default function Landing() {
             <Button
               className="start-button"
               width="200px"
-              hoverBgColor={theme.pink}
+              color={theme.white}
+              bgColor={theme.pink}
+              hoverBgColor={theme.white}
             >
               게임하러가기
             </Button>
@@ -62,17 +64,18 @@ const Container = styled.div`
 
 const HistoryWrapper = styled.div`
   position: absolute;
-  top: 50%;
+  top: 54%;
   left: 50%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  min-height: 480px;
   transform: translate(-50%, -50%);
 
   .history-title {
-    font-size: 32px;
+    font-size: 1.5em;
     color: ${({ theme }) => theme.pink};
     animation: ${bounce} 1.2s ease-in infinite;
   }
