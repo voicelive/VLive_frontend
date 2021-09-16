@@ -29,23 +29,27 @@ export default function Preview() {
   return (
     <PreviewContainer>
       <h2 className="preview-title">Episode preview</h2>
-      <ListContainer>
+      <List>
         {episodes?.map((episode) => {
           return (
-            <div key={episode._id} onClick={() => openModal(episode)}>
+            <div
+              className="episode"
+              key={episode._id}
+              onClick={() => openModal(episode)}
+            >
               <h3 className="episode-title">{episode.title}</h3>
               <div className="episode-thumbnail">
                 <Image
                   src={episode.thumbnail}
                   alt="Episode thumbnail"
-                  width={100}
+                  width={200}
                   height={100}
                 />
               </div>
             </div>
           );
         })}
-      </ListContainer>
+      </List>
       {isModalOpen && (
         <Modal closeModal={closeModal}>
           <EpisodeVideo
@@ -60,32 +64,32 @@ export default function Preview() {
 
 const PreviewContainer = styled.div`
   text-align: center;
-  margin: 30px 20px 20px;
+  height: 45%;
+  padding-top: 30px;
+  box-sizing: border-box;
 
   .preview-title {
     margin: 2px;
     color: white;
     font-weight: 500;
+    font-size: 1.3em;
   }
 
   .episode:hover {
     border: 1px solid black;
+    font-size: 1.2em;
   }
 `;
 
-const ListContainer = styled.div`
-  position: relative;
-  padding: 10px;
-  height: 500px;
-  overflow: scroll;
-  border-radius: 10px;
-  box-shadow: inset 0px 0px 15px 8px rgba(0, 0, 0, 0.383);
-  background: #2e313db3;
+const List = styled.div`
   .episode-title {
-    color: white;
+    margin: 10px 0;
     font-weight: 300;
+    font-size: 1em;
+    color: white;
   }
+
   .episode-thumbnail {
-    margin: 0 auto;
+    margin: 0px auto;
   }
 `;

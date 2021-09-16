@@ -78,9 +78,11 @@ export default function PlayerEntryButton({ channelId, isActive }) {
           <Button
             onClick={() => onButtonClick(channelId)}
             color={!isActive ? 'gray' : null}
+            width="140px"
+            height="40px"
           >
-            <h3>플레이어로 입장</h3>
-            <p>
+            <h3 className="entry-text">플레이어로 입장</h3>
+            <p className="entry-count">
               {players.length} / {channel.episode.characters.length}
             </p>
           </Button>
@@ -96,6 +98,17 @@ PlayerEntryButton.propTypes = {
 };
 
 const Wrapper = styled.div`
+  line-height: 2px;
+
+  a {
+    text-decoration: none;
+  }
+
+  .entry-text {
+    font-size: 1.2em;
+    font-weight: 400;
+  }
+
   .disable {
     cursor: not-allowed;
     pointer-events: none;

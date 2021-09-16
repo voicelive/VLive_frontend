@@ -22,16 +22,21 @@ const StyledButton = styled.button`
   height: ${({ height }) => height || '20px'};
   padding: 15px 20px;
   font-size: ${({ fontSize }) => fontSize || '14px'};
-  font-size: ${({ fontWeight }) => fontWeight || '700'};
+  line-height: ${({ fontSize }) => fontSize || '14px'};
+  font-weight: ${({ fontWeight }) => fontWeight || '500'};
   text-align: center;
   cursor: pointer;
   border-radius: ${({ borderRadius }) => borderRadius || '20px'};
-  background-color: ${({ color, theme }) => color || theme.pink};
+  background-color: ${({ bgColor, theme }) => bgColor || theme.gray};
   transition-property: scale, translateY;
   transition: scale 300ms ease-in;
-  color: white;
+  color: ${({ color, theme }) => color || theme.black};
 
   &:hover {
-    transform: scale(1.02);
+    transform: scale(0.97);
+    opacity: 80%;
+    background-color: ${({ hoverBgColor, theme }) =>
+      hoverBgColor || theme.gray};
+    color: ${({ color, theme }) => color || theme.black};
   }
 `;

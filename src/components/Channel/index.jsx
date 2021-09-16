@@ -55,7 +55,7 @@ const Container = styled.div`
   background-image: linear-gradient(
       rgba(5, 5, 5, 0.746),
       rgba(58, 57, 57, 0.842),
-      rgba(100, 98, 98, 0.5),
+      rgba(54, 54, 54, 0.5),
       rgba(58, 57, 57, 0.842),
       rgba(5, 5, 5, 0.746)
     ),

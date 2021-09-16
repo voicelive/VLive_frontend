@@ -6,27 +6,33 @@ import theme from '../../styles/theme';
 export default function HistoryItem({ channel: { name, episode } }) {
   return (
     <Wrapper>
-      <h3>{name}</h3>
-      <p>{episode.title}</p>
+      <span className="channel-name">{name}</span>
+      <span className="episode-title">{episode.title}</span>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  height: 80px;
-  width: 500px;
+  width: 90%;
+  height: 70px;
   margin: 10px auto;
+  cursor: pointer;
   border-bottom: 1px solid #575757;
-  color: #ffffff;
+  color: ${({ theme }) => theme.white};
+
   &:hover {
-    border-bottom: 2px solid ${theme.pink};
+    border-bottom: 2px solid ${theme.white};
+    color: ${({ theme }) => theme.pink};
   }
-  h3 {
-    font-size: 1.5em;
-    font-weight: 200;
-    margin-bottom: 5px;
+
+  .channel-name {
+    display: block;
+    font-size: 1.4em;
+    font-weight: 500;
+    margin-bottom: 7px;
   }
-  p {
+
+  .episode-title {
     font-weight: 100;
   }
 `;

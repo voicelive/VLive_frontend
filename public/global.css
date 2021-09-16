@@ -6,3 +6,7 @@ body {
   margin: 0;
   font-family: 'Montserrat';
 }
+
+* {
+  box-sizing: border-box;
+}

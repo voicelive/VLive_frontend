@@ -20,27 +20,34 @@ export default function UserProfile({ onLogin, onLogout, loginStatus }) {
   }, [loginStatus]);
 
   return (
-    <ProfileBox>
-      {user === null ? (
-        <GoogleLoginButton onLogin={onLogin} />
-      ) : (
-        <Profile>
-          <div className="user-image">
-            <Image
-              src={user?.photoUrl}
-              alt="User profile image"
-              width={72}
-              height={72}
-            />
+    <Container>
+      <ProfileBox>
+        <div className="user-image">
+          <Image
+            className="img"
+            src={user ? user?.photoUrl : '/images/profile.png'}
+            alt="profile-img"
+            width={80}
+            height={80}
+          />
+        </div>
+        <div className="profile">
+          <div className="user-email">
+            {user ? user?.email : '로그인이 필요합니다'}
           </div>
-          <div className="user-email">{user?.email}</div>
-          <div className="user-name">{user?.name}</div>
-          <div className="logout">
-            <LogoutButton setLogoutError={setError} onLogout={onLogout} />
+          <div className="user-name">
+            {user ? user?.name : '로그인이 필요합니다'}
           </div>
-        </Profile>
-      )}
-    </ProfileBox>
+        </div>
+      </ProfileBox>
+      <LoginBox>
+        {user === null ? (
+          <GoogleLoginButton onLogin={onLogin} />
+        ) : (
+          <LogoutButton setLogoutError={setError} onLogout={onLogout} />
+        )}
+      </LoginBox>
+    </Container>
   );
 }
 
@@ -50,45 +57,42 @@ UserProfile.propTypes = {
   onLogout: PropTypes.func.isRequired,
 };
 
-const ProfileBox = styled.div`
-  padding: 20px;
+const Container = styled.div`
+  padding: 0 20px;
   text-align: center;
-  height: 120px;
-  margin: 10px;
+  height: 25%;
 `;
 
-const Profile = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+const ProfileBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70%;
 
-  .user-image {
-    grid-area: 1 / 1 / 3 / 2;
-    justify-self: center;
+  .img {
+    border-radius: 50%;
   }
 
-  .user-email {
-    grid-area: 1 / 2 / 2 / 4;
-    justify-self: start;
-    color: white;
-    border-bottom: 1px solid white;
-    width: 160px;
-    margin-bottom: 12px;
-    padding: 8px 0 2px;
-  }
+  .profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
 
-  .user-name {
-    justify-self: start;
-    grid-area: 2 / 2 / 3 / 4;
-    color: white;
-    border-bottom: 1px solid white;
-    width: 160px;
-    padding: 8px 0 2px;
-    margin-bottom: 12px;
+    .user-email,
+    .user-name {
+      width: 80%;
+      padding: 15px 0;
+      font-size: 0.8em;
+      color: gray;
+      border-bottom: 1px solid ${({ theme }) => theme.blue};
+    }
   }
+`;
 
-  .logout {
-    justify-self: center;
-    grid-area: 3 / 1 / 4 / 4;
-  }
+const LoginBox = styled.div`
+  width: 100%;
+  height: 30%;
+  margin: auto;
 `;

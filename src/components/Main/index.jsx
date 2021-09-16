@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import theme from '../../styles/theme';
 
 import Header from '../Header';
 import UserProfile from './UserProfile';
@@ -28,7 +27,7 @@ export default function Main() {
 
   return (
     <>
-      <Header>V-Live</Header>
+      <Header>VLIVE</Header>
       <MainContainer>
         <ChannelList loginStatus={isLogin} />
         <SideBox>
@@ -38,16 +37,17 @@ export default function Main() {
             loginStatus={isLogin}
           />
           <Preview />
-          <div className={`button-wrapper ${!isLogin ? 'disable' : null}`}>
+          <CreateButton isLogin={isLogin}>
             <Button
+              className="button"
               onClick={openModal}
-              width="200px"
+              width="60%"
               fontSize="1em"
               color={!isLogin ? 'gray' : null}
             >
               채널 개설하기
             </Button>
-          </div>
+          </CreateButton>
         </SideBox>
       </MainContainer>
       {isModalOpen && (
@@ -68,18 +68,35 @@ const MainContainer = styled.div`
 const SideBox = styled.div`
   position: relative;
   display: inline-block;
-  width: 20%;
+  width: 30%;
   text-align: center;
-  background: ${theme.navy};
-
-  .button-wrapper {
-    position: absolute;
-    width: 100%;
-    margin-bottom: 20px;
-  }
+  background-size: cover;
+  background-image: linear-gradient(
+      rgba(5, 3, 19, 0.801),
+      rgba(5, 3, 19, 0.788),
+      rgba(5, 3, 19, 0.568),
+      rgba(5, 3, 19, 0.788),
+      rgba(5, 3, 19, 0.801)
+    ),
+    url('/images/11.jpg');
 
   .disable {
     cursor: not-allowed;
     pointer-events: none;
+  }
+`;
+
+const CreateButton = styled.div`
+  position: relative;
+  width: 100%;
+  height: 30%;
+  cursor: ${({ isLogin }) => (!isLogin ? 'not-allowed' : 'pointer')};
+  pointer-events: ${({ isLogin }) => (!isLogin ? 'none' : 'auto')};
+
+  .button {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 `;

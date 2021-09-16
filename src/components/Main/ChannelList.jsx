@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import theme from '../../styles/theme';
 import PropTypes from 'prop-types';
 
-import { useSocket } from '../../hooks/socket/useSocket';
+import { socketClient } from '../../hooks/socket/useSocket';
 import useChannels from '../../hooks/channel/useChannels';
 
 import ChannelItem from './ChannelItem';
@@ -18,37 +17,61 @@ export default function ChannelList({ loginStatus }) {
     return <ErrorBox message={error.message} />;
   }
 
-  useSocket(EVENTS.LISTEN_CREATE_CHANNEL, (channel) => {
-    mutate([...activeChannels, channel]);
+  socketClient.on(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
+    activeChannels.forEach(({ _id: channelId }) => {
+      if (user.channelId === channelId) {
+        updatePlayers(channelId, user);
+      }
+    });
   });
 
-  useSocket(EVENTS.LISTEN_END_CHANNEL, (endChannelId) => {
+  socketClient.on(EVENTS.LISTEN_CREATE_CHANNEL, (channel) => {
+    const newChannel = Object.assign(channel, { isNew: true });
+    mutate((prev) => [...prev, newChannel]);
+  });
+
+  socketClient.on(EVENTS.LISTEN_END_CHANNEL, (channelId) => {
     const newActiveChannels = activeChannels.filter(
-      (activeChannel) => activeChannel._id !== endChannelId,
+      (activeChannel) => activeChannel._id !== channelId,
     );
 
     mutate(newActiveChannels);
   });
 
-  useSocket(EVENTS.LISTEN_READY_TO_START, (id) => {
+  socketClient.on(EVENTS.LISTEN_READY_TO_START, (id) => {
     const isStartChannels = activeChannels.map((activeChannel) => {
       if (activeChannel._id === id) {
         activeChannel.isPlaying = true;
       }
+
       return activeChannel;
     });
 
     mutate(isStartChannels);
   });
 
+  function updatePlayers(channelId, user) {
+    mutate((prev) => {
+      return prev.map((channel) => {
+        if (channel._id === channelId) {
+          channel.players = channel.players.concat([user]);
+        }
+
+        return channel;
+      });
+    });
+  }
+
   return (
-    <ListBox>
+    <List>
       {activeChannels?.map((channel) => (
-        <div key={channel._id}>
-          <ChannelItem channel={channel} loginStatus={loginStatus} />
-        </div>
+        <ChannelItem
+          key={channel._id}
+          channel={channel}
+          loginStatus={loginStatus}
+        />
       ))}
-    </ListBox>
+    </List>
   );
 }
 
@@ -56,16 +79,34 @@ ChannelList.propTypes = {
   loginStatus: PropTypes.bool.isRequired,
 };
 
-const ListBox = styled.div`
+const List = styled.div`
   display: inline-block;
-  width: 80%;
-  overflow: scroll;
-  padding: 30px 100px;
-  background: linear-gradient(
-      to right,
-      ${theme.darkNavy},
-      ${theme.navy},
-      ${theme.darkNavy}
+  width: 75%;
+  height: 100%;
+  margin: auto;
+  padding: 60px 100px;
+  overflow-y: scroll;
+  background-image: linear-gradient(
+      rgba(5, 3, 19, 0.801),
+      rgba(5, 3, 19, 0.788),
+      rgba(5, 3, 19, 0.568),
+      rgba(5, 3, 19, 0.788),
+      rgba(5, 3, 19, 0.801)
     ),
-    url('/images/background.jpg');
+    url(/images/background.jpg);
+
+  &::-webkit-scrollbar {
+    width: 13px;
+    background-color: ${({ theme }) => theme.darkNavy};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 30px;
+    background-color: ${({ theme }) => theme.blue};
+
+    &:hover {
+      background-color: ${({ theme }) => theme.white};
+      border: none;
+    }
+  }
 `;
