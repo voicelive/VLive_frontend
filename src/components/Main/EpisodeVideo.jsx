@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
+import Button from '../Button';
+
 export default function EpisodeVideo({ closeModal, episode }) {
   return (
     <Container>
       <div className="header">
         <span className="title">{episode.title}</span>
-        <button type="button" onClick={() => closeModal()}>
-          나가기
-        </button>
+        <Button onClick={() => closeModal()}>나가기</Button>
       </div>
       <video autoPlay>
         <source src={episode.videoUrl} />
@@ -19,8 +19,8 @@ export default function EpisodeVideo({ closeModal, episode }) {
 }
 
 EpisodeVideo.propTypes = {
-  isModalOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
+  episode: PropTypes.object,
 };
 
 const Container = styled.div`
@@ -49,8 +49,3 @@ const Container = styled.div`
     }
   }
 `;
-
-EpisodeVideo.propTypes = {
-  closeModal: PropTypes.func.isRequired,
-  episode: PropTypes.object,
-};
