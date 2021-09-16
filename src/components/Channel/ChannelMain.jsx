@@ -8,6 +8,7 @@ import ChatBody from './ChatBody';
 import ChatForm from './ChatForm';
 import Vote from './Vote';
 import VoteResult from './VoteResult';
+import Video from './Video';
 
 export default function ChannelMain() {
   const {
@@ -15,7 +16,15 @@ export default function ChannelMain() {
   } = useRouter();
   const { channel, error } = useChannel(channelId);
   const [showResult, setShowResult] = useState(false);
-  const [showChat, setShowChat] = useState(false);
+  const [showVote, setShowVote] = useState(false);
+
+  if (channelId == null || channel == null) {
+    return null;
+  }
+
+  if (error) {
+    return <ErrorBox message={error.message} />;
+  }
 
   if (channelId == null || channel == null) {
     return null;
@@ -34,19 +43,23 @@ export default function ChannelMain() {
         <h3 className="episode-title">{episode?.title}</h3>
       </header>
       <VideoWrapper>
-        {showResult ? <VoteResult /> : <h1>비디오컴포넌트</h1>}
+        {showResult ? (
+          <VoteResult />
+        ) : (
+          <Video isVideoEnd={() => setShowVote(true)} />
+        )}
       </VideoWrapper>
       <ChatWrapper>
-        {!showChat ? (
+        {showVote ? (
+          <Vote
+            onShowResult={() => setShowResult(true)}
+            onShowChat={() => setShowVote(false)}
+          />
+        ) : (
           <>
             <ChatBody />
             <ChatForm />
           </>
-        ) : (
-          <Vote
-            onShowResult={() => setShowResult(true)}
-            onShowChat={() => setShowChat(true)}
-          />
         )}
       </ChatWrapper>
     </MainContainer>

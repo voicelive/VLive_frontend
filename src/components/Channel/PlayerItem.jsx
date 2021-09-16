@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 export default function PlayerItem({ player: { userId, characterId } }) {
   return (
-    <div key={userId._id} className="player-profile">
-      <div className="player-name">{userId.name}</div>
+    <div key={userId?._id} className="player-profile">
+      <div className="player-name">{userId?.name}</div>
       <div className="character-name">{characterId?.name}</div>
     </div>
   );

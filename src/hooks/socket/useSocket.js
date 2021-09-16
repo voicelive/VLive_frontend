@@ -8,7 +8,6 @@ export const getMySocketId = () => socket.id;
 export function useSocket(eventName, cb) {
   useEffect(() => {
     socket.on(eventName, cb);
-
     return function useSocketCleanup() {
       socket.off(eventName, cb);
     };

@@ -7,8 +7,8 @@ import theme from '../../styles/theme';
 import { useSocket } from '../../hooks/socket/useSocket';
 import usePlayers from '../../hooks/channel/usePlayers';
 import useChannel from '../../hooks/channel/useChannel';
-import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
+import { API } from '../../constants/api';
 
 import Button from '../Button';
 import ErrorBox from '../ErrorBox';
