@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
 
     socket.emit(EVENTS.ALL_USER, usersInThisChannel);
 
-    socket.broadcast.emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
+    io.to(channelId).emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
   });
 
   socket.on(EVENTS.EXIT_CHANNEL, ({ channelId, userId }) => {

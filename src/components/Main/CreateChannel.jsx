@@ -4,8 +4,12 @@ import Image from 'next/image';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import Button from '../Button';
+import { socketClient } from '../../hooks/socket/useSocket';
+
 import { API } from '../../constants/api';
+import { EVENTS } from '../../constants/socketEvent';
+
+import Button from '../Button';
 
 export default function CreateChannel({ isModalOpen, closeModal }) {
   const [episodes, setEpisodes] = useState([]);
@@ -60,6 +64,24 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
         return alert(message);
       }
 
+      const res = await fetch(`${API.URL}/channel/${channelId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          state: 'enter',
+          userId: user._id,
+        }),
+      });
+
+      const { result2, message2 } = await res.json();
+
+      if (result2 === 'error') {
+        throw new Error(message2);
+      }
+
+      socketClient.emit(EVENTS.CREATE_CHANNEL, data);
       router.push(`/channel/${channelId}`);
     } catch (err) {
       alert(err.message);
