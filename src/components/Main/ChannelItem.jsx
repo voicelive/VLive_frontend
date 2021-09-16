@@ -74,7 +74,7 @@ const Container = styled.div`
 
   .state.onAir {
     color: ${({ theme }) => theme.pink};
-    text-shadow: 0 0 5px #ffffffb7, 0 0 5px #ffffff8b, 0 0 10px #ffffffc7;
+    text-shadow: ${({ theme }) => theme.textWhiteShadow};
   }
 
   .title {

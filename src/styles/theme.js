@@ -12,6 +12,7 @@ const theme = {
   blueShadow: '0px 1px 3px 3px #668dea90',
   pinkShadow: '0px 1px 3px 3px #F1215290',
   blackShadow: '0px 1px 5px 3px rgba(0, 0, 0, 0.1)',
+  textWhiteShadow: '0 0 5px #ffffffb7, 0 0 5px #ffffff8b, 0 0 10px #ffffffc7',
 };
 
 export default theme;
