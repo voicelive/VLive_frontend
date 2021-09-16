@@ -1,28 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-export default function Header({ openModal, loginStatus }) {
+import CreateChannel from './Main/CreateChannel';
+import Modal from './Modal';
+
+export default function Header() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    setIsLogin(!!sessionStorage.getItem('user'));
+  });
+
+  function openModal() {
+    setIsModalOpen(true);
+  }
+
+  function closeModal() {
+    setIsModalOpen(false);
+  }
+
   return (
-    <HeaderWrapper loginStatus={loginStatus}>
+    <HeaderWrapper loginStatus={isLogin}>
       <Link href="/main" passHref>
         <span className="nav">CHANNEL</span>
       </Link>
       <Link href="/" passHref>
         <span className="nav logo">VLIVE</span>
       </Link>
-      <span href="/channel" className="nav create-channel" onClick={openModal}>
+      <span className="nav create-channel" onClick={openModal}>
         CREATE CHANNEL
       </span>
+      {isModalOpen && (
+        <Modal closeModal={closeModal}>
+          <CreateChannel closeModal={closeModal} isModalOpen={isModalOpen} />
+        </Modal>
+      )}
     </HeaderWrapper>
   );
 }
-
-Header.propTypes = {
-  openModal: PropTypes.func.isRequired,
-  loginStatus: PropTypes.bool.isRequired,
-};
 
 const HeaderWrapper = styled.header`
   display: flex;
@@ -53,16 +70,7 @@ const HeaderWrapper = styled.header`
     color: ${({ theme }) => theme.blue};
   }
 
-  .app-name {
-    margin: 0;
-    padding: 18px 40px;
-    height: 100%;
-    line-height: 4vh;
-    font-size: 40px;
-    color: ${({ theme }) => theme.blue};
-  }
-
-  .create-channel {
+  .nav.create-channel {
     cursor: ${({ loginStatus }) => (!loginStatus ? 'not-allowed' : 'pointer')};
     pointer-events: ${({ loginStatus }) => (!loginStatus ? 'none' : 'auto')};
   }
