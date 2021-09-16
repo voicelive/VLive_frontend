@@ -126,7 +126,9 @@ export default function UserReady({ isModalOpen, closeModal }) {
                 <span className="character-name">{character.name}</span>
                 <div
                   className={
-                    userRole.characterId === character._id && 'character-image'
+                    userRole.characterId === character._id
+                      ? 'character-image'
+                      : null
                   }
                 >
                   <Image
