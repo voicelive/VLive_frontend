@@ -42,8 +42,8 @@ export default function Preview() {
                 <Image
                   src={episode.thumbnail}
                   alt="Episode thumbnail"
-                  width={230}
-                  height={120}
+                  width={200}
+                  height={100}
                 />
               </div>
             </div>
@@ -64,15 +64,15 @@ export default function Preview() {
 
 const PreviewContainer = styled.div`
   text-align: center;
-  margin: 30px 20px 20px;
-  height: 50%;
-  padding-top: 20px;
+  height: 45%;
+  padding-top: 30px;
   box-sizing: border-box;
 
   .preview-title {
     margin: 2px;
     color: white;
     font-weight: 500;
+    font-size: 1.3em;
   }
 
   .episode:hover {
@@ -90,6 +90,6 @@ const List = styled.div`
   }
 
   .episode-thumbnail {
-    margin: 20px auto;
+    margin: 0px auto;
   }
 `;

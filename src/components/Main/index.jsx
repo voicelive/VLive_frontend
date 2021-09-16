@@ -39,6 +39,7 @@ export default function Main() {
           <Preview />
           <CreateButton isLogin={isLogin}>
             <Button
+              className="button"
               onClick={openModal}
               width="60%"
               fontSize="1em"
@@ -86,11 +87,16 @@ const SideBox = styled.div`
 `;
 
 const CreateButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
   width: 100%;
-  height: 20%;
+  height: 30%;
   cursor: ${({ isLogin }) => (!isLogin ? 'not-allowed' : 'pointer')};
   pointer-events: ${({ isLogin }) => (!isLogin ? 'none' : 'auto')};
+
+  .button {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
