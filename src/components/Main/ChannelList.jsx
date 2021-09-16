@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
-import { socketClient } from '../../hooks/socket/useSocket';
+import { socketClient, useSocket } from '../../hooks/socket/useSocket';
 import useChannels from '../../hooks/channel/useChannels';
 
 import ChannelItem from './ChannelItem';
@@ -17,7 +17,7 @@ export default function ChannelList({ loginStatus }) {
     return <ErrorBox message={error.message} />;
   }
 
-  socketClient.on(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
+  useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
     activeChannels.forEach(({ _id: channelId }) => {
       if (user.channelId === channelId) {
         updatePlayers(channelId, user);
@@ -25,12 +25,12 @@ export default function ChannelList({ loginStatus }) {
     });
   });
 
-  socketClient.on(EVENTS.LISTEN_CREATE_CHANNEL, (channel) => {
+  useSocket(EVENTS.LISTEN_CREATE_CHANNEL, (channel) => {
     const newChannel = Object.assign(channel, { isNew: true });
     mutate((prev) => [...prev, newChannel]);
   });
 
-  socketClient.on(EVENTS.LISTEN_END_CHANNEL, (channelId) => {
+  useSocket(EVENTS.LISTEN_END_CHANNEL, (channelId) => {
     const newActiveChannels = activeChannels.filter(
       (activeChannel) => activeChannel._id !== channelId,
     );
@@ -38,7 +38,7 @@ export default function ChannelList({ loginStatus }) {
     mutate(newActiveChannels);
   });
 
-  socketClient.on(EVENTS.LISTEN_READY_TO_START, (id) => {
+  useSocket(EVENTS.LISTEN_READY_TO_START, (id) => {
     const isStartChannels = activeChannels.map((activeChannel) => {
       if (activeChannel._id === id) {
         activeChannel.isPlaying = true;
