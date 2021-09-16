@@ -2,18 +2,30 @@ import 'webrtc-adapter';
 import React, { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Peer from 'simple-peer';
-import { socketClient, getMySocketId } from '../../hooks/socket/useSocket';
+import {
+  socketClient,
+  getMySocketId,
+  useSocket,
+} from '../../hooks/socket/useSocket';
 import { EVENTS } from '../../constants/socketEvent';
 import PlayerVideo from './PlayerVideo';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 
-export default function Video() {
+export default function Video({ isVideoEnd }) {
   const {
     query: { channelId },
   } = useRouter();
   const [peers, setPeers] = useState([]);
   const peersRef = useRef([]);
   const userVideo = useRef();
+  const episodeVideo = useRef();
+
+  useSocket(EVENTS.LISTEN_READY_TO_START, (id) => {
+    if (channelId === id) {
+      episodeVideo.current.play();
+    }
+  });
 
   useEffect(async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -74,6 +86,21 @@ export default function Video() {
       socketClient.removeAllListeners(EVENTS.ALL_USER);
       socketClient.removeAllListeners(EVENTS.USER_JOINED);
       socketClient.removeAllListeners(EVENTS.RECEIVING_RETURNED_SIGNAL);
+      if (!stream) return;
+
+      stream.getVideoTracks().forEach((track) => {
+        track.stop();
+        stream.removeTrack(track);
+      });
+
+      delete peersRef.current;
+      setPeers((peers) => {
+        peers.forEach((peer) => {
+          peer.destroy();
+        });
+
+        return [];
+      });
     };
   }, []);
 
@@ -110,11 +137,18 @@ export default function Video() {
     return peer;
   }
 
+  function onEndedHandler() {
+    isVideoEnd();
+  }
+
   return (
     <Wrapper>
       <StyledVideo
+        ref={episodeVideo}
         playsInline
         src="https://awwdwd.s3.ap-northeast-2.amazonaws.com/sampleVideo.mp4"
+        onEnded={onEndedHandler}
+        muted
       />
       <PlayerVideoContainer>
         <video
@@ -132,6 +166,10 @@ export default function Video() {
     </Wrapper>
   );
 }
+
+Video.propTypes = {
+  isVideoEnd: PropTypes.func.isRequired,
+};
 
 const StyledVideo = styled.video`
   width: 810px;

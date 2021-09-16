@@ -113,8 +113,8 @@ app.prepare().then(() => {
       },
     );
 
-    socket.on(EVENTS.READY_TO_START, (id) => {
-      socket.broadcast.emit(EVENTS.LISTEN_READY_TO_START, id);
+    socket.on(EVENTS.READY_TO_START, (channelId) => {
+      io.to(channelId).emit(EVENTS.LISTEN_READY_TO_START, channelId);
     });
   });
 });

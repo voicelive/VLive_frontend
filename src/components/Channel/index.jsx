@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 
 import useChannel from '../../hooks/channel/useChannel';
-import { socketClient } from '../../hooks/socket/useSocket';
-import { EVENTS } from '../../constants/socketEvent';
 
 import ChannelMain from './ChannelMain';
 import ChannelSide from './ChannelSide';

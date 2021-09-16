@@ -16,7 +16,7 @@ export default function ChannelMain() {
   } = useRouter();
   const { channel, error } = useChannel(channelId);
   const [showResult, setShowResult] = useState(false);
-  const [showChat, setShowChat] = useState(false);
+  const [showVote, setShowVote] = useState(false);
 
   if (channelId == null || channel == null) {
     return null;
@@ -42,18 +42,24 @@ export default function ChannelMain() {
         <h2 className="channel-name">{name}</h2>
         <h3 className="episode-title">{episode?.title}</h3>
       </header>
-      <VideoWrapper>{showResult ? <VoteResult /> : <Video />}</VideoWrapper>
+      <VideoWrapper>
+        {showResult ? (
+          <VoteResult />
+        ) : (
+          <Video isVideoEnd={() => setShowVote(true)} />
+        )}
+      </VideoWrapper>
       <ChatWrapper>
-        {!showChat ? (
+        {showVote ? (
+          <Vote
+            onShowResult={() => setShowResult(true)}
+            onShowChat={() => setShowVote(false)}
+          />
+        ) : (
           <>
             <ChatBody />
             <ChatForm />
           </>
-        ) : (
-          <Vote
-            onShowResult={() => setShowResult(true)}
-            onShowChat={() => setShowChat(true)}
-          />
         )}
       </ChatWrapper>
     </MainContainer>
