@@ -63,9 +63,12 @@ export default function Preview() {
 }
 
 const PreviewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  height: 45%;
-  padding-top: 30px;
+  height: 60%;
   box-sizing: border-box;
 
   .preview-title {

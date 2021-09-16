@@ -6,7 +6,6 @@ import UserProfile from './UserProfile';
 import Preview from './Preview';
 import CreateChannel from './CreateChannel';
 import ChannelList from './ChannelList';
-import Button from '../Button';
 import Modal from '../Modal';
 
 export default function Main() {
@@ -27,7 +26,7 @@ export default function Main() {
 
   return (
     <>
-      <Header>VLIVE</Header>
+      <Header openModal={openModal} loginStatus={isLogin} />
       <MainContainer>
         <ChannelList loginStatus={isLogin} />
         <SideBox>
@@ -37,17 +36,6 @@ export default function Main() {
             loginStatus={isLogin}
           />
           <Preview />
-          <CreateButton isLogin={isLogin}>
-            <Button
-              className="button"
-              onClick={openModal}
-              width="60%"
-              fontSize="1em"
-              color={!isLogin ? 'gray' : null}
-            >
-              채널 개설하기
-            </Button>
-          </CreateButton>
         </SideBox>
       </MainContainer>
       {isModalOpen && (
@@ -69,6 +57,7 @@ const SideBox = styled.div`
   position: relative;
   display: inline-block;
   width: 30%;
+  min-width: 300px;
   text-align: center;
   background-size: cover;
   background-image: linear-gradient(
@@ -83,20 +72,5 @@ const SideBox = styled.div`
   .disable {
     cursor: not-allowed;
     pointer-events: none;
-  }
-`;
-
-const CreateButton = styled.div`
-  position: relative;
-  width: 100%;
-  height: 30%;
-  cursor: ${({ isLogin }) => (!isLogin ? 'not-allowed' : 'pointer')};
-  pointer-events: ${({ isLogin }) => (!isLogin ? 'none' : 'auto')};
-
-  .button {
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
 `;

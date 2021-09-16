@@ -60,7 +60,7 @@ UserProfile.propTypes = {
 const Container = styled.div`
   padding: 0 20px;
   text-align: center;
-  height: 25%;
+  height: 40%;
 `;
 
 const ProfileBox = styled.div`

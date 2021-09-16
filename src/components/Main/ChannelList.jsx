@@ -82,9 +82,10 @@ ChannelList.propTypes = {
 const List = styled.div`
   display: inline-block;
   width: 75%;
+  min-width: 500px;
   height: 100%;
   margin: auto;
-  padding: 60px 100px;
+  padding: 20px 60px;
   overflow-y: scroll;
   background-image: linear-gradient(
       rgba(5, 3, 19, 0.801),

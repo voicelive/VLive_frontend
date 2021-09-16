@@ -27,13 +27,14 @@ const Wrapper = styled.div`
 
   .channel-name {
     display: block;
-    font-size: 1.4em;
+    font-size: 1.2em;
     font-weight: 500;
     margin-bottom: 7px;
   }
 
   .episode-title {
     font-weight: 100;
+    font-size: 1em;
   }
 `;
 
