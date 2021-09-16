@@ -8,6 +8,7 @@ import ChatBody from './ChatBody';
 import ChatForm from './ChatForm';
 import Vote from './Vote';
 import VoteResult from './VoteResult';
+import Video from './Video';
 
 export default function ChannelMain() {
   const {
@@ -25,6 +26,14 @@ export default function ChannelMain() {
     return <ErrorBox message={error.message} />;
   }
 
+  if (channelId == null || channel == null) {
+    return null;
+  }
+
+  if (error) {
+    return <ErrorBox message={error.message} />;
+  }
+
   const { name, episode } = channel;
 
   return (
@@ -33,9 +42,7 @@ export default function ChannelMain() {
         <h2 className="channel-name">{name}</h2>
         <h3 className="episode-title">{episode?.title}</h3>
       </header>
-      <VideoWrapper>
-        {showResult ? <VoteResult /> : <h1>비디오컴포넌트</h1>}
-      </VideoWrapper>
+      <VideoWrapper>{showResult ? <VoteResult /> : <Video />}</VideoWrapper>
       <ChatWrapper>
         {!showChat ? (
           <>

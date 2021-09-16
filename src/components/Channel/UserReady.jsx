@@ -51,7 +51,7 @@ export default function UserReady({ isModalOpen, closeModal }) {
 
         setEpisodeInfo(data);
       } catch (err) {
-        return <ErrorBox message={err.message} />;
+        console.error(err.message); // eslint-disable-line no-console
       }
     }
 

@@ -21,6 +21,8 @@
     "@emotion/styled": "^11.3.0",
     "express": "~4.16.1",
     "firebase": "^8.10.0",
+    "http": "0.0.1-security",
+    "https": "^1.0.0",
     "next": "11.1.2",
     "nodemon": "^2.0.12",
     "prop-types": "^15.7.2",
@@ -30,7 +32,8 @@
     "simple-peer": "^9.6.2",
     "socket.io": "^4.2.0",
     "socket.io-client": "^4.2.0",
-    "swr": "^1.0.0"
+    "swr": "^1.0.0",
+    "webrtc-adapter": "^8.1.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

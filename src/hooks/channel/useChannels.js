@@ -9,6 +9,7 @@ async function fetcher() {
         'Content-Type': 'application/json',
       },
     });
+
     const { data: channels } = await response.json();
 
     return channels;
