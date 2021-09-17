@@ -28,7 +28,7 @@ export default function Vote({ onShowResult, onShowChat }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onShowResult();
-    }, 10000);
+    }, 6000);
 
     return () => clearTimeout(timer);
   }, []);
