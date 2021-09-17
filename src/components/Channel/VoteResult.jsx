@@ -120,20 +120,21 @@ export default function VoteResult() {
 }
 
 const Wrapper = styled.div`
+  width: 65%;
   height: 100%;
   background-color: black;
 
   .result-title {
     margin: 0;
     padding: 30px 0 10px 0;
-    font-size: 20px;
+    font-size: 2em;
     color: white;
   }
 
   .result-subtitle {
     padding: 30px 0 30px 0;
     font-weight: 200px;
-    font-size: 22px;
+    font-size: 1.5em;
     color: ${({ theme }) => theme.pink || 'white'};
   }
 
@@ -182,7 +183,7 @@ const Character = styled.div`
 
   .voting-result {
     display: block;
-    padding: 10px 0;
+    padding: 30px 0;
     font-size: 24px;
     color: ${({ iswinner, theme }) => (iswinner ? theme.pink : 'white')};
   }
