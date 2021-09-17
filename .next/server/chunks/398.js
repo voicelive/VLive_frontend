@@ -1,11 +1,11 @@
-"use strict";
-exports.id = 789;
-exports.ids = [789];
+exports.id = 398;
+exports.ids = [398];
 exports.modules = {
 
 /***/ 4461:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (/* binding */ Modal)
 /* harmony export */ });
@@ -60,9 +60,44 @@ const StyledModal = (_emotion_styled__WEBPACK_IMPORTED_MODULE_0___default().div)
 
 /***/ }),
 
+/***/ 7144:
+/***/ ((module) => {
+
+module.exports.EVENTS = {
+  ENTER_CHANNEL: 'enter channel',
+  LISTEN_ENTER_CHANNEL: 'listen enter channel',
+  LISTEN_ENTER_CHANNEL_LIST: 'listen enter channel list',
+  CREATE_CHANNEL: 'create channel',
+  LISTEN_CREATE_CHANNEL: 'listen create channel',
+  EXIT_CHANNEL: 'exit channel',
+  LISTEN_EXIT_CHANNEL: 'listen exit channel',
+  LISTEN_EXIT_CHANNEL_LIST: 'listen exit channel list',
+  END_CHANNEL: 'end channel',
+  LISTEN_END_CHANNEL: 'listen end channel',
+  NEW_CHAT: 'new chat',
+  LISTEN_NEW_CHAT: 'listen new chat',
+  PLAYER_READY: 'player ready',
+  LISTEN_PLAYER_READY: 'listen player ready',
+  SEND_SIGNAL: 'send signal',
+  RETURN_SIGNAL: 'return signal',
+  LISTEN_SEND_SIGNAL: 'listen send signal',
+  LISTEN_RETURN_SIGNAL: 'listen return signal',
+  ALL_USER: 'all user',
+  SENDING_SIGNAL: 'sending signal',
+  RETURNING_SIGNAL: 'returning signal',
+  USER_JOINED: 'user joined',
+  RECEIVING_RETURNED_SIGNAL: 'receiving returned signal',
+  LISTEN_GAME_START: 'listen game start',
+  READY_TO_START: 'start game',
+  LISTEN_READY_TO_START: 'listen start game'
+};
+
+/***/ }),
+
 /***/ 3942:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (/* binding */ useChannel)
 /* harmony export */ });
@@ -109,6 +144,7 @@ function useChannel(channelId) {
 /***/ 1657:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (/* binding */ usePlayers)
 /* harmony export */ });
@@ -133,6 +169,7 @@ function usePlayers(channelId) {
 /***/ 6388:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "cH": () => (/* binding */ getMySocketId),
 /* harmony export */   "sV": () => (/* binding */ useSocket),
@@ -176,6 +213,7 @@ const getSocketClient = () => socket;
 /***/ 9254:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
