@@ -80,6 +80,7 @@ export default function PlayerEntryButton({ channelId, isActive }) {
             className="entry-button"
             onClick={() => onButtonClick(channelId)}
             bgColor={!isActive ? 'gray' : theme.blue}
+            hoverBgColor={theme.pink}
             width="100px"
             height="50px"
           >
