@@ -3,11 +3,11 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import useChannel from '../../hooks/channel/useChannel';
-import { getSocketClient } from '../../hooks/socket/useSocket';
+import { getSocketClient, useSocket } from '../../hooks/socket/useSocket';
 import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
 
-import UserReady from './UserReady';
+import CharacterSelection from './CharacterSelection';
 import Button from '../Button';
 import Modal from '../Modal';
 import ErrorBox from '../ErrorBox';
@@ -16,6 +16,7 @@ export default function SideButtonContainer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null);
   const [ready, setReady] = useState(false);
+  const [selectedCharacters, setSelectedCharacters] = useState([]);
   const {
     query: { channelId },
   } = useRouter();
@@ -25,6 +26,10 @@ export default function SideButtonContainer() {
     const { _id } = JSON.parse(sessionStorage.getItem('user'));
     setUserId(_id);
   }, []);
+
+  useSocket(EVENTS.LISTEN_PLAYER_READY, ({ characterId }) => {
+    setSelectedCharacters((prev) => [...prev, characterId]);
+  });
 
   const { channel } = useChannel(channelId);
 
@@ -105,7 +110,11 @@ export default function SideButtonContainer() {
       </div>
       {isModalOpen && (
         <Modal closeModal={closeModal}>
-          <UserReady closeModal={closeModal} isModalOpen={isModalOpen} />
+          <CharacterSelection
+            selectedCharacters={selectedCharacters}
+            closeModal={closeModal}
+            isModalOpen={isModalOpen}
+          />
         </Modal>
       )}
     </ButtonWrapper>

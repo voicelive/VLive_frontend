@@ -98,24 +98,28 @@ app.prepare().then(() => {
     });
 
     socket.on(EVENTS.END_CHANNEL, (id) => {
+      delete users[id];
       socket.broadcast.emit(EVENTS.LISTEN_END_CHANNEL, id);
     });
 
     socket.on(
       EVENTS.PLAYER_READY,
-      ({ channelId, userId, userRole, episodeInfo }) => {
-        io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, { userId, userRole });
+      ({ channelId, userId, characterId, episode }) => {
+        io.to(channelId).emit(EVENTS.LISTEN_PLAYER_READY, {
+          userId,
+          characterId,
+        });
 
         if (!readyPlayers[channelId]) {
-          readyPlayers[channelId] = [userRole];
+          readyPlayers[channelId] = [characterId];
         } else {
-          readyPlayers[channelId].push(userRole);
+          readyPlayers[channelId].push(characterId);
         }
 
-        if (readyPlayers[channelId].length === episodeInfo.characters.length) {
+        if (readyPlayers[channelId].length === episode.characters.length) {
           io.to(channelId).emit(EVENTS.LISTEN_GAME_START, 'start');
 
-          readyPlayers[channelId] = [];
+          delete readyPlayers[channelId];
         }
       },
     );

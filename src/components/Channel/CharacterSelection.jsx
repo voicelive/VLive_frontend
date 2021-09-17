@@ -14,10 +14,16 @@ import ErrorBox from '../ErrorBox';
 import theme from '../../styles/theme';
 
 import { API } from '../../constants/api';
+import { ALERT_MSG } from '../../constants/alertMessage';
 
-export default function UserReady({ isModalOpen, closeModal }) {
-  const [episodeInfo, setEpisodeInfo] = useState([]);
-  const [userRole, setUserRole] = useState({ characterId: '' });
+export default function CharacterSelection({
+  isModalOpen,
+  closeModal,
+  selectedCharacters,
+}) {
+  const [episode, setEpisode] = useState([]);
+  const [currentCharacter, setCurrentCharacter] = useState(null);
+  const [fetchError, setFetchError] = useState(null);
   const {
     query: { channelId },
   } = useRouter();
@@ -27,12 +33,16 @@ export default function UserReady({ isModalOpen, closeModal }) {
     return null;
   }
 
-  if (error) {
-    return <ErrorBox message={error.message} />;
+  if (error || fetchError) {
+    if (error) {
+      return <ErrorBox message={error.message} />;
+    }
+
+    return <ErrorBox message={fetchError.message} />;
   }
 
   useEffect(() => {
-    async function fetchData() {
+    (async () => {
       try {
         const response = await fetch(
           `${API.URL}/episode/${channel.episode._id}`,
@@ -49,25 +59,19 @@ export default function UserReady({ isModalOpen, closeModal }) {
           throw new Error(message);
         }
 
-        setEpisodeInfo(data);
+        setEpisode(data);
       } catch (err) {
-        console.error(err.message); // eslint-disable-line no-console
+        setFetchError(err);
       }
-    }
-
-    fetchData();
+    })();
   }, [isModalOpen]);
 
-  function handleClick({ currentTarget }) {
-    const { id } = currentTarget;
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-    setUserRole({
-      ['characterId']: id,
-    });
-  }
-
-  async function handleSubmit(ev) {
-    ev.preventDefault();
+    if (!currentCharacter) {
+      return alert(ALERT_MSG.SELECTION_REQUIRED);
+    }
 
     const { _id } = JSON.parse(sessionStorage.getItem('user'));
 
@@ -80,7 +84,7 @@ export default function UserReady({ isModalOpen, closeModal }) {
         body: JSON.stringify({
           state: 'character',
           userId: _id,
-          characterId: userRole.characterId,
+          characterId: currentCharacter,
         }),
       });
       const { result, message } = await response.json();
@@ -89,20 +93,26 @@ export default function UserReady({ isModalOpen, closeModal }) {
         throw new Error(message);
       }
 
-      getSocketClient().emit(EVENTS.PLAYER_READY, {
+      socketClient.emit(EVENTS.PLAYER_READY, {
+        userId: _id,
+        characterId: currentCharacter,
         channelId,
-        _id,
-        userRole,
-        episodeInfo,
+        episode,
       });
 
       closeModal();
     } catch (err) {
-      return <ErrorBox message={err.message} />;
+      setFetchError(err);
     }
   }
 
-  const { title, characters } = episodeInfo;
+  function handleSelectCharacter({ currentTarget: { id } }) {
+    if (selectedCharacters.includes(id)) {
+      return alert(ALERT_MSG.SELECTION_FAIL);
+    }
+
+    setCurrentCharacter(id);
+  }
 
   return (
     <Container>
@@ -113,27 +123,25 @@ export default function UserReady({ isModalOpen, closeModal }) {
         </button>
       </div>
       <ReadyForm onSubmit={handleSubmit}>
-        <span className="character-select">연기할 배역을 선택하세요</span>
-        <div className="episode-title">{title}</div>
+        <span className="description">연기할 배역을 선택하세요</span>
+        <div className="episode-title">{episode.title}</div>
         <ReadyOptions>
           <ul className="character-list">
-            {characters?.map((character) => (
+            {episode.characters?.map((character) => (
               <ReadyOption
                 key={character._id}
                 id={character._id}
-                onClick={handleClick}
+                onClick={handleSelectCharacter}
               >
                 <span className="character-name">{character.name}</span>
                 <div
                   className={
-                    userRole.characterId === character._id
-                      ? 'character-image'
-                      : null
+                    currentCharacter === character._id ? 'select' : null
                   }
                 >
                   <Image
-                    src={character?.imgUrl}
-                    alt="character-imgUrl"
+                    src={character.imgUrl}
+                    alt="character-img"
                     width={90}
                     height={100}
                     layout="responsive"
@@ -151,9 +159,10 @@ export default function UserReady({ isModalOpen, closeModal }) {
   );
 }
 
-UserReady.propTypes = {
+CharacterSelection.propTypes = {
   isModalOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
+  selectedCharacters: PropTypes.array.isRequired,
 };
 
 const Container = styled.div`
@@ -199,7 +208,7 @@ const ReadyForm = styled.form`
 const ReadyOptions = styled.div`
   margin-top: 10px;
 
-  .character-select {
+  .description {
     font-size: 16px;
   }
 
@@ -209,7 +218,7 @@ const ReadyOptions = styled.div`
     padding: 0;
   }
 
-  .character-image {
+  .select {
     border: 2px solid ${theme.pink};
   }
 
