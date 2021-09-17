@@ -21,7 +21,7 @@ export default function UserProfile({ onLogin, onLogout, loginStatus }) {
 
   return (
     <Container>
-      <ProfileBox>
+      <ProfileBox loginStatus>
         <div className="user-image">
           <Image
             className="img"
@@ -60,7 +60,7 @@ UserProfile.propTypes = {
 const Container = styled.div`
   padding: 0 20px;
   text-align: center;
-  height: 40%;
+  height: 35%;
 `;
 
 const ProfileBox = styled.div`
@@ -85,7 +85,8 @@ const ProfileBox = styled.div`
       width: 80%;
       padding: 15px 0;
       font-size: 0.8em;
-      color: gray;
+      color: ${({ loginStatus, theme }) =>
+        loginStatus ? theme.white : theme.gray};
       border-bottom: 1px solid ${({ theme }) => theme.blue};
     }
   }

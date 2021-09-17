@@ -3,18 +3,17 @@ import { useRouter } from 'next/dist/client/router';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
+import theme from '../../styles/theme';
 
-import { socketClient } from '../../hooks/socket/useSocket';
 import useChannel from '../../hooks/channel/useChannel';
+import { socketClient } from '../../hooks/socket/useSocket';
 
 import { EVENTS } from '../../constants/socketEvent';
+import { API } from '../../constants/api';
+import { ALERT_MSG } from '../../constants/alertMessage';
 
 import Button from '../Button';
 import ErrorBox from '../ErrorBox';
-import theme from '../../styles/theme';
-
-import { API } from '../../constants/api';
-import { ALERT_MSG } from '../../constants/alertMessage';
 
 export default function CharacterSelection({
   isModalOpen,
@@ -118,7 +117,7 @@ export default function CharacterSelection({
     <Container>
       <div className="header">
         <span className="title">역할고르기</span>
-        <button type="button" onClick={closeModal}>
+        <button className="exit-button" type="button" onClick={closeModal}>
           나가기
         </button>
       </div>
@@ -152,7 +151,9 @@ export default function CharacterSelection({
           </ul>
         </ReadyOptions>
         <div className="button">
-          <Button type="submit">배역 고르기</Button>
+          <Button type="submit" bgColor={theme.blue} color={theme.white}>
+            배역 고르기
+          </Button>
         </div>
       </ReadyForm>
     </Container>
@@ -169,8 +170,8 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   border: 1px solid white;
-  background-color: ${({ theme }) => theme.navy};
-  color: white;
+  background-color: ${({ theme }) => theme.darkNavy}90;
+  color: ${({ theme }) => theme.white};
 
   .header {
     display: flex;
@@ -183,6 +184,20 @@ const Container = styled.div`
     .title {
       font-size: 24px;
       line-height: 24px;
+      color: ${({ theme }) => theme.blue};
+    }
+
+    .exit-button {
+      padding: 5px 10px;
+      border-radius: 10px;
+      background-color: transparent;
+      border: 1px solid white;
+      color: ${({ theme }) => theme.white};
+      cursor: pointer;
+    }
+
+    :hover {
+      opacity: 0.7;
     }
   }
 `;
@@ -201,7 +216,7 @@ const ReadyForm = styled.form`
   }
 
   .button {
-    margin: 25px auto 0 auto;
+    margin: 15px auto 0 auto;
   }
 `;
 
@@ -238,5 +253,6 @@ const ReadyOption = styled.li`
 
   .character-name {
     margin-bottom: 5px;
+    font-size: 1.2em;
   }
 `;

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import styled from '@emotion/styled';
 
 import usePlayers from '../../hooks/channel/usePlayers';
-import { getSocketClient } from '../../hooks/socket/useSocket';
+import { socketClient } from '../../hooks/socket/useSocket';
 
 import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
@@ -32,9 +32,9 @@ export default function VoteResult() {
       clearTimeout(timer);
       deactivateChannel();
 
-      getSocketClient().emit(EVENTS.END_CHANNEL, channelId);
-      getSocketClient().off(EVENTS.LISTEN_ENTER_CHANNEL);
-      getSocketClient().off(EVENTS.LISTEN_NEW_CHAT);
+      socketClient.emit(EVENTS.END_CHANNEL, channelId);
+      socketClient.off(EVENTS.LISTEN_ENTER_CHANNEL);
+      socketClient.off(EVENTS.LISTEN_NEW_CHAT);
     };
   }, []);
 
@@ -120,20 +120,21 @@ export default function VoteResult() {
 }
 
 const Wrapper = styled.div`
+  width: 65%;
   height: 100%;
   background-color: black;
 
   .result-title {
     margin: 0;
     padding: 30px 0 10px 0;
-    font-size: 20px;
+    font-size: 2em;
     color: white;
   }
 
   .result-subtitle {
     padding: 30px 0 30px 0;
     font-weight: 200px;
-    font-size: 22px;
+    font-size: 1.5em;
     color: ${({ theme }) => theme.pink || 'white'};
   }
 
@@ -182,7 +183,7 @@ const Character = styled.div`
 
   .voting-result {
     display: block;
-    padding: 10px 0;
+    padding: 30px 0;
     font-size: 24px;
     color: ${({ iswinner, theme }) => (iswinner ? theme.pink : 'white')};
   }

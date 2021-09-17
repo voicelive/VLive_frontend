@@ -62,12 +62,8 @@ export default function PlayerContainer() {
 }
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 55%;
+  width: 15%;
+  height: 100%;
+  padding-bottom: 30px;
   color: white;
-
-  .player-profile {
-    width: 100%;
-    height: 50px;
-  }
 `;

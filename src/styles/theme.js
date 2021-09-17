@@ -5,7 +5,7 @@ const theme = {
   blue: '#4378f7',
   white: '#FFFFFF',
   black: '#000000',
-  gray: '#FFFFFF',
+  gray: '#c5c0c2',
   waitingBg: '#2d4b6560',
   onAirBg: '#65061c26',
   whiteShadow: '0px 1px 5px 3px #72727290',

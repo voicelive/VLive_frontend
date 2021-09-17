@@ -87,10 +87,25 @@ const HistoryWrapper = styled.div`
     flex-direction: column;
     min-width: 600px;
     height: 400px;
-    overflow: visible;
+    overflow-y: auto;
     border-radius: 20px;
     background: ${({ theme }) => theme.darkNavy}95;
     box-shadow: ${({ theme }) => theme.whiteShadow};
+
+    &::-webkit-scrollbar {
+      width: 13px;
+      background-color: ${({ theme }) => theme.darkNavy};
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 30px;
+      background-color: ${({ theme }) => theme.pink};
+
+      &:hover {
+        background-color: ${({ theme }) => theme.white};
+        border: none;
+      }
+    }
   }
 
   .button-wrapper {

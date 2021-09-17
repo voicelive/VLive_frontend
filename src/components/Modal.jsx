@@ -31,7 +31,7 @@ const Dimmed = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.8);
+  background: ${({ theme }) => theme.darkNavy}85;
 `;
 
 const StyledModal = styled.div`
@@ -42,7 +42,6 @@ const StyledModal = styled.div`
   width: 600px;
   height: 450px;
   text-align: center;
-  background-color: white;
   transform: translate(-50%, -50%);
-  box-shadow: 0px 1px 5px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: ${({ theme }) => theme.whiteShadow};
 `;

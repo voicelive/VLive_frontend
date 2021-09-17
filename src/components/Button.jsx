@@ -21,7 +21,7 @@ const StyledButton = styled.button`
   width: ${({ width }) => width || '130px'};
   height: ${({ height }) => height || '20px'};
   padding: 15px 20px;
-  font-size: ${({ fontSize }) => fontSize || '14px'};
+  font-size: ${({ fontSize }) => fontSize || '15px'};
   line-height: ${({ fontSize }) => fontSize || '14px'};
   font-weight: ${({ fontWeight }) => fontWeight || '500'};
   text-align: center;
@@ -36,7 +36,7 @@ const StyledButton = styled.button`
     transform: scale(0.97);
     opacity: 80%;
     background-color: ${({ hoverBgColor, theme }) =>
-      hoverBgColor || theme.gray};
+      hoverBgColor || theme.white};
     color: ${({ hoverColor, theme }) => hoverColor || theme.darkNavy};
   }
 `;
