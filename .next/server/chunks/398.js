@@ -172,41 +172,27 @@ function usePlayers(channelId) {
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "cH": () => (/* binding */ getMySocketId),
-/* harmony export */   "sV": () => (/* binding */ useSocket),
-/* harmony export */   "JW": () => (/* binding */ getSocketClient)
+/* harmony export */   "sV": () => (/* binding */ useSocket)
 /* harmony export */ });
+/* unused harmony export socketClient */
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9297);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7069);
 /* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_1__);
 
 
-let socket = null;
-let isConnecting = false;
-const getMySocketId = () => {
-  var _socket;
-
-  return (_socket = socket) === null || _socket === void 0 ? void 0 : _socket.id;
-};
+const socket = socket_io_client__WEBPACK_IMPORTED_MODULE_1___default()();
+const getMySocketId = () => socket.id;
 function useSocket(eventName, cb) {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    if (isConnecting) return;
-    isConnecting = true;
-    console.log('before fetch', socket);
-    fetch('/api/socketio').finally(() => {
-      socket = socket_io_client__WEBPACK_IMPORTED_MODULE_1___default()();
-      console.log('finally fetch', socket);
-      socket.on(eventName, cb);
-    });
+    socket.on(eventName, cb);
     return function useSocketCleanup() {
-      var _socket2;
-
-      (_socket2 = socket) === null || _socket2 === void 0 ? void 0 : _socket2.off(eventName, cb);
+      socket.off(eventName, cb);
     };
   }, [eventName, cb]);
   return socket;
 }
-const getSocketClient = () => socket;
+const socketClient = (/* unused pure expression or super */ null && (socket));
 
 /***/ }),
 
