@@ -68,31 +68,28 @@ const PreviewContainer = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 60%;
-  box-sizing: border-box;
+  height: 65%;
 
   .preview-title {
     margin: 2px;
     color: white;
     font-weight: 500;
-    font-size: 1.3em;
-  }
-
-  .episode:hover {
-    border: 1px solid black;
     font-size: 1.2em;
   }
 `;
 
 const List = styled.div`
   .episode-title {
-    margin: 10px 0;
     font-weight: 300;
     font-size: 1em;
     color: white;
   }
 
+  .episode {
+    padding-bottom: 10px;
+  }
+
   .episode-thumbnail {
-    margin: 0px auto;
+    margin: 0px auto 10px 0;
   }
 `;
