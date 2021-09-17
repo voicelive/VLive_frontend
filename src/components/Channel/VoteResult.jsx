@@ -26,7 +26,7 @@ export default function VoteResult() {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/main');
-    }, 1000);
+    }, 6000);
 
     return () => {
       clearTimeout(timer);
