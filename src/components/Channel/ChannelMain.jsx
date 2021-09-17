@@ -11,16 +11,8 @@ import { EVENTS } from '../../constants/socketEvent';
 import PlayerVideo from './PlayerVideo';
 import { useRouter } from 'next/router';
 
-<<<<<<< HEAD
-import ErrorBox from '../ErrorBox';
-import ChatBody from './ChatBody';
-import ChatForm from './ChatForm';
-=======
->>>>>>> b0bdcbf (style: change channel index composition)
 import Vote from './Vote';
 import VoteResult from './VoteResult';
-
-import useChannel from '../../hooks/channel/useChannel';
 
 export default function ChannelMain() {
   const {
@@ -143,47 +135,10 @@ export default function ChannelMain() {
       stream,
     });
 
-<<<<<<< HEAD
-  function turnToVote() {
-    setShowVote(true);
-  }
-
-  function turnToResult() {
-    setShowResult(true);
-  }
-
-  function turnToChat() {
-    setShowVote(false);
-  }
-
-  return (
-    <MainContainer>
-      <header>
-        <h2 className="channel-name">{name}</h2>
-        <h3 className="episode-title">{episode?.title}</h3>
-      </header>
-      <VideoWrapper>
-        {showResult ? <VoteResult /> : <Video onVideoEnd={turnToVote} />}
-      </VideoWrapper>
-      <ChatWrapper>
-        {showVote ? (
-          <Vote onVoteTimeEnd={turnToResult} onVote={turnToChat} />
-        ) : (
-          <>
-            <ChatBody />
-            <ChatForm />
-          </>
-        )}
-      </ChatWrapper>
-    </MainContainer>
-  );
-}
-=======
     peer.on('signal', (signal) => {
       socketClient.emit(EVENTS.RETURNING_SIGNAL, { signal, callerId });
     });
     peer.signal(signal);
->>>>>>> b0bdcbf (style: change channel index composition)
 
     return peer;
   }

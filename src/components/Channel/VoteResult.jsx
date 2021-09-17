@@ -4,7 +4,7 @@ import Image from 'next/image';
 import styled from '@emotion/styled';
 
 import usePlayers from '../../hooks/channel/usePlayers';
-import { getSocketClient } from '../../hooks/socket/useSocket';
+import { socketClient } from '../../hooks/socket/useSocket';
 
 import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
@@ -32,9 +32,9 @@ export default function VoteResult() {
       clearTimeout(timer);
       deactivateChannel();
 
-      getSocketClient().emit(EVENTS.END_CHANNEL, channelId);
-      getSocketClient().off(EVENTS.LISTEN_ENTER_CHANNEL);
-      getSocketClient().off(EVENTS.LISTEN_NEW_CHAT);
+      socketClient.emit(EVENTS.END_CHANNEL, channelId);
+      socketClient.off(EVENTS.LISTEN_ENTER_CHANNEL);
+      socketClient.off(EVENTS.LISTEN_NEW_CHAT);
     };
   }, []);
 

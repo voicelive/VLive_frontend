@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import theme from '../../styles/theme';
 
-import { getSocketClient } from '../../hooks/socket/useSocket';
+import { socketClient } from '../../hooks/socket/useSocket';
 
 import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
@@ -77,13 +77,13 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
         }),
       });
 
-      const { result2, message2 } = await res.json();
+      const { result: putResult, message: pusMessage } = await res.json();
 
-      if (result2 === 'error') {
-        throw new Error(message2);
+      if (putResult === 'error') {
+        throw new Error(pusMessage);
       }
 
-      getSocketClient().emit(EVENTS.CREATE_CHANNEL, data);
+      socketClient.emit(EVENTS.CREATE_CHANNEL, data);
       router.push(`/channel/${channelId}`);
     } catch (err) {
       return <ErrorBox message={err.message} />;

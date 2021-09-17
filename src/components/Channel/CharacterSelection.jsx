@@ -10,13 +10,10 @@ import { socketClient } from '../../hooks/socket/useSocket';
 
 import { EVENTS } from '../../constants/socketEvent';
 import { API } from '../../constants/api';
+import { ALERT_MSG } from '../../constants/alertMessage';
 
 import Button from '../Button';
 import ErrorBox from '../ErrorBox';
-import theme from '../../styles/theme';
-
-import { API } from '../../constants/api';
-import { ALERT_MSG } from '../../constants/alertMessage';
 
 export default function CharacterSelection({
   isModalOpen,
