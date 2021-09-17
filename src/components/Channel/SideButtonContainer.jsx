@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
+import theme from '../../styles/theme';
 
 import useChannel from '../../hooks/channel/useChannel';
 import { useSocket, socketClient } from '../../hooks/socket/useSocket';
@@ -99,14 +100,22 @@ export default function SideButtonContainer() {
 
   return (
     <ButtonWrapper>
-      <div className="button-wrapper">
-        {ready ? (
-          <Button onClick={startGameHandleClick}>Start</Button>
-        ) : (
-          <Button onClick={openModal}>Ready</Button>
-        )}
-        <Button onClick={handleClick}>나가기</Button>
-      </div>
+      {ready ? (
+        <Button
+          onClick={startGameHandleClick}
+          bgColor={theme.pink}
+          fontsize="18px"
+        >
+          Start
+        </Button>
+      ) : (
+        <Button onClick={openModal} bgColor={theme.pink} fontsize="18px">
+          Ready
+        </Button>
+      )}
+      <Button onClick={handleClick} bgColor={theme.blue} fontsize="18px">
+        나가기
+      </Button>
       {isModalOpen && (
         <Modal closeModal={closeModal}>
           <CharacterSelection
@@ -121,7 +130,12 @@ export default function SideButtonContainer() {
 }
 
 const ButtonWrapper = styled.div`
-  padding: 10px;
+  width: 20%;
+  padding: 20px 0;
+
+  button {
+    margin: 20px;
+  }
 
   .ready {
     color: navy;

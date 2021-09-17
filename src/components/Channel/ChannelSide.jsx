@@ -3,10 +3,12 @@ import styled from '@emotion/styled';
 
 import PlayerContainer from './PlayerContainer';
 import SideButtonContainer from './SideButtonContainer';
+import ChatContainer from './ChatContainer';
 
 export default function ChannelSide() {
   return (
     <SideContainer>
+      <ChatContainer />
       <PlayerContainer />
       <SideButtonContainer />
     </SideContainer>
@@ -14,7 +16,8 @@ export default function ChannelSide() {
 }
 
 const SideContainer = styled.div`
-  width: 30%;
-  height: auto;
-  background: #1d2e3c;
+  display: flex;
+  width: 100%;
+  height: 30vh;
+  background-size: cover;
 `;
