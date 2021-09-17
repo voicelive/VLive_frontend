@@ -10,7 +10,7 @@ import { API } from '../../constants/api';
 
 import ErrorBox from '../ErrorBox';
 
-export default function Vote({ onShowResult, onShowChat }) {
+export default function Vote({ onShowResult }) {
   const {
     query: { channelId },
   } = useRouter();
@@ -53,15 +53,13 @@ export default function Vote({ onShowResult, onShowChat }) {
       if (result === 'error') {
         throw new Error(message);
       }
-
-      onShowChat();
     } catch (err) {
       return <ErrorBox message={err.message} />;
     }
   }
 
   return (
-    <Wrapper>
+    <Container>
       <h1 className="vote-title">최고의 캐릭터에게 투표해주세요</h1>
       <span className="vote-subtitle">투표는 한 번만 참여 가능합니다.</span>
       <div className="characters">
@@ -76,18 +74,20 @@ export default function Vote({ onShowResult, onShowChat }) {
               <Image
                 src={player.characterId?.imgUrl}
                 alt="character-image"
-                width={110}
-                height={150}
+                width={150}
+                height={200}
               />
             </div>
-            <span className={`img ${playerId === player._id && 'color'}`}>
+            <span
+              className={`character-name ${playerId === player._id && 'color'}`}
+            >
               {player.characterId?.name}
             </span>
             <span className="user-name">{player.userId?.name}</span>
           </Character>
         ))}
       </div>
-    </Wrapper>
+    </Container>
   );
 }
 
@@ -96,18 +96,19 @@ Vote.propTypes = {
   onShowChat: PropTypes.func.isRequired,
 };
 
-const Wrapper = styled.div`
+const Container = styled.div`
+  width: 65%;
   color: white;
 
   .vote-title {
-    margin: 15px 0 0 0;
-    font-size: 20px;
+    margin: 20px 0 0 0;
+    font-size: 2em;
   }
 
   .vote-subtitle {
     padding: 20px 0 0 0;
     font-weight: 200px;
-    font-size: 16px;
+    font-size: 1.5em;
     color: #898bf3;
   }
 
@@ -115,7 +116,7 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 40px;
   }
 `;
 
@@ -132,22 +133,21 @@ const Character = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 113px;
-    height: 153px;
+    margin-bottom: 20px;
   }
 
   .character-name {
     display: block;
-    padding: 4px 0;
-    font-size: 18px;
+    margin-bottom: 20px;
+    font-size: 1.4em;
   }
 
   .user-name {
     background-color: #898bf3;
-    padding: 0px 4px;
+    padding: 0px 10px;
     border-radius: 5px;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 1.2em;
     color: black;
   }
 
