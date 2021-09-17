@@ -49,10 +49,10 @@ export default function ChatBody() {
 
 const Contents = styled.div`
   height: 85%;
-  padding-top: 5px;
+  padding: 10px 30px 0 30px;
   box-sizing: border-box;
   border-inline: 2px solid ${({ theme }) => theme.darkNavy};
-  background-color: ${({ theme }) => theme.darkNavy};
+  background-color: ${({ theme }) => theme.darkNavy}80;
   overflow-y: auto;
   color: white;
 
@@ -60,6 +60,21 @@ const Contents = styled.div`
     padding: 10px 0 0 10px;
     list-style: none;
     text-align: left;
+  }
+
+  &::-webkit-scrollbar {
+    width: 13px;
+    background-color: ${({ theme }) => theme.darkNavy};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 30px;
+    background-color: ${({ theme }) => theme.blue};
+
+    &:hover {
+      background-color: ${({ theme }) => theme.white};
+      border: none;
+    }
   }
 `;
 
