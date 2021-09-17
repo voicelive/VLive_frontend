@@ -3,8 +3,6 @@ import io from 'socket.io-client';
 
 let socket = null;
 
-console.log(123);
-
 export const getMySocketId = () => socket?.id;
 
 export function useSocket(eventName, cb) {
@@ -16,7 +14,7 @@ export function useSocket(eventName, cb) {
     fetch('/api/socketio').finally(() => {
       console.log('finally fetch', socket);
 
-      socket = io();
+      socket = io(process.env.SOCKET_SERVER_ADDRESS);
 
       socket.on(eventName, cb);
     });
