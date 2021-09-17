@@ -101,7 +101,7 @@ export default function UserReady({ isModalOpen, closeModal }) {
     }
   }
 
-  const { title, characters } = episodeInfo;
+  const { characters } = episodeInfo;
 
   return (
     <Container>
