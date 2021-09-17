@@ -9,6 +9,7 @@ import { getSocketClient } from '../../hooks/socket/useSocket';
 
 import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
+import ErrorBox from '../ErrorBox';
 
 import Button from '../Button';
 
@@ -37,7 +38,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
 
         setEpisodes(data);
       } catch (err) {
-        alert(err.message);
+        return <ErrorBox message={err.message} />;
       }
     }
 
@@ -62,7 +63,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
       const channelId = data._id;
 
       if (result === 'error') {
-        return alert(message);
+        throw new Error(message);
       }
 
       const res = await fetch(`${API.URL}/channel/${channelId}`, {
@@ -85,7 +86,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
       getSocketClient().emit(EVENTS.CREATE_CHANNEL, data);
       router.push(`/channel/${channelId}`);
     } catch (err) {
-      alert(err.message);
+      return <ErrorBox message={err.message} />;
     }
   }
 
