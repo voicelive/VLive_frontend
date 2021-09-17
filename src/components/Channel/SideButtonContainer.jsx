@@ -60,7 +60,7 @@ export default function SideButtonContainer() {
         throw new Error(message);
       }
 
-      socketClient().emit(EVENTS.EXIT_CHANNEL, { channelId, userId });
+      socketClient.emit(EVENTS.EXIT_CHANNEL, { channelId, userId });
       router.push('/main');
     } catch (err) {
       return <ErrorBox message={err.message} />;
@@ -92,7 +92,7 @@ export default function SideButtonContainer() {
         throw new Error(message);
       }
 
-      socketClient().emit(EVENTS.READY_TO_START, channelId);
+      socketClient.emit(EVENTS.READY_TO_START, channelId);
     } catch (err) {
       return <ErrorBox message={err.message} />;
     }

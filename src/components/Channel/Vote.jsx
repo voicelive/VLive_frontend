@@ -10,7 +10,7 @@ import { API } from '../../constants/api';
 
 import ErrorBox from '../ErrorBox';
 
-export default function Vote({ onVoteTimeEnd, onVote }) {
+export default function Vote({ onShowResult }) {
   const {
     query: { channelId },
   } = useRouter();
@@ -27,7 +27,7 @@ export default function Vote({ onVoteTimeEnd, onVote }) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      onVoteTimeEnd();
+      onShowResult();
     }, 6000);
 
     return () => clearTimeout(timer);
@@ -53,8 +53,6 @@ export default function Vote({ onVoteTimeEnd, onVote }) {
       if (result === 'error') {
         throw new Error(message);
       }
-
-      onVote();
     } catch (err) {
       return <ErrorBox message={err.message} />;
     }
@@ -94,8 +92,7 @@ export default function Vote({ onVoteTimeEnd, onVote }) {
 }
 
 Vote.propTypes = {
-  onVoteTimeEnd: PropTypes.func.isRequired,
-  onVote: PropTypes.func.isRequired,
+  onShowResult: PropTypes.func.isRequired,
 };
 
 const Container = styled.div`

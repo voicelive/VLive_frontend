@@ -33,73 +33,69 @@ export default function ChannelMain() {
     }
   });
 
-  useEffect(async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true,
-    });
-    userVideo.current.srcObject = stream;
-    userVideo.current.play();
+  useSocket(EVENTS.RECEIVING_RETURNED_SIGNAL, ({ id, signal }) => {
+    const item = peersRef.current.find((p) => p.peerID === id);
 
-    const { _id, name, email, photoUrl } = JSON.parse(
-      sessionStorage.getItem('user'),
-    );
+    item.peer.signal(signal);
+  });
 
-    const user = {
-      _id,
-      name,
-      email,
-      photoUrl,
-      channelId,
-    };
+  useEffect(() => {
+    (async () => {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      userVideo.current.srcObject = stream;
 
-    socketClient.emit(EVENTS.ENTER_CHANNEL, user);
-    socketClient.once(EVENTS.ALL_USER, (userIdList) => {
-      const peers = [];
+      const { _id, name, email, photoUrl } = JSON.parse(
+        sessionStorage.getItem('user'),
+      );
 
-      userIdList.forEach((userId) => {
-        const peer = createPeer(userId, getMySocketId(), stream);
+      const user = {
+        _id,
+        name,
+        email,
+        photoUrl,
+        channelId,
+      };
+
+      socketClient.emit(EVENTS.ENTER_CHANNEL, user);
+      socketClient.on(EVENTS.ALL_USER, (userIdList) => {
+        const peers = [];
+
+        userIdList.forEach((userId) => {
+          const peer = createPeer(userId, getMySocketId(), stream);
+
+          peersRef.current.push({
+            peerID: userId,
+            peer,
+          });
+
+          peers.push(peer);
+        });
+
+        setPeers(peers);
+      });
+
+      socketClient.on(EVENTS.USER_JOINED, ({ signal, callerId }) => {
+        const peer = addPeer(signal, callerId, stream);
 
         peersRef.current.push({
-          peerID: userId,
+          peerID: callerId,
           peer,
         });
 
-        peers.push(peer);
+        setPeers((users) => [...users, peer]);
       });
-
-      setPeers(peers);
-    });
-
-    socketClient.on(EVENTS.USER_JOINED, ({ signal, callerId }) => {
-      const peer = addPeer(signal, callerId, stream);
-
-      peersRef.current.push({
-        peerID: callerId,
-        peer,
-      });
-
-      setPeers((users) => [...users, peer]);
-    });
-
-    socketClient.on(EVENTS.RECEIVING_RETURNED_SIGNAL, ({ id, signal }) => {
-      const item = peersRef.current.find((p) => p.peerID === id);
-
-      item.peer.signal(signal);
-    });
+    })();
 
     return () => {
       socketClient.removeAllListeners(EVENTS.ALL_USER);
       socketClient.removeAllListeners(EVENTS.USER_JOINED);
       socketClient.removeAllListeners(EVENTS.RECEIVING_RETURNED_SIGNAL);
-      if (!stream) return;
+      socketClient.emit(EVENTS.END_CHANNEL, channelId);
 
-      stream.getVideoTracks().forEach((track) => {
-        track.stop();
-        stream.removeTrack(track);
-      });
-
-      delete peersRef.current;
+      peersRef.current = [];
       setPeers((peers) => {
         peers.forEach((peer) => {
           peer.destroy();
