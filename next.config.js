@@ -1,5 +1,6 @@
 module.exports = {
   reactStrictMode: true,
+  useFileSystemPublicRoutes: false,
   images: {
     domains: [
       'lh3.googleusercontent.com',
