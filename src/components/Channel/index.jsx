@@ -22,8 +22,14 @@ export default function Channel() {
     return null;
   }
 
+  const { name, episode } = channel;
+
   return (
     <Container>
+      <ChannelHeader>
+        <h2 className="channel-name">{name}</h2>
+        <h3 className="episode-title">{episode?.title}</h3>
+      </ChannelHeader>
       <ChannelMain />
       <ChannelSide />
     </Container>
@@ -32,14 +38,36 @@ export default function Channel() {
 
 const Container = styled.div`
   display: flex;
-  position: relative;
+  flex-direction: column;
   text-align: center;
+  background-size: cover;
   background-image: linear-gradient(
-      rgba(5, 5, 5, 0.746),
-      rgba(58, 57, 57, 0.842),
-      rgba(54, 54, 54, 0.5),
-      rgba(58, 57, 57, 0.842),
-      rgba(5, 5, 5, 0.746)
+      rgba(5, 3, 19, 0.801),
+      rgba(5, 3, 19, 0.788),
+      rgba(5, 3, 19, 0.568),
+      rgba(5, 3, 19, 0.788),
+      rgba(5, 3, 19, 0.801)
     ),
-  height: 100vh;
+    url('/images/11.jpg');
+`;
+
+const ChannelHeader = styled.div`
+  height: 8vh;
+  padding: 10px 20px;
+  text-align: left;
+  color: ${({ theme }) => theme.white};
+  background-color: ${({ theme }) => theme.darkNavy};
+  box-shadow: ${({ theme }) => theme.whiteShadow};
+
+  .channel-name {
+    margin: 0px;
+    font-size: 1em;
+    font-weight: 200;
+  }
+
+  .episode-title {
+    margin: 0px;
+    font-size: 1.1em;
+    font-weight: 500;
+  }
 `;
