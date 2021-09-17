@@ -3,8 +3,6 @@ import { Server } from 'socket.io';
 const { EVENTS } = require('../../src/constants/socketEvent');
 
 const ioHandler = (req, res) => {
-  console.log('ioHandler', res.socket.server.io);
-
   if (!res.socket.server.io) {
     console.log('*First use, starting socket.io');
 

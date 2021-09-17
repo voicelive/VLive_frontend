@@ -2,20 +2,22 @@ import { useEffect } from 'react';
 import io from 'socket.io-client';
 
 let socket = null;
+let isConnecting = false;
 
 export const getMySocketId = () => socket?.id;
 
 export function useSocket(eventName, cb) {
   useEffect(() => {
+    if (isConnecting) return;
+
+    isConnecting = true;
+
     console.log('before fetch', socket);
 
-    if (socket) return;
-
     fetch('/api/socketio').finally(() => {
-      console.log('finally fetch', socket);
+      socket = io();
 
-      // TODO: Update address
-      socket = io(process.env.SOCKET_SERVER_ADDRESS);
+      console.log('finally fetch', socket);
 
       socket.on(eventName, cb);
     });
