@@ -18,7 +18,7 @@ export default function PlayerContainer() {
 
   useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
     const newUser = {
-      userId: user._id,
+      userId: user,
       voteCount: 0,
     };
 
@@ -63,12 +63,8 @@ export default function PlayerContainer() {
 }
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 55%;
+  width: 15%;
+  height: 100%;
+  padding-bottom: 30px;
   color: white;
-
-  .player-profile {
-    width: 100%;
-    height: 50px;
-  }
 `;
