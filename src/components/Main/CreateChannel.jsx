@@ -3,6 +3,7 @@ import { useRouter } from 'next/dist/client/router';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
+import theme from '../../styles/theme';
 
 import { getSocketClient } from '../../hooks/socket/useSocket';
 
@@ -93,7 +94,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
 
     setInputValue({
       ...inputValue,
-      ['episodeId']: id,
+      episodeId: id,
     });
   }
 
@@ -110,17 +111,17 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
     <Container>
       <div className="header">
         <span className="title">채널개설 하기</span>
-        <button type="button" onClick={closeModal}>
+        <button className="exit-button" type="button" onClick={closeModal}>
           나가기
         </button>
       </div>
       <CreatingForm>
         <ChannelName>
-          <span className="channel-name">방 이름을 입력하세요</span>
+          <span className="channel-name">채널 이름을 입력하세요</span>
           <input
             type="text"
             name="name"
-            placeholder="아무나 들어와보시지"
+            placeholder="ex) 저랑 연기배틀 하실 분 들어오세요"
             value={inputValue.name}
             onChange={handleChange}
           />
@@ -134,19 +135,31 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
                 id={episode._id}
                 onClick={handleClick}
               >
-                <span className="episode-title">{episode.title}</span>
+                <span
+                  className={`episode-title ${
+                    inputValue.episodeId === episode._id && 'color'
+                  }`}
+                >
+                  {episode.title}
+                </span>
                 <Image
                   src={episode.thumbnail}
                   alt="episode-thumbnail"
-                  width={200}
-                  height={100}
+                  id={episode._id}
+                  width={180}
+                  height={200}
                 />
               </EpisodeOption>
             ))}
           </ul>
         </EpisodeOptions>
         <div className="button">
-          <Button type="submit" onClick={submitData}>
+          <Button
+            type="submit"
+            onClick={submitData}
+            bgColor={theme.blue}
+            color={theme.white}
+          >
             채널 개설
           </Button>
         </div>
@@ -164,8 +177,21 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   border: 1px solid white;
-  background-color: ${({ theme }) => theme.navy};
-  color: white;
+  background-color: ${({ theme }) => theme.darkNavy}90;
+  color: ${({ theme }) => theme.white};
+
+  .exit-button {
+    padding: 5px 10px;
+    border-radius: 10px;
+    background-color: transparent;
+    border: 1px solid white;
+    color: ${({ theme }) => theme.white};
+    cursor: pointer;
+
+    :hover {
+      opacity: 0.7;
+    }
+  }
 
   .header {
     display: flex;
@@ -178,6 +204,7 @@ const Container = styled.div`
     .title {
       font-size: 24px;
       line-height: 24px;
+      color: ${({ theme }) => theme.blue};
     }
   }
 `;
@@ -193,6 +220,8 @@ const CreatingForm = styled.form`
 
   .channel-name {
     display: block;
+    font-size: 1.1em;
+    color: ${({ theme }) => theme.white};
   }
 
   .button {
@@ -216,14 +245,16 @@ const ChannelName = styled.div`
 
 const EpisodeOptions = styled.div`
   margin-top: 10px;
+  height: 180px;
 
   .episode-select {
-    font-size: 16px;
+    font-size: 1.1em;
+    color: ${({ theme }) => theme.white};
   }
 
   .episode-list {
     display: grid;
-    grid-template-columns: repeat(3, minmax(100px, 170px));
+    grid-template-columns: 1fr 1fr;
     padding: 0;
   }
 `;
@@ -231,13 +262,18 @@ const EpisodeOptions = styled.div`
 const EpisodeOption = styled.li`
   display: flex;
   flex-direction: column;
-  height: 100px;
-  margin: 0 15px 20px 0;
+  height: 110px;
+  margin: 0 60px 0 0;
   font-size: 12px;
   list-style: none;
   cursor: pointer;
 
   .episode-title {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+  }
+
+  .color {
+    color: ${({ theme }) => theme.pink};
   }
 `;
