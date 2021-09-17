@@ -21,6 +21,7 @@ export default function ChatForm() {
   useEffect(() => {
     const { name } = JSON.parse(sessionStorage.getItem('user'));
     setUserName(name);
+    setInput({ ...input, author: userName.replace(' ', '') });
   }, []);
 
   async function submitChat(ev) {
@@ -50,7 +51,7 @@ export default function ChatForm() {
     getSocketClient().emit(EVENTS.NEW_CHAT, { channelId, input });
 
     setInput({
-      author: '',
+      author: userName?.replace(' ', ''),
       chat: '',
     });
   }
@@ -62,7 +63,7 @@ export default function ChatForm() {
     if (trimmedChat === '') return;
 
     setInput({
-      author: userName.replace(' ', ''),
+      ...input,
       chat: trimmedChat,
     });
   }
@@ -82,8 +83,10 @@ export default function ChatForm() {
 
 const Form = styled.form`
   display: flex;
+  justify-content: center;
   align-items: center;
-  width: 100%;
+  padding: 0 30px;
+  background-color: ${({ theme }) => theme.white};
 
   input {
     width: 80%;
@@ -91,7 +94,6 @@ const Form = styled.form`
     padding: 0px 20px;
     border: none;
     font-size: 16px;
-    background-color: whitesmoke;
 
     &:focus {
       outline: none;
@@ -106,6 +108,6 @@ const Form = styled.form`
     border: none;
     cursor: pointer;
     border-radius: 15px;
-    background-color: lightGray;
+    background-color: ${({ theme }) => theme.blue};
   }
 `;
