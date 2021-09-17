@@ -21,6 +21,7 @@ export default function SideButtonContainer() {
     query: { channelId },
   } = useRouter();
   const router = useRouter();
+  const { channel } = useChannel(channelId);
 
   useEffect(() => {
     const { _id } = JSON.parse(sessionStorage.getItem('user'));
@@ -30,8 +31,6 @@ export default function SideButtonContainer() {
   useSocket(EVENTS.LISTEN_PLAYER_READY, ({ characterId }) => {
     setSelectedCharacters((prev) => [...prev, characterId]);
   });
-
-  const { channel } = useChannel(channelId);
 
   function openModal() {
     setIsModalOpen(true);
@@ -67,7 +66,7 @@ export default function SideButtonContainer() {
     }
   }
 
-  socketClient().on(EVENTS.LISTEN_GAME_START, (start) => {
+  useSocket(EVENTS.LISTEN_GAME_START, (start) => {
     if (start && userId === channel?.host._id) {
       setReady(true);
     }

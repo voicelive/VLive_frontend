@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
-import useChannel from '../../hooks/channel/useChannel';
 import ErrorBox from '../ErrorBox';
 import ChatBody from './ChatBody';
 import ChatForm from './ChatForm';
 import Vote from './Vote';
 import VoteResult from './VoteResult';
 import Video from './Video';
+
+import useChannel from '../../hooks/channel/useChannel';
 
 export default function ChannelMain() {
   const {
@@ -28,6 +29,18 @@ export default function ChannelMain() {
 
   const { name, episode } = channel;
 
+  function turnToVote() {
+    setShowVote(true);
+  }
+
+  function turnToResult() {
+    setShowResult(true);
+  }
+
+  function turnToChat() {
+    setShowVote(false);
+  }
+
   return (
     <MainContainer>
       <header>
@@ -35,18 +48,11 @@ export default function ChannelMain() {
         <h3 className="episode-title">{episode?.title}</h3>
       </header>
       <VideoWrapper>
-        {showResult ? (
-          <VoteResult />
-        ) : (
-          <Video isVideoEnd={() => setShowVote(true)} />
-        )}
+        {showResult ? <VoteResult /> : <Video onVideoEnd={turnToVote} />}
       </VideoWrapper>
       <ChatWrapper>
         {showVote ? (
-          <Vote
-            onShowResult={() => setShowResult(true)}
-            onShowChat={() => setShowVote(false)}
-          />
+          <Vote onVoteTimeEnd={turnToResult} onVote={turnToChat} />
         ) : (
           <>
             <ChatBody />

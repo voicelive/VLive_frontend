@@ -18,8 +18,7 @@ export default function PlayerContainer() {
 
   useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
     const newUser = {
-      userId: user._id,
-      voteCount: 0,
+      userId: user,
     };
 
     mutate((prev) => ({ ...prev, players: [...prev.players, newUser] }));
