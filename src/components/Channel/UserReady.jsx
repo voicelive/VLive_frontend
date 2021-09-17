@@ -4,7 +4,7 @@ import Image from 'next/image';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import { socketClient } from '../../hooks/socket/useSocket';
+import { getSocketClient } from '../../hooks/socket/useSocket';
 import useChannel from '../../hooks/channel/useChannel';
 
 import { EVENTS } from '../../constants/socketEvent';
@@ -89,7 +89,7 @@ export default function UserReady({ isModalOpen, closeModal }) {
         throw new Error(message);
       }
 
-      socketClient.emit(EVENTS.PLAYER_READY, {
+      getSocketClient().emit(EVENTS.PLAYER_READY, {
         channelId,
         _id,
         userRole,

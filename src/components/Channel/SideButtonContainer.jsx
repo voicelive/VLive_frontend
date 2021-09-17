@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import useChannel from '../../hooks/channel/useChannel';
-import { socketClient } from '../../hooks/socket/useSocket';
+import { getSocketClient } from '../../hooks/socket/useSocket';
 import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
 
@@ -55,14 +55,14 @@ export default function SideButtonContainer() {
         throw new Error(message);
       }
 
-      socketClient.emit(EVENTS.EXIT_CHANNEL, { channelId, userId });
+      getSocketClient().emit(EVENTS.EXIT_CHANNEL, { channelId, userId });
       router.push('/main');
     } catch (err) {
       return <ErrorBox message={err.message} />;
     }
   }
 
-  socketClient.on(EVENTS.LISTEN_GAME_START, (start) => {
+  getSocketClient().on(EVENTS.LISTEN_GAME_START, (start) => {
     if (start && userId === channel?.host._id) {
       setReady(true);
     }
@@ -87,7 +87,7 @@ export default function SideButtonContainer() {
         throw new Error(message);
       }
 
-      socketClient.emit(EVENTS.READY_TO_START, channelId);
+      getSocketClient().emit(EVENTS.READY_TO_START, channelId);
     } catch (err) {
       return <ErrorBox message={err.message} />;
     }

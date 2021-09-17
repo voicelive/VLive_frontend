@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Peer from 'simple-peer';
 import {
-  socketClient,
+  getSocketClient,
   getMySocketId,
   useSocket,
 } from '../../hooks/socket/useSocket';
@@ -47,8 +47,8 @@ export default function Video({ isVideoEnd }) {
       channelId,
     };
 
-    socketClient.emit(EVENTS.ENTER_CHANNEL, user);
-    socketClient.once(EVENTS.ALL_USER, (userIdList) => {
+    getSocketClient().emit(EVENTS.ENTER_CHANNEL, user);
+    getSocketClient().once(EVENTS.ALL_USER, (userIdList) => {
       const peers = [];
 
       userIdList.forEach((userId) => {
@@ -65,7 +65,7 @@ export default function Video({ isVideoEnd }) {
       setPeers(peers);
     });
 
-    socketClient.on(EVENTS.USER_JOINED, ({ signal, callerId }) => {
+    getSocketClient().on(EVENTS.USER_JOINED, ({ signal, callerId }) => {
       const peer = addPeer(signal, callerId, stream);
 
       peersRef.current.push({
@@ -76,16 +76,16 @@ export default function Video({ isVideoEnd }) {
       setPeers((users) => [...users, peer]);
     });
 
-    socketClient.on(EVENTS.RECEIVING_RETURNED_SIGNAL, ({ id, signal }) => {
+    getSocketClient().on(EVENTS.RECEIVING_RETURNED_SIGNAL, ({ id, signal }) => {
       const item = peersRef.current.find((p) => p.peerID === id);
 
       item.peer.signal(signal);
     });
 
     return () => {
-      socketClient.removeAllListeners(EVENTS.ALL_USER);
-      socketClient.removeAllListeners(EVENTS.USER_JOINED);
-      socketClient.removeAllListeners(EVENTS.RECEIVING_RETURNED_SIGNAL);
+      getSocketClient().removeAllListeners(EVENTS.ALL_USER);
+      getSocketClient().removeAllListeners(EVENTS.USER_JOINED);
+      getSocketClient().removeAllListeners(EVENTS.RECEIVING_RETURNED_SIGNAL);
       if (!stream) return;
 
       stream.getVideoTracks().forEach((track) => {
@@ -112,7 +112,7 @@ export default function Video({ isVideoEnd }) {
     });
 
     peer.on('signal', async (signal) => {
-      socketClient.emit(EVENTS.SENDING_SIGNAL, {
+      getSocketClient().emit(EVENTS.SENDING_SIGNAL, {
         userToSignal,
         callerId,
         signal,
@@ -130,7 +130,7 @@ export default function Video({ isVideoEnd }) {
     });
 
     peer.on('signal', (signal) => {
-      socketClient.emit(EVENTS.RETURNING_SIGNAL, { signal, callerId });
+      getSocketClient().emit(EVENTS.RETURNING_SIGNAL, { signal, callerId });
     });
     peer.signal(signal);
 

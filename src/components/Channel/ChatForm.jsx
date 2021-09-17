@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
-import { socketClient } from '../../hooks/socket/useSocket';
+import { getSocketClient } from '../../hooks/socket/useSocket';
 import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
 
@@ -47,7 +47,7 @@ export default function ChatForm() {
       return <ErrorBox message={err.message} />;
     }
 
-    socketClient.emit(EVENTS.NEW_CHAT, { channelId, input });
+    getSocketClient().emit(EVENTS.NEW_CHAT, { channelId, input });
 
     setInput({
       author: '',

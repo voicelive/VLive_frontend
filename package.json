@@ -9,9 +9,9 @@
     "Eunbin Kim <eunbines2@gmail.com>"
   ],
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "next dev",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
     "test": "echo \"Error: no test specified\" && exit 0"

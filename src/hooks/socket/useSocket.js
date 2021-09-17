@@ -1,19 +1,32 @@
 import { useEffect } from 'react';
 import io from 'socket.io-client';
 
-const socket = io();
+let socket = null;
 
-export const getMySocketId = () => socket.id;
+console.log(123);
+
+export const getMySocketId = () => socket?.id;
 
 export function useSocket(eventName, cb) {
   useEffect(() => {
-    socket.on(eventName, cb);
+    console.log('before fetch', socket);
+
+    if (socket) return;
+
+    fetch('/api/socketio').finally(() => {
+      console.log('finally fetch', socket);
+
+      socket = io();
+
+      socket.on(eventName, cb);
+    });
+
     return function useSocketCleanup() {
-      socket.off(eventName, cb);
+      socket?.off(eventName, cb);
     };
   }, [eventName, cb]);
 
   return socket;
 }
 
-export const socketClient = socket;
+export const getSocketClient = () => socket;

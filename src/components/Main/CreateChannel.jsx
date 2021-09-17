@@ -4,7 +4,7 @@ import Image from 'next/image';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import { socketClient } from '../../hooks/socket/useSocket';
+import { getSocketClient } from '../../hooks/socket/useSocket';
 
 import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
@@ -81,7 +81,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
         throw new Error(message2);
       }
 
-      socketClient.emit(EVENTS.CREATE_CHANNEL, data);
+      getSocketClient().emit(EVENTS.CREATE_CHANNEL, data);
       router.push(`/channel/${channelId}`);
     } catch (err) {
       alert(err.message);
