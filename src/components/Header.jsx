@@ -59,8 +59,9 @@ const HeaderWrapper = styled.header`
     font-size: 1.1em;
     color: ${({ theme }) => theme.white};
 
-    :hover {
+    &:hover {
       color: ${({ theme }) => theme.blue};
+      transform: scale(1.05);
     }
   }
 
