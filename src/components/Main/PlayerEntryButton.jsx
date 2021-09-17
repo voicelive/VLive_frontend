@@ -25,9 +25,7 @@ export default function PlayerEntryButton({ channelId, isActive }) {
 
     const { episode } = channel;
 
-    episode.characters.length <= players.length
-      ? setIsButtonActive(false)
-      : setIsButtonActive(true);
+    setIsButtonActive(episode.characters.length > players.length);
   }, [players]);
 
   useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
