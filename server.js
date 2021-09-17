@@ -21,7 +21,7 @@ app.prepare().then(() => {
     } else {
       handle(req, res, parsedUrl);
     }
-  }).listen(3000, (err) => {
+  }).listen(8080, (err) => {
     if (err) throw err;
     console.log('> Server started on http://localhost:3000');
   });
