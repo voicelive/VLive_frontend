@@ -14,6 +14,7 @@ export function useSocket(eventName, cb) {
     fetch('/api/socketio').finally(() => {
       console.log('finally fetch', socket);
 
+      // TODO: Update address
       socket = io(process.env.SOCKET_SERVER_ADDRESS);
 
       socket.on(eventName, cb);
