@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styled from '@emotion/styled';
@@ -14,8 +14,21 @@ import Button from '../Button';
 import ErrorBox from '../ErrorBox';
 
 export default function PlayerEntryButton({ channelId, isActive }) {
+  const [isButtonActive, setIsButtonActive] = useState(true);
   const { channel, error } = useChannel(channelId);
   const { players, mutate } = usePlayers(channelId);
+
+  useEffect(() => {
+    if (channel == null) {
+      return null;
+    }
+
+    const { episode } = channel;
+
+    episode.characters.length <= players.length
+      ? setIsButtonActive(false)
+      : setIsButtonActive(true);
+  }, [players]);
 
   useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
     if (user.channelId === channelId) {
@@ -71,15 +84,15 @@ export default function PlayerEntryButton({ channelId, isActive }) {
   return (
     <Wrapper isActive={isActive}>
       <Link
-        href={isActive ? `/channel/${channelId}` : '#'}
+        href={isActive && isButtonActive ? `/channel/${channelId}` : '#'}
         key={channelId}
         passHref
       >
-        <a className={!isActive ? 'disable' : null}>
+        <a className={!isActive || !isButtonActive ? 'disable' : null}>
           <Button
             className="entry-button"
             onClick={() => onButtonClick(channelId)}
-            bgColor={!isActive ? 'gray' : theme.blue}
+            bgColor={!isActive || !isButtonActive ? 'gray' : theme.blue}
             width="100px"
             height="50px"
           >
