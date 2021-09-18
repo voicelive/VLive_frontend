@@ -21,7 +21,6 @@ export default function ChatForm() {
   useEffect(() => {
     const { name } = JSON.parse(sessionStorage.getItem('user'));
     setUserName(name);
-    setInput({ ...input, author: userName.replace(' ', '') });
   }, []);
 
   async function submitChat(ev) {
@@ -63,7 +62,7 @@ export default function ChatForm() {
     if (trimmedChat === '') return;
 
     setInput({
-      ...input,
+      author: userName.replace(' ', ''),
       chat: trimmedChat,
     });
   }
