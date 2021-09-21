@@ -43,12 +43,14 @@ export default function CharacterSelection({
   useEffect(() => {
     (async () => {
       try {
+        const user = JSON.parse(sessionStorage.getItem('user'));
         const response = await fetch(
           `${API.URL}/episode/${channel.episode._id}`,
           {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
+              authorization: `bearer ${user?.token}`,
             },
           },
         );
@@ -72,17 +74,18 @@ export default function CharacterSelection({
       return alert(ALERT_MSG.SELECTION_REQUIRED);
     }
 
-    const { _id } = JSON.parse(sessionStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem('user'));
 
     try {
       const response = await fetch(`${API.URL}/channel/${channelId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          authorization: `bearer ${user?.token}`,
         },
         body: JSON.stringify({
           state: 'character',
-          userId: _id,
+          userId: user?._id,
           characterId: currentCharacter,
         }),
       });
@@ -93,7 +96,7 @@ export default function CharacterSelection({
       }
 
       socketClient.emit(EVENTS.PLAYER_READY, {
-        userId: _id,
+        userId: user?._id,
         characterId: currentCharacter,
         channelId,
         episode,

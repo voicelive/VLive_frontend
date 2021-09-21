@@ -17,25 +17,21 @@ export default function PlayerContainer() {
   const { players, error, mutate } = usePlayers(channelId);
 
   useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
-    const newUser = {
-      userId: user,
-    };
-
-    mutate((prev) => ({ ...prev, players: [...prev.players, newUser] }));
+    mutate((prev) => {
+      return { ...prev, players: [...prev.players, { user }] };
+    });
   });
 
-  useSocket(EVENTS.LISTEN_EXIT_CHANNEL, (user) => {
-    const newPlayers = players.filter(
-      (player) => player.userId._id !== user.userId,
-    );
+  useSocket(EVENTS.LISTEN_EXIT_CHANNEL, (userId) => {
+    const newPlayers = players.filter((player) => player.user._id !== userId);
 
     mutate((prevPlayers) => ({ ...prevPlayers, newPlayers }));
   });
 
   useSocket(EVENTS.LISTEN_PLAYER_READY, (user) => {
     const readyPlayers = players.map((player) => {
-      if (player.userId._id === user._id) {
-        player.characterId = user.userRole.characterId;
+      if (player.user._id === user._id) {
+        player.character = user.userRole.character;
       }
 
       return player;
@@ -55,7 +51,7 @@ export default function PlayerContainer() {
   return (
     <Wrapper>
       {players.map((player) => (
-        <PlayerItem key={player._id} player={player} />
+        <PlayerItem key={player.user._id} player={player} />
       ))}
     </Wrapper>
   );

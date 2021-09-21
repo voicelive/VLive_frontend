@@ -35,13 +35,13 @@ export default function RecentHistory() {
         {players?.map((player) => (
           <div key={player._id} className="player-profile">
             <Image
-              src={player.characterId.imgUrl}
+              src={player.character.imgUrl}
               alt="character image"
               width={70}
               height={70}
             />
-            <div>{player.userId.name}</div>
-            <div>{player.characterId.name}</div>
+            <div>{player.user.name}</div>
+            <div>{player.character.name}</div>
             <div>{player.voteCount}</div>
           </div>
         ))}

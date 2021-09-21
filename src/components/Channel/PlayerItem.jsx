@@ -2,19 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-export default function PlayerItem({ player: { userId, characterId } }) {
+export default function PlayerItem({ player: { user, character } }) {
   return (
-    <PlayerInfo key={userId?._id}>
-      <div className="player-name">{userId?.name}</div>
-      <div className="character-name">{characterId?.name}</div>
+    <PlayerInfo key={user?._id}>
+      <div className="player-name">{user?.name}</div>
+      <div className="character-name">{character?.name}</div>
     </PlayerInfo>
   );
 }
 
 PlayerItem.propTypes = {
   player: PropTypes.shape({
-    userId: PropTypes.object.isRequired,
-    characterId: PropTypes.object,
+    user: PropTypes.object.isRequired,
+    character: PropTypes.object,
   }),
 };
 

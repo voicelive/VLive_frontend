@@ -3,10 +3,12 @@ import { API } from '../../constants/api';
 
 async function fetcher() {
   try {
+    const user = JSON.parse(sessionStorage.getItem('user'));
     const response = await fetch(`${API.URL}/channel`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        authorization: `bearer ${user?.token}`,
       },
     });
 
