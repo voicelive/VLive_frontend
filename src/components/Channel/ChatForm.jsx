@@ -27,10 +27,12 @@ export default function ChatForm() {
     ev.preventDefault();
 
     try {
+      const user = JSON.parse(sessionStorage.getItem('user'));
       const response = await fetch(`${API.URL}/chat`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          authorization: `bearer ${user?.token}`,
         },
         body: JSON.stringify({
           channelId,

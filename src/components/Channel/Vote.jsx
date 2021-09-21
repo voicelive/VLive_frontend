@@ -37,10 +37,12 @@ export default function Vote({ onShowResult }) {
     setPlayerId(currentTarget.id);
 
     try {
+      const user = JSON.parse(sessionStorage.getItem('user'));
       const response = await fetch(`${API.URL}/channel/${channelId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          authorization: `bearer ${user?.token}`,
         },
         body: JSON.stringify({
           state: 'voting',
@@ -83,7 +85,7 @@ export default function Vote({ onShowResult }) {
             >
               {player.characterId?.name}
             </span>
-            <span className="user-name">{player.userId?.name}</span>
+            <span className="user-name">{player.user?.name}</span>
           </Character>
         ))}
       </div>

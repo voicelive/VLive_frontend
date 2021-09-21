@@ -34,17 +34,17 @@ export default function PlayerEntryButton({ channelId, isActive }) {
     }
   });
 
-  useSocket(EVENTS.LISTEN_EXIT_CHANNEL, (user) => {
-    if (user.channelId === channelId) {
-      const newPlayers = players.filter(
-        (player) => player.userId._id !== user.userId,
-      );
-
-      mutate((data) => {
-        return { ...data, players: newPlayers };
-      });
-    }
-  });
+  useSocket(
+    EVENTS.LISTEN_EXIT_CHANNEL,
+    ({ userId, channelId: exitChannelId }) => {
+      if (exitChannelId === channelId) {
+        const newPlayers = players.filter(
+          (player) => player.user._id !== userId,
+        );
+        mutate((prev) => ({ ...prev, players: newPlayers }));
+      }
+    },
+  );
 
   if (error) {
     return <ErrorBox message={error.message} />;
@@ -56,16 +56,17 @@ export default function PlayerEntryButton({ channelId, isActive }) {
 
   async function onButtonClick(channelId) {
     try {
-      const { _id } = JSON.parse(sessionStorage.getItem('user'));
+      const user = JSON.parse(sessionStorage.getItem('user'));
 
       const response = await fetch(`${API.URL}/channel/${channelId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          authorization: `bearer ${user?.token}`,
         },
         body: JSON.stringify({
           state: 'enter',
-          userId: _id,
+          userId: user?._id,
         }),
       });
 

@@ -23,7 +23,7 @@ app.prepare().then(() => {
     }
   }).listen(8080, (err) => {
     if (err) throw err;
-    console.log('> Server started on http://localhost:3000');
+    console.log('> Server started on http://localhost:8080');
   });
 
   const io = require('socket.io')(server);
@@ -41,8 +41,8 @@ app.prepare().then(() => {
       socket.broadcast.emit(EVENTS.LISTEN_CREATE_CHANNEL, channel);
     });
 
-    socket.on(EVENTS.ENTER_CHANNEL, (userData) => {
-      const { channelId } = userData;
+    socket.on(EVENTS.ENTER_CHANNEL, (user) => {
+      const { channelId } = user;
 
       if (users[channelId]) {
         users[channelId].push(socket.id);
@@ -60,7 +60,7 @@ app.prepare().then(() => {
 
       socket.join(channelId);
 
-      io.to(channelId).emit(EVENTS.LISTEN_ENTER_CHANNEL, userData);
+      io.emit(EVENTS.LISTEN_ENTER_CHANNEL, user);
     });
 
     socket.on(EVENTS.EXIT_CHANNEL, ({ channelId, userId }) => {
@@ -72,7 +72,7 @@ app.prepare().then(() => {
 
       users.channelId = newUserInThisChannel;
 
-      socket.broadcast.emit(EVENTS.LISTEN_EXIT_CHANNEL, {
+      io.emit(EVENTS.LISTEN_EXIT_CHANNEL, {
         channelId,
         userId,
       });

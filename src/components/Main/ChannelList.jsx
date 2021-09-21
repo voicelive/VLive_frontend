@@ -17,14 +17,6 @@ export default function ChannelList({ loginStatus }) {
     return <ErrorBox message={error.message} />;
   }
 
-  useSocket(EVENTS.LISTEN_ENTER_CHANNEL, (user) => {
-    activeChannels.forEach(({ _id: channelId }) => {
-      if (user.channelId === channelId) {
-        updatePlayers(channelId, user);
-      }
-    });
-  });
-
   useSocket(EVENTS.LISTEN_CREATE_CHANNEL, (channel) => {
     const newChannel = Object.assign(channel, { isNew: true });
     mutate((prev) => [...prev, newChannel]);
@@ -49,18 +41,6 @@ export default function ChannelList({ loginStatus }) {
 
     mutate(isStartChannels);
   });
-
-  function updatePlayers(channelId, user) {
-    mutate((prev) => {
-      return prev.map((channel) => {
-        if (channel._id === channelId) {
-          channel.players = channel.players.concat([user]);
-        }
-
-        return channel;
-      });
-    });
-  }
 
   return (
     <List>
