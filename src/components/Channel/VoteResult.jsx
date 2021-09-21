@@ -50,10 +50,12 @@ export default function VoteResult() {
 
   async function deactivateChannel() {
     try {
+      const user = JSON.parse(sessionStorage.getItem('user'));
       const response = await fetch(`${API.URL}/channel/${channelId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          authorization: `bearer ${user?.token}`,
         },
         body: JSON.stringify({
           state: 'end',
@@ -80,7 +82,7 @@ export default function VoteResult() {
 
     for (const player of players) {
       if (winners.includes(player._id)) {
-        winnerNames.push(`, ${player.userId.name}님`);
+        winnerNames.push(`, ${player.user.name}님`);
       }
     }
 
@@ -100,16 +102,14 @@ export default function VoteResult() {
               <Character key={player._id} id={player._id} iswinner={isWinner}>
                 <div className="img">
                   <Image
-                    src={player.characterId?.imgUrl}
+                    src={player.character?.imgUrl}
                     alt="character-image"
                     width={150}
                     height={200}
                   />
                 </div>
-                <span className="character-name">
-                  {player.characterId?.name}
-                </span>
-                <span className="user-name">{player.userId?.name}</span>
+                <span className="character-name">{player.character?.name}</span>
+                <span className="user-name">{player.user?.name}</span>
                 <span className="voting-result">{player.voteCount} 표</span>
               </Character>
             );

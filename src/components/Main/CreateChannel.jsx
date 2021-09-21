@@ -24,10 +24,12 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
   useEffect(() => {
     async function fetchData() {
       try {
+        const user = JSON.parse(sessionStorage.getItem('user'));
         const response = await fetch(`${API.URL}/episode`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            authorization: `bearer ${user?.token}`,
           },
         });
         const { result, data, message } = await response.json();
@@ -49,13 +51,14 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
     ev.preventDefault();
 
     const { name, episodeId } = inputValue;
-    const user = JSON.parse(sessionStorage.getItem('user'));
 
     try {
+      const user = JSON.parse(sessionStorage.getItem('user'));
       const response = await fetch(`${API.URL}/channel`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          authorization: `bearer ${user?.token}`,
         },
         body: JSON.stringify({ name, episodeId, host: user._id }),
       });
@@ -70,6 +73,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          authorization: `bearer ${user?.token}`,
         },
         body: JSON.stringify({
           state: 'enter',
