@@ -34,12 +34,17 @@ export default function PlayerEntryButton({ channelId, isActive }) {
     }
   });
 
-  useSocket(EVENTS.LISTEN_EXIT_CHANNEL, ({ userId, channelId }) => {
-    if (channelId === channelId) {
-      const newPlayers = players.filter((player) => player.user._id !== userId);
-      mutate((prev) => ({ ...prev, players: newPlayers }));
-    }
-  });
+  useSocket(
+    EVENTS.LISTEN_EXIT_CHANNEL,
+    ({ userId, channelId: exitChannelId }) => {
+      if (exitChannelId === channelId) {
+        const newPlayers = players.filter(
+          (player) => player.user._id !== userId,
+        );
+        mutate((prev) => ({ ...prev, players: newPlayers }));
+      }
+    },
+  );
 
   if (error) {
     return <ErrorBox message={error.message} />;

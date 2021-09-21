@@ -25,7 +25,7 @@ export default function Landing() {
         <h2 className="history-title">RECENT LIVE</h2>
         <div className="history-list">
           {historyChannels?.map((channel) => (
-            <Link href={`/history/${channel._id}`} key={channel._id}>
+            <Link href={`/history/${channel._id}`} key={channel._id} passHref>
               <a>
                 <HistoryItem channel={channel} />
               </a>
