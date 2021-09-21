@@ -29,6 +29,12 @@ export default function SideButtonContainer() {
     setUserId(_id);
   }, []);
 
+  useEffect(() => {
+    channel.players.forEach((player) => {
+      setSelectedCharacters((prev) => [...prev, player.character]);
+    });
+  }, []);
+
   useSocket(EVENTS.LISTEN_PLAYER_READY, ({ characterId }) => {
     setSelectedCharacters((prev) => [...prev, characterId]);
   });
@@ -41,12 +47,14 @@ export default function SideButtonContainer() {
     setIsModalOpen(false);
   }
 
-  async function handleClick() {
+  async function handleExitButtonClick() {
     try {
+      const user = JSON.parse(sessionStorage.getItem('user'));
       const response = await fetch(`${API.URL}/channel/${channelId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          authorization: `bearer ${user?.token}`,
         },
         body: JSON.stringify({
           state: 'exit',
@@ -75,14 +83,16 @@ export default function SideButtonContainer() {
 
   async function startGameHandleClick() {
     try {
+      const user = JSON.parse(sessionStorage.getItem('user'));
       const response = await fetch(`${API.URL}/channel/${channelId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          authorization: `bearer ${user?.token}`,
         },
         body: JSON.stringify({
           state: 'start',
-          channelId,
+          channel: channelId,
         }),
       });
 
@@ -113,7 +123,11 @@ export default function SideButtonContainer() {
           Ready
         </Button>
       )}
-      <Button onClick={handleClick} bgColor={theme.blue} fontsize="18px">
+      <Button
+        onClick={handleExitButtonClick}
+        bgColor={theme.blue}
+        fontsize="18px"
+      >
         나가기
       </Button>
       {isModalOpen && (
