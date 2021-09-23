@@ -5,8 +5,11 @@ import theme from '../../styles/theme';
 
 import useChannel from '../../hooks/channel/useChannel';
 import { useSocket, socketClient } from '../../hooks/socket/useSocket';
+
 import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
+
+import { putRequest } from '../../../remote/remotes';
 
 import CharacterSelection from './CharacterSelection';
 import Button from '../Button';
@@ -50,18 +53,14 @@ export default function SideButtonContainer() {
   async function handleExitButtonClick() {
     try {
       const user = JSON.parse(sessionStorage.getItem('user'));
-      const response = await fetch(`${API.URL}/channel/${channelId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `bearer ${user?.token}`,
-        },
-        body: JSON.stringify({
+      const response = await putRequest(
+        `${API.URL}/channel/${channelId}`,
+        user,
+        JSON.stringify({
           state: 'exit',
           userId,
         }),
-      });
-
+      );
       const { result, message } = response;
 
       if (result === 'error') {
@@ -84,18 +83,14 @@ export default function SideButtonContainer() {
   async function startGameHandleClick() {
     try {
       const user = JSON.parse(sessionStorage.getItem('user'));
-      const response = await fetch(`${API.URL}/channel/${channelId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `bearer ${user?.token}`,
-        },
-        body: JSON.stringify({
+      const response = await putRequest(
+        `${API.URL}/channel/${channelId}`,
+        user,
+        JSON.stringify({
           state: 'start',
           channel: channelId,
         }),
-      });
-
+      );
       const { result, message } = await response.json();
 
       if (result === 'error') {

@@ -9,8 +9,10 @@ import { socketClient } from '../../hooks/socket/useSocket';
 
 import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
-import ErrorBox from '../ErrorBox';
 
+import { getRequest, putRequest, postRequest } from '../../../remote/remotes';
+
+import ErrorBox from '../ErrorBox';
 import Button from '../Button';
 
 export default function CreateChannel({ isModalOpen, closeModal }) {
@@ -25,13 +27,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
     async function fetchData() {
       try {
         const user = JSON.parse(sessionStorage.getItem('user'));
-        const response = await fetch(`${API.URL}/episode`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            authorization: `bearer ${user?.token}`,
-          },
-        });
+        const response = await getRequest(`${API.URL}/episode`, user);
         const { result, data, message } = await response.json();
 
         if (result === 'error') {
@@ -54,14 +50,11 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
 
     try {
       const user = JSON.parse(sessionStorage.getItem('user'));
-      const response = await fetch(`${API.URL}/channel`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `bearer ${user?.token}`,
-        },
-        body: JSON.stringify({ name, episodeId, host: user._id }),
-      });
+      const response = await postRequest(
+        `${API.URL}/channel`,
+        user,
+        JSON.stringify({ name, episodeId, host: user._id }),
+      );
       const { result, data, message } = await response.json();
       const channelId = data._id;
 
@@ -69,18 +62,14 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
         throw new Error(message);
       }
 
-      const res = await fetch(`${API.URL}/channel/${channelId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `bearer ${user?.token}`,
-        },
-        body: JSON.stringify({
+      const res = await putRequest(
+        `${API.URL}/channel/${channelId}`,
+        user,
+        JSON.stringify({
           state: 'enter',
           userId: user._id,
         }),
-      });
-
+      );
       const { result: putResult, message: pusMessage } = await res.json();
 
       if (putResult === 'error') {

@@ -12,6 +12,8 @@ import { EVENTS } from '../../constants/socketEvent';
 import { API } from '../../constants/api';
 import { ALERT_MSG } from '../../constants/alertMessage';
 
+import { getRequest, putRequest } from '../../../remote/remotes';
+
 import Button from '../Button';
 import ErrorBox from '../ErrorBox';
 
@@ -44,15 +46,9 @@ export default function CharacterSelection({
     (async () => {
       try {
         const user = JSON.parse(sessionStorage.getItem('user'));
-        const response = await fetch(
+        const response = await getRequest(
           `${API.URL}/episode/${channel.episode._id}`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              authorization: `bearer ${user?.token}`,
-            },
-          },
+          user,
         );
         const { result, data, message } = await response.json();
 
@@ -77,18 +73,15 @@ export default function CharacterSelection({
     const user = JSON.parse(sessionStorage.getItem('user'));
 
     try {
-      const response = await fetch(`${API.URL}/channel/${channelId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `bearer ${user?.token}`,
-        },
-        body: JSON.stringify({
+      const response = await putRequest(
+        `${API.URL}/channel/${channelId}`,
+        user,
+        JSON.stringify({
           state: 'character',
           userId: user?._id,
           characterId: currentCharacter,
         }),
-      });
+      );
       const { result, message } = await response.json();
 
       if (result === 'error') {

@@ -7,8 +7,11 @@ import theme from '../../styles/theme';
 import { useSocket } from '../../hooks/socket/useSocket';
 import usePlayers from '../../hooks/channel/usePlayers';
 import useChannel from '../../hooks/channel/useChannel';
+
 import { EVENTS } from '../../constants/socketEvent';
 import { API } from '../../constants/api';
+
+import { putRequest } from '../../../remote/remotes';
 
 import Button from '../Button';
 import ErrorBox from '../ErrorBox';
@@ -57,19 +60,14 @@ export default function PlayerEntryButton({ channelId, isActive }) {
   async function onButtonClick(channelId) {
     try {
       const user = JSON.parse(sessionStorage.getItem('user'));
-
-      const response = await fetch(`${API.URL}/channel/${channelId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `bearer ${user?.token}`,
-        },
-        body: JSON.stringify({
+      const response = await putRequest(
+        `${API.URL}/channel/${channelId}`,
+        user,
+        JSON.stringify({
           state: 'enter',
           userId: user?._id,
         }),
-      });
-
+      );
       const { result, message } = await response.json();
 
       if (result === 'error') {

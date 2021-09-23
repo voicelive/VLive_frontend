@@ -9,6 +9,8 @@ import { socketClient } from '../../hooks/socket/useSocket';
 import { API } from '../../constants/api';
 import { EVENTS } from '../../constants/socketEvent';
 
+import { putRequest } from '../../../remote/remotes';
+
 import ErrorBox from '../ErrorBox';
 
 export default function VoteResult() {
@@ -51,18 +53,14 @@ export default function VoteResult() {
   async function deactivateChannel() {
     try {
       const user = JSON.parse(sessionStorage.getItem('user'));
-      const response = await fetch(`${API.URL}/channel/${channelId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `bearer ${user?.token}`,
-        },
-        body: JSON.stringify({
+      const response = await putRequest(
+        `${API.URL}/channel/${channelId}`,
+        user,
+        JSON.stringify({
           state: 'end',
           channelId,
         }),
-      });
-
+      );
       const { result, message } = await response.json();
 
       if (result === 'error') {

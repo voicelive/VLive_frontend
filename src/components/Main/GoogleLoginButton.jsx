@@ -4,9 +4,12 @@ import 'firebase/auth';
 import PropTypes from 'prop-types';
 import theme from '../../styles/theme';
 
+import { API } from '../../constants/api';
+
+import { postRequest } from '../../../remote/remotes';
+
 import Button from '../Button';
 import ErrorBox from '../ErrorBox';
-import { API } from '../../constants/api';
 
 export default function GoogleLoginButton({ onLogin }) {
   const [error, setError] = useState(null);
@@ -26,13 +29,11 @@ export default function GoogleLoginButton({ onLogin }) {
     };
 
     try {
-      const response = await fetch(`${API.URL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userInfo),
-      });
+      const response = await postRequest(
+        `${API.URL}/login`,
+        null,
+        JSON.stringify(userInfo),
+      );
       const { result, data, message } = await response.json();
 
       if (result === 'error') {
