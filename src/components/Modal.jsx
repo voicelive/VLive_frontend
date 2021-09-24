@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 export default function Modal({ children, closeModal }) {
   return (
     <Wrapper>
-      <Dimmed onClick={closeModal} />
+      <Dimmed data-testid="dimmed" onClick={closeModal} />
       <StyledModal>{children}</StyledModal>
     </Wrapper>
   );
 }
 
 Modal.propTypes = {
-  children: PropTypes.object.isRequired,
+  children: PropTypes.any.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 
