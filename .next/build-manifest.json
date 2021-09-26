@@ -10,13 +10,8 @@
     "static/chunks/amp.js"
   ],
   "lowPriorityFiles": [
-<<<<<<< HEAD
-    "static/kRi-a7ls0ClD2GWeVAYjZ/_buildManifest.js",
-    "static/kRi-a7ls0ClD2GWeVAYjZ/_ssgManifest.js"
-=======
     "static/development/_buildManifest.js",
     "static/development/_ssgManifest.js"
->>>>>>> dfa2254 (chore: commit build files)
   ],
   "pages": {
     "/_app": [
@@ -28,28 +23,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
-    ],
-    "/channel/[channelId]": [
-<<<<<<< HEAD
-      "static/chunks/webpack-90a60b87fd0d5fc150f2.js",
-      "static/chunks/framework-895f067827ebe11ffe45.js",
-      "static/chunks/main-62b8caa3ccc47893b147.js",
-      "static/chunks/160-ff4720bbe4500829b668.js",
-      "static/chunks/595-eef596363ce5799a341d.js",
-      "static/chunks/pages/channel/[channelId]-15bf71d88513ee7ea4bd.js"
-    ],
-    "/history/[historyId]": [
-      "static/chunks/webpack-90a60b87fd0d5fc150f2.js",
-      "static/chunks/framework-895f067827ebe11ffe45.js",
-      "static/chunks/main-62b8caa3ccc47893b147.js",
-      "static/chunks/160-ff4720bbe4500829b668.js",
-      "static/chunks/511-842b5098f5cae77743e8.js",
-      "static/chunks/pages/history/[historyId]-7df56b48f22beb659247.js"
-=======
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/channel/[channelId].js"
->>>>>>> dfa2254 (chore: commit build files)
     ],
     "/main": [
       "static/chunks/webpack.js",

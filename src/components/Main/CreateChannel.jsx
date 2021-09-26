@@ -105,9 +105,9 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
     <Container>
       <div className="header">
         <span className="title">채널개설 하기</span>
-        <button className="exit-button" type="button" onClick={closeModal}>
+        <Button className="exit-button" onClick={closeModal}>
           나가기
-        </button>
+        </Button>
       </div>
       <CreatingForm>
         <ChannelName>

@@ -113,9 +113,9 @@ export default function CharacterSelection({
     <Container>
       <div className="header">
         <span className="title">역할고르기</span>
-        <button className="exit-button" type="button" onClick={closeModal}>
+        <Button className="exit-button" onClick={closeModal}>
           나가기
-        </button>
+        </Button>
       </div>
       <ReadyForm onSubmit={handleSubmit}>
         <span className="description">연기할 배역을 선택하세요</span>
