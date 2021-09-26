@@ -126,10 +126,10 @@ export default function SideButtonContainer() {
         나가기
       </Button>
       {isModalOpen && (
-        <Modal closeModal={closeModal}>
+        <Modal onClose={closeModal}>
           <CharacterSelection
             selectedCharacters={selectedCharacters}
-            closeModal={closeModal}
+            onClose={closeModal}
             isModalOpen={isModalOpen}
           />
         </Modal>

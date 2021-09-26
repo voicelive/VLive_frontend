@@ -4,12 +4,12 @@ import styled from '@emotion/styled';
 
 import Button from '../Button';
 
-export default function EpisodeVideo({ closeModal, episode }) {
+export default function EpisodeVideo({ onClose, episode }) {
   return (
     <Container>
       <div className="header">
         <span className="title">{episode.title}</span>
-        <Button className="exit-button" onClick={closeModal}>
+        <Button className="exit-button" onClick={onClose}>
           나가기
         </Button>
       </div>
@@ -21,7 +21,7 @@ export default function EpisodeVideo({ closeModal, episode }) {
 }
 
 EpisodeVideo.propTypes = {
-  closeModal: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   episode: PropTypes.object,
 };
 

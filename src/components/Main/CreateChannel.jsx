@@ -15,7 +15,7 @@ import { getRequest, putRequest, postRequest } from '../../../remote/remotes';
 import ErrorBox from '../ErrorBox';
 import Button from '../Button';
 
-export default function CreateChannel({ isModalOpen, closeModal }) {
+export default function CreateChannel({ isModalOpen, onClose }) {
   const [episodes, setEpisodes] = useState([]);
   const [inputValue, setInputValue] = useState({
     name: '',
@@ -105,7 +105,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
     <Container>
       <div className="header">
         <span className="title">채널개설 하기</span>
-        <Button className="exit-button" onClick={closeModal}>
+        <Button className="exit-button" onClick={onClose}>
           나가기
         </Button>
       </div>
@@ -164,7 +164,7 @@ export default function CreateChannel({ isModalOpen, closeModal }) {
 
 CreateChannel.propTypes = {
   isModalOpen: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 const Container = styled.div`

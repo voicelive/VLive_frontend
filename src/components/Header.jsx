@@ -33,8 +33,8 @@ export default function Header() {
         CREATE CHANNEL
       </span>
       {isModalOpen && (
-        <Modal closeModal={closeModal}>
-          <CreateChannel closeModal={closeModal} isModalOpen={isModalOpen} />
+        <Modal onClose={closeModal}>
+          <CreateChannel onClose={closeModal} isModalOpen={isModalOpen} />
         </Modal>
       )}
     </HeaderWrapper>

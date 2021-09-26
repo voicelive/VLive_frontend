@@ -51,11 +51,8 @@ export default function Preview() {
         })}
       </List>
       {isModalOpen && (
-        <Modal closeModal={closeModal}>
-          <EpisodeVideo
-            closeModal={closeModal}
-            episode={episode}
-          ></EpisodeVideo>
+        <Modal onClose={closeModal}>
+          <EpisodeVideo onClose={closeModal} episode={episode}></EpisodeVideo>
         </Modal>
       )}
     </PreviewContainer>
