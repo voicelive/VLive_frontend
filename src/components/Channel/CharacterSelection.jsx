@@ -19,7 +19,7 @@ import ErrorBox from '../ErrorBox';
 
 export default function CharacterSelection({
   isModalOpen,
-  closeModal,
+  onClose,
   selectedCharacters,
 }) {
   const [episode, setEpisode] = useState([]);
@@ -95,7 +95,7 @@ export default function CharacterSelection({
         episode,
       });
 
-      closeModal();
+      onClose();
     } catch (err) {
       setFetchError(err);
     }
@@ -113,9 +113,9 @@ export default function CharacterSelection({
     <Container>
       <div className="header">
         <span className="title">역할고르기</span>
-        <button className="exit-button" type="button" onClick={closeModal}>
+        <Button className="exit-button" onClick={onClose}>
           나가기
-        </button>
+        </Button>
       </div>
       <ReadyForm onSubmit={handleSubmit}>
         <span className="description">연기할 배역을 선택하세요</span>
@@ -158,7 +158,7 @@ export default function CharacterSelection({
 
 CharacterSelection.propTypes = {
   isModalOpen: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   selectedCharacters: PropTypes.array.isRequired,
 };
 

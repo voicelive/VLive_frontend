@@ -2,14 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-export default function EpisodeVideo({ closeModal, episode }) {
+import Button from '../Button';
+
+export default function EpisodeVideo({ onClose, episode }) {
   return (
     <Container>
       <div className="header">
         <span className="title">{episode.title}</span>
-        <button className="exit-button" type="button" onClick={closeModal}>
+        <Button className="exit-button" onClick={onClose}>
           나가기
-        </button>
+        </Button>
       </div>
       <video autoPlay>
         <source src={episode.videoUrl} />
@@ -19,7 +21,7 @@ export default function EpisodeVideo({ closeModal, episode }) {
 }
 
 EpisodeVideo.propTypes = {
-  closeModal: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   episode: PropTypes.object,
 };
 

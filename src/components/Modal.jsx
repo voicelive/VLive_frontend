@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
-export default function Modal({ children, closeModal }) {
+export default function Modal({ children, onClose }) {
   return (
     <Wrapper>
-      <Dimmed data-testid="dimmed" onClick={closeModal} />
+      <Dimmed data-testid="dimmed" onClick={onClose} />
       <StyledModal>{children}</StyledModal>
     </Wrapper>
   );
@@ -12,7 +12,7 @@ export default function Modal({ children, closeModal }) {
 
 Modal.propTypes = {
   children: PropTypes.any.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 const Wrapper = styled.div`

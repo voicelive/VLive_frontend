@@ -8,16 +8,14 @@ function SampleComponent() {
 
 describe('Modal', () => {
   it('renders children', () => {
-    const { getByText } = render(
-      <Modal closeModal={() => {}}>Sample Text</Modal>,
-    );
+    const { getByText } = render(<Modal onClose={() => {}}>Sample Text</Modal>);
 
     expect(getByText('Sample Text')).toBeInTheDocument();
   });
 
   it('renders component', () => {
     const { getByText } = render(
-      <Modal closeModal={() => {}}>
+      <Modal onClose={() => {}}>
         <SampleComponent />
       </Modal>,
     );
@@ -25,10 +23,10 @@ describe('Modal', () => {
     expect(getByText('Sample Heading')).toBeInTheDocument();
   });
 
-  it('execute closeModal function when clicked dimmed', () => {
+  it('execute onClose function when clicked dimmed', () => {
     const myMock = jest.fn();
     const { getByTestId } = render(
-      <Modal closeModal={myMock}>
+      <Modal onClose={myMock}>
         <SampleComponent />
       </Modal>,
     );
