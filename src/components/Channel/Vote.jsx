@@ -74,7 +74,7 @@ export default function Vote({ onShowResult }) {
           >
             <div className={`img ${playerId === player._id && 'border'}`}>
               <Image
-                src={player.characterId?.imgUrl}
+                src={player.character?.imgUrl}
                 alt="character-image"
                 width={150}
                 height={200}
@@ -83,7 +83,7 @@ export default function Vote({ onShowResult }) {
             <span
               className={`character-name ${playerId === player._id && 'color'}`}
             >
-              {player.characterId?.name}
+              {player.character?.name}
             </span>
             <span className="user-name">{player.user?.name}</span>
           </Character>

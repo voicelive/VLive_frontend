@@ -11,6 +11,8 @@ export default class MyDocument extends Document {
       <Html lang="ko">
         <Head>
           <meta charSet="UTF-8" />
+          <link rel="shortcut icon" href="/static/favicon.ico" />
+          <title>VLIVE</title>
         </Head>
         <body>
           <Main />
