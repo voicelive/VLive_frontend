@@ -1,12 +1,12 @@
 branch-defaults:
-  master:
-    environment: Vlivenextjs-prod
+  Deploy:
+    environment: Vliveprod-env
 environment-defaults:
-  Vlivenextjs-prod:
+  Vliveprod-env:
     branch: null
     repository: null
 global:
-  application_name: vlive-nextjs
+  application_name: vlive_prod
   default_ec2_keyname: null
   default_platform: Node.js 14 running on 64bit Amazon Linux 2
   default_region: ap-northeast-2
