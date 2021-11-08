@@ -19,7 +19,7 @@ export default function VoteResult() {
   } = useRouter();
   const router = useRouter();
   const { players, error } = usePlayers(channelId);
-  const [winners, setWinners] = useState([]);
+  const [winners, setWinners] = useState('');
 
   if (error) {
     return <ErrorBox message={error.message} />;
@@ -42,13 +42,16 @@ export default function VoteResult() {
 
   useEffect(() => {
     const voteCounts = players.map((player) => player.voteCount);
+    const winnerNames = [];
 
     players.forEach((player) => {
       if (player.voteCount === Math.max(...voteCounts)) {
-        setWinners((prevWinners) => prevWinners.concat(player._id));
+        winnerNames.push(`, ${player.user.name}님`);
       }
     });
-  }, []);
+
+    setWinners(winnerNames.join(' ').slice(2));
+  }, [players]);
 
   async function deactivateChannel() {
     try {
@@ -71,33 +74,23 @@ export default function VoteResult() {
     }
   }
 
-  function checkWinner(playerId) {
-    return winners?.includes(playerId);
-  }
-
-  function getWinnerNames() {
-    const winnerNames = [];
-
-    for (const player of players) {
-      if (winners.includes(player._id)) {
-        winnerNames.push(`, ${player.user.name}님`);
-      }
-    }
-
-    return winnerNames.join(' ').slice(2);
+  function checkWinner(name) {
+    return winners?.includes(name);
   }
 
   return (
     <Wrapper>
       <h1 className="result-title">투표 결과</h1>
-      <span className="result-subtitle">{getWinnerNames()} 축하합니다!</span>
+      <span className="result-subtitle">{winners && winners} 축하합니다!</span>
       <div className="characters">
         {winners &&
           players.map((player) => {
-            const isWinner = checkWinner(player._id);
-
             return (
-              <Character key={player._id} id={player._id} iswinner={isWinner}>
+              <Character
+                key={player._id}
+                id={player._id}
+                iswinner={checkWinner(player.user.name)}
+              >
                 <div className="img">
                   <Image
                     src={player.character?.imgUrl}
